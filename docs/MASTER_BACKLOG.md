@@ -198,7 +198,7 @@ Validation:
 
 ### P2-T01: Implement `claim_check`
 
-Status: TODO
+Status: DONE
 
 Goal: validate one claim against ontology, adapter evidence, policy, and compliance context.
 
@@ -213,9 +213,14 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
+Validation:
+
+- Added `SemanticTrustRuntime.claim_check` with adapter, ontology, explicit evidence, compliance, trivalent decision, evidence, contradiction, missing requirement, and proof metadata paths.
+- Tests cover supported adapter evidence, explicit evidence with tenant/domain/context, contradicted adapter output, and unsupported claims that return `UNDECIDABLE` instead of `FALSE`.
+
 ### P2-T02: Implement `answer_check`
 
-Status: TODO
+Status: DONE
 
 Goal: decompose an answer into claims and aggregate a decision.
 
@@ -231,9 +236,14 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
+Validation:
+
+- Added `SemanticTrustRuntime.answer_check` using GroundCite `RegexClaimDecomposer`, claim-level validation, dependency graph propagation, aggregate trivalent decisions, and unsupported span metadata.
+- Tests cover mixed supported/unsupported answers, propagated dependency failures, and a GroundCite `Context` sample-shaped check.
+
 ### P2-T03: Implement `action_check`
 
-Status: TODO
+Status: DONE
 
 Goal: validate whether an agent action is semantically and policy-authorized.
 
@@ -248,9 +258,14 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
+Validation:
+
+- Added `SemanticTrustRuntime.action_check` with actor/action/resource/purpose/context inputs and semantic policy fact matching.
+- Tests cover allowed policy facts, denied policy facts, and absent authorization returning `UNDECIDABLE` with an escalation recommendation.
+
 ### P2-T04: Implement `policy_check`
 
-Status: TODO
+Status: DONE
 
 Goal: unify compliance rules, internal policies, and constraints.
 
@@ -264,6 +279,13 @@ Subtasks:
 - Run regression tests for policy checks.
 - Update this backlog.
 - Update `CHANGELOG.md`.
+
+Validation:
+
+- Added `SemanticTrustRuntime.policy_check` combining `ComplianceEngine` violations with tenant semantic policy facts and policy provenance in evidence/contradiction records.
+- Tests cover LGPD, AI Act, custom compliance rules, tenant policy packs, and input/output/action scope filtering.
+- Phase 2 product tests passed: `10 passed` for `tests/product/test_phase2_runtime_api.py`.
+- Product plus GroundCite schema/claim regression passed after Phase 2 implementation: `38 passed`.
 
 ## Phase 3: Proof And Audit Hardening
 
@@ -406,6 +428,6 @@ Subtasks:
 
 ## Current Immediate Next Tasks
 
-1. Start Phase 2 with P2-T01 by implementing `claim_check`.
-2. Reuse the Phase 1 decision model as the return contract and the semantic fact model as the ontology/storage contract.
+1. Start Phase 3 with P3-T01 by enriching the proof ledger schema.
+2. Preserve the Phase 2 runtime API contracts as the public SDK surface.
 3. Continue preserving GroundCite reference tests as regression evidence while adapting product-level tests.

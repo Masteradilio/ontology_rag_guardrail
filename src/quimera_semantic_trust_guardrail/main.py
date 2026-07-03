@@ -27,6 +27,7 @@ from .output_validator import QuimeraOutputValidator, ValidationResult, Validati
 from .tenant_ontology import TenantOntologyManager, OntologyEntry
 from .compliance_engine import ComplianceEngine, ComplianceStandard
 from .proof_recorder import ProofRecorder
+from .runtime import SemanticTrustRuntime
 
 
 @dataclass
@@ -214,6 +215,15 @@ class QuimeraGuardrails:
             proof_recorder=self.proof_recorder,
             config=self.config.to_output_config()
         )
+
+        self.semantic_runtime = SemanticTrustRuntime(
+            tenant_id=tenant_id,
+            ontology_manager=self.ontology_manager,
+            ontology_id=ontology_id,
+            knowledge_adapter=knowledge_adapter,
+            compliance_engine=self.compliance_engine,
+            proof_recorder=self.proof_recorder,
+        )
     
     async def shield_input(
         self,
@@ -292,6 +302,22 @@ class QuimeraGuardrails:
         return await self.output_validator.validate(
             original_query, agent_response, context, expected_topics
         )
+
+    async def claim_check(self, claim: str, **kwargs):
+        """Runtime API: validate one claim and return a trivalent decision."""
+        return await self.semantic_runtime.claim_check(claim, **kwargs)
+
+    async def answer_check(self, answer: str, **kwargs):
+        """Runtime API: validate an answer by decomposing and checking claims."""
+        return await self.semantic_runtime.answer_check(answer, **kwargs)
+
+    async def action_check(self, **kwargs):
+        """Runtime API: validate whether an agent action is authorized."""
+        return await self.semantic_runtime.action_check(**kwargs)
+
+    async def policy_check(self, text: str, **kwargs):
+        """Runtime API: validate text or action context against policies."""
+        return await self.semantic_runtime.policy_check(text, **kwargs)
     
     async def full_cycle(
         self,
@@ -365,6 +391,8 @@ class QuimeraGuardrails:
         self.ontology_id = ontology_id
         self.output_validator.ontology_id = ontology_id
         self.output_validator.ontology_manager = self.ontology_manager
+        self.semantic_runtime.ontology_id = ontology_id
+        self.semantic_runtime.ontology_manager = self.ontology_manager
         
         return ontology_id
     
@@ -414,6 +442,8 @@ class QuimeraGuardrails:
         self.ontology_id = ontology_id
         self.output_validator.ontology_id = ontology_id
         self.output_validator.ontology_manager = self.ontology_manager
+        self.semantic_runtime.ontology_id = ontology_id
+        self.semantic_runtime.ontology_manager = self.ontology_manager
         return True
     
     # =========== Métodos de Compliance ===========
@@ -425,6 +455,7 @@ class QuimeraGuardrails:
         if not self.compliance_engine:
             self.compliance_engine = ComplianceEngine(enabled_standards=[std])
             self.output_validator.compliance_engine = self.compliance_engine
+            self.semantic_runtime.compliance_engine = self.compliance_engine
         else:
             self.compliance_engine.enabled_standards.add(std)
     

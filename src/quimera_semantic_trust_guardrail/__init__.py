@@ -69,6 +69,7 @@ from .semantic_fact import (
     semantic_facts_from_ontology_entry,
     semantic_facts_from_ontology_entries,
 )
+from .runtime import SemanticTrustRuntime
 
 # Adapters para bases de conhecimento externas
 from .adapters import (
@@ -147,6 +148,7 @@ __all__ = [
     "SemanticOntology",
     "semantic_facts_from_ontology_entry",
     "semantic_facts_from_ontology_entries",
+    "SemanticTrustRuntime",
     
     # Adapters
     "KnowledgeAdapter",

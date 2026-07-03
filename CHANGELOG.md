@@ -9,6 +9,8 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added the Phase 1 runtime decision model with trivalent decisions, recommended actions, decision statuses, evidence records, contradiction records, missing requirements, proof metadata, serialization support, and GroundCite label mapping.
 - Added the Phase 1 semantic fact model with tenant-scoped facts, ontology/policy version fields, provenance metadata, validity windows, and migration helpers for `OntologyEntry`, adapter `KnowledgeFact`, and legacy graph `Fact` records.
 - Added Phase 1 runtime integration for `knowledge_adapter` and `OntologySync`, including adapter-backed output validation, unified ontology fact writes, duplicate skipping, and conflict metadata.
+- Added the Phase 2 `SemanticTrustRuntime` SDK surface with `claim_check`, `answer_check`, `action_check`, and `policy_check`.
+- Exposed Phase 2 runtime methods through `QuimeraGuardrails` while keeping the existing input/output guardrail API.
 - Created the initial product workspace for Quimera Semantic Trust Guardrail.
 - Copied current `quimera_guardrails` modules into `src/quimera_semantic_trust_guardrail`.
 - Copied the original guardrail README to `docs/README_quimera_guardrail.md`.
@@ -24,6 +26,8 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Product decision model tests passed: `8 passed` for `tests/product/test_decision_model.py`.
 - Product decision and semantic fact model tests passed together: `13 passed`.
 - Phase 1 product and GroundCite schema/claim regression passed: `28 passed`.
+- Phase 2 runtime API tests passed: `10 passed` for `tests/product/test_phase2_runtime_api.py`.
+- Phase 2 product and GroundCite schema/claim regression passed: `38 passed`.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 
