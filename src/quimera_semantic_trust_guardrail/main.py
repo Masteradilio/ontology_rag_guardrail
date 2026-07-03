@@ -466,11 +466,171 @@ class QuimeraGuardrails:
         return self.compliance_engine.get_enabled_standards()
     
     # =========== Métodos de Auditoria ===========
-    
+
     def get_proof(self, proof_id: str) -> Optional[Dict[str, Any]]:
         """Busca uma prova específica"""
         entry = self.proof_recorder.get_proof(proof_id)
         return entry.to_dict() if entry else None
+
+    def proof_lookup(self, proof_id: str) -> Optional[Dict[str, Any]]:
+        """Public Phase 3 lookup API for a proof by id."""
+        return self.get_proof(proof_id)
+
+    def list_proofs_for_ontology(
+        self,
+        ontology_id: str,
+        *,
+        proof_type: Optional[Any] = None,
+        limit: int = 200,
+    ) -> List[Dict[str, Any]]:
+        """Return enriched proofs that reference the given ontology."""
+        entries = self.proof_recorder.list_tenant_proofs_with_provenance(
+            tenant_id=self.tenant_id,
+            ontology_id=ontology_id,
+            proof_type=proof_type,
+            limit=limit,
+        )
+        return [entry.to_dict() for entry in entries]
+
+    def snapshot_ontology(
+        self,
+        ontology_id: Optional[str] = None,
+        *,
+        name: Optional[str] = None,
+        proof_id: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """Capture an immutable snapshot of the active (or given) tenant ontology."""
+        target_id = ontology_id or self.ontology_id
+        if not target_id:
+            raise ValueError("No active ontology for the guardrails instance.")
+        snapshot = self.ontology_manager.snapshot_ontology(
+            self.tenant_id,
+            target_id,
+            name=name,
+            proof_id=proof_id,
+            metadata=metadata,
+        )
+        try:
+            from .proof_recorder import ProofType
+            proof_entry = self.proof_recorder.record(
+                proof_type=ProofType.ONTOLOGY_SNAPSHOT,
+                tenant_id=self.tenant_id,
+                input_data=snapshot.snapshot_id,
+                decision="TRUE",
+                confidence=1.0,
+                metadata={
+                    "snapshot_id": snapshot.snapshot_id,
+                    "snapshot_name": snapshot.name,
+                    "ontology_version": str(snapshot.ontology_version),
+                    "fact_count": snapshot.fact_count,
+                    "entry_count": snapshot.entry_count,
+                },
+                ontology_id=target_id,
+                ontology_version=str(snapshot.ontology_version),
+                evidence_ids=[],
+                policy_ids=[],
+                decision_path=[
+                    "ontology:snapshot",
+                    f"ontology_version:{snapshot.ontology_version}",
+                ],
+                related_proof_id=proof_id,
+            )
+            snapshot_proof_id = proof_entry.proof_id
+        except Exception:
+            snapshot_proof_id = proof_id
+        result = snapshot.to_dict()
+        result["proof_id"] = snapshot_proof_id
+        return result
+
+    def rollback_ontology(
+        self,
+        snapshot_id: str,
+        ontology_id: Optional[str] = None,
+        *,
+        proof_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Roll back the active (or given) ontology to a captured snapshot."""
+        target_id = ontology_id or self.ontology_id
+        if not target_id:
+            raise ValueError("No active ontology for the guardrails instance.")
+        rollback_result = self.ontology_manager.rollback_ontology(
+            self.tenant_id,
+            target_id,
+            snapshot_id,
+            proof_id=proof_id,
+        )
+        try:
+            from .proof_recorder import ProofType
+            proof_entry = self.proof_recorder.record(
+                proof_type=ProofType.ONTOLOGY_ROLLBACK,
+                tenant_id=self.tenant_id,
+                input_data=snapshot_id,
+                decision="TRUE",
+                confidence=1.0,
+                metadata={
+                    "snapshot_id": snapshot_id,
+                    "from_version": rollback_result.get("from_version"),
+                    "to_version": rollback_result.get("to_version"),
+                    "fact_count": rollback_result.get("fact_count"),
+                    "entry_count": rollback_result.get("entry_count"),
+                },
+                ontology_id=target_id,
+                ontology_version=str(rollback_result.get("to_version")),
+                evidence_ids=[],
+                policy_ids=[],
+                decision_path=[
+                    "ontology:rollback",
+                    f"snapshot:{snapshot_id}",
+                ],
+                related_proof_id=proof_id,
+            )
+            rollback_proof_id = proof_entry.proof_id
+        except Exception:
+            rollback_proof_id = proof_id
+        rollback_result["proof_id"] = rollback_proof_id
+        return rollback_result
+
+    def diff_ontology(
+        self,
+        snapshot_id: str,
+        ontology_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Diff between a snapshot and the live ontology for the active tenant."""
+        target_id = ontology_id or self.ontology_id
+        if not target_id:
+            raise ValueError("No active ontology for the guardrails instance.")
+        return self.ontology_manager.diff_ontology(
+            self.tenant_id,
+            target_id,
+            snapshot_id,
+        )
+
+    def list_ontology_snapshots(
+        self, ontology_id: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        target_id = ontology_id or self.ontology_id
+        if not target_id:
+            return []
+        return [
+            snap.to_dict()
+            for snap in self.ontology_manager.list_ontology_snapshots(
+                self.tenant_id, target_id
+            )
+        ]
+
+    def list_ontology_migrations(
+        self, ontology_id: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        target_id = ontology_id or self.ontology_id
+        if not target_id:
+            return []
+        return [
+            mig.to_dict()
+            for mig in self.ontology_manager.list_ontology_migrations(
+                self.tenant_id, target_id
+            )
+        ]
     
     def get_audit_log(
         self,

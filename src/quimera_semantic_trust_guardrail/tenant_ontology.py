@@ -24,6 +24,11 @@ from enum import Enum
 
 from .decision_model import TrivalentDecision
 from .semantic_fact import SemanticFact, SemanticFactType, SemanticFactProvenance
+from .ontology_versioning import (
+    OntologyMigration,
+    OntologySnapshot,
+    OntologyVersioningStore,
+)
 
 
 class FactConfidence(Enum):
@@ -196,6 +201,7 @@ class TenantOntologyManager:
         self.cache_path.mkdir(parents=True, exist_ok=True)
         self._cache: Dict[str, Ontology] = {}
         self._lock = RLock()
+        self.versioning_store = OntologyVersioningStore(self.storage_path)
     
     def create_ontology(
         self,
@@ -312,6 +318,8 @@ class TenantOntologyManager:
         source_chunk: Optional[str] = None,
         source_uri: Optional[str] = None,
         extractor: Optional[str] = None,
+        *,
+        proof_id: Optional[str] = None,
     ) -> bool:
         """Adds a unified semantic fact to an ontology."""
         with self._lock:
@@ -358,20 +366,40 @@ class TenantOntologyManager:
                 semantic_fact.relation,
                 semantic_fact.object,
             )
+            previous_version = int(ontology.version)
+            added = True
             if duplicate and duplicate.state == semantic_fact.state:
-                return False
-            if duplicate and duplicate.state != semantic_fact.state:
+                added = False
+            elif duplicate and duplicate.state != semantic_fact.state:
                 duplicate.metadata["conflict_detected"] = True
                 duplicate.metadata["conflicts_with_state"] = semantic_fact.state.value
                 semantic_fact.metadata["conflict_detected"] = True
                 semantic_fact.metadata["conflicts_with_state"] = duplicate.state.value
+                ontology.semantic_facts.append(semantic_fact)
+            else:
+                ontology.semantic_facts.append(semantic_fact)
 
-            ontology.semantic_facts.append(semantic_fact)
-            ontology.version += 1
-            ontology.updated_at = time.time()
-            self._save_ontology(ontology)
-            self._cache[self._cache_key(tenant_id, ontology_id)] = ontology
-            return True
+            if added:
+                ontology.version += 1
+                ontology.updated_at = time.time()
+                self._save_ontology(ontology)
+                self._cache[self._cache_key(tenant_id, ontology_id)] = ontology
+                self.versioning_store.record_migration(
+                    tenant_id=tenant_id,
+                    ontology_id=ontology_id,
+                    action="add_fact",
+                    from_version=previous_version,
+                    to_version=int(ontology.version),
+                    proof_id=proof_id,
+                    details={
+                        "subject": semantic_fact.subject,
+                        "relation": semantic_fact.relation,
+                        "object": semantic_fact.object,
+                        "fact_type": semantic_fact.fact_type.value,
+                        "state": semantic_fact.state.value,
+                    },
+                )
+            return added
 
     def list_facts(
         self,
@@ -673,6 +701,98 @@ class TenantOntologyManager:
             ):
                 return fact
         return None
+
+    # ------------------------------------------------------------------
+    # Versioning: snapshot, diff, rollback, and migration records
+    # ------------------------------------------------------------------
+    def snapshot_ontology(
+        self,
+        tenant_id: str,
+        ontology_id: str,
+        *,
+        name: Optional[str] = None,
+        parent_snapshot_id: Optional[str] = None,
+        proof_id: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> OntologySnapshot:
+        """Capture an immutable snapshot of a tenant ontology."""
+        with self._lock:
+            ontology = self.get_ontology(tenant_id, ontology_id)
+            if ontology is None:
+                raise FileNotFoundError(
+                    f"Ontology {ontology_id!r} not found for tenant {tenant_id!r}"
+                )
+            snapshot = self.versioning_store.snapshot(
+                ontology=ontology,
+                name=name,
+                parent_snapshot_id=parent_snapshot_id,
+                proof_id=proof_id,
+                metadata=metadata,
+            )
+            self.versioning_store.record_migration(
+                tenant_id=tenant_id,
+                ontology_id=ontology_id,
+                action="snapshot",
+                from_version=int(ontology.version),
+                to_version=int(ontology.version),
+                snapshot_id=snapshot.snapshot_id,
+                proof_id=proof_id,
+                details={"name": name, "path": snapshot.path},
+            )
+            return snapshot
+
+    def list_ontology_snapshots(
+        self, tenant_id: str, ontology_id: str
+    ) -> List[OntologySnapshot]:
+        return self.versioning_store.list_snapshots(tenant_id, ontology_id)
+
+    def get_ontology_snapshot(
+        self, tenant_id: str, ontology_id: str, snapshot_id: str
+    ) -> Optional[OntologySnapshot]:
+        return self.versioning_store.get_snapshot(tenant_id, ontology_id, snapshot_id)
+
+    def diff_ontology(
+        self,
+        tenant_id: str,
+        ontology_id: str,
+        snapshot_id: str,
+    ) -> Dict[str, Any]:
+        """Return diff between an existing snapshot and the live ontology."""
+        with self._lock:
+            ontology = self.get_ontology(tenant_id, ontology_id)
+            if ontology is None:
+                raise FileNotFoundError(
+                    f"Ontology {ontology_id!r} not found for tenant {tenant_id!r}"
+                )
+            return self.versioning_store.diff_snapshot_vs_live(
+                tenant_id=tenant_id,
+                ontology_id=ontology_id,
+                snapshot_id=snapshot_id,
+                ontology=ontology,
+            )
+
+    def rollback_ontology(
+        self,
+        tenant_id: str,
+        ontology_id: str,
+        snapshot_id: str,
+        *,
+        proof_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Roll back the live ontology to a captured snapshot."""
+        with self._lock:
+            return self.versioning_store.rollback_to_snapshot(
+                manager=self,
+                tenant_id=tenant_id,
+                ontology_id=ontology_id,
+                snapshot_id=snapshot_id,
+                proof_id=proof_id,
+            )
+
+    def list_ontology_migrations(
+        self, tenant_id: str, ontology_id: str
+    ) -> List[OntologyMigration]:
+        return self.versioning_store.list_migrations(tenant_id, ontology_id)
     
     def _cache_key(self, tenant_id: str, ontology_id: str) -> str:
         return f"{tenant_id}:{ontology_id}"

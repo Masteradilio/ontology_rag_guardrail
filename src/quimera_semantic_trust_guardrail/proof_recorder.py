@@ -28,47 +28,69 @@ class ProofType(Enum):
     OUTPUT_VALIDATION = "output_validation"
     COMPLIANCE_CHECK = "compliance_check"
     ONTOLOGY_VERIFICATION = "ontology_verification"
+    CLAIM_CHECK = "claim_check"
+    ANSWER_CHECK = "answer_check"
+    ACTION_CHECK = "action_check"
+    POLICY_CHECK = "policy_check"
+    ONTOLOGY_SNAPSHOT = "ontology_snapshot"
+    ONTOLOGY_ROLLBACK = "ontology_rollback"
+    ONTOLOGY_MIGRATION = "ontology_migration"
 
 
 @dataclass
 class ProofEntry:
     """
     Entrada no ledger de provas
-    
+
     Cada decisão do Quimera gera uma entrada imutável
     que pode ser auditada posteriormente.
     """
+
+    # Identidade e proveniência
     proof_id: str
     proof_type: ProofType
     tenant_id: str
     timestamp: str
     timestamp_unix: float
-    
+
     # Hashes de entrada
     input_hash: str
-    
+
     # Resultado
     decision: str  # TRUE, FALSE, UNDECIDABLE
     confidence: float
-    
+
     # Contexto (opcional)
     context_hash: Optional[str] = None
-    
+
     # Detalhes
     threats_detected: List[str] = field(default_factory=list)
     issues_detected: List[str] = field(default_factory=list)
-    
+
     # Encadeamento
     previous_proof_hash: Optional[str] = None
     entry_hash: str = ""
-    
+
+    # Phase 3: schema enriquecido para auditoria reprodutível
+    ontology_id: Optional[str] = None
+    ontology_version: Optional[str] = None
+    policy_id: Optional[str] = None
+    policy_version: Optional[str] = None
+    ruleset_version: Optional[str] = None
+    adapter_source: Optional[str] = None
+    evidence_ids: List[str] = field(default_factory=list)
+    policy_ids: List[str] = field(default_factory=list)
+    decision_path: List[str] = field(default_factory=list)
+    proof_status: str = "recorded"
+    related_proof_id: Optional[str] = None
+
     # Metadata
     metadata: Dict[str, Any] = field(default_factory=dict)
-    
+
     def __post_init__(self):
         if not self.entry_hash:
             self.entry_hash = self._calculate_hash()
-    
+
     def _calculate_hash(self) -> str:
         """Calcula hash da entrada para integridade"""
         data = {
@@ -79,7 +101,18 @@ class ProofEntry:
             "input_hash": self.input_hash,
             "decision": self.decision,
             "confidence": self.confidence,
-            "previous_proof_hash": self.previous_proof_hash
+            "previous_proof_hash": self.previous_proof_hash,
+            "ontology_id": self.ontology_id,
+            "ontology_version": self.ontology_version,
+            "policy_id": self.policy_id,
+            "policy_version": self.policy_version,
+            "ruleset_version": self.ruleset_version,
+            "adapter_source": self.adapter_source,
+            "evidence_ids": list(self.evidence_ids),
+            "policy_ids": list(self.policy_ids),
+            "decision_path": list(self.decision_path),
+            "proof_status": self.proof_status,
+            "related_proof_id": self.related_proof_id,
         }
         data_str = json.dumps(data, sort_keys=True)
         return hashlib.sha256(data_str.encode()).hexdigest()
@@ -153,11 +186,23 @@ class ProofRecorder:
         threats: Optional[List[str]] = None,
         issues: Optional[List[str]] = None,
         context: Optional[Dict[str, Any]] = None,
-        metadata: Optional[Dict[str, Any]] = None
+        metadata: Optional[Dict[str, Any]] = None,
+        *,
+        ontology_id: Optional[str] = None,
+        ontology_version: Optional[str] = None,
+        policy_id: Optional[str] = None,
+        policy_version: Optional[str] = None,
+        ruleset_version: Optional[str] = None,
+        adapter_source: Optional[str] = None,
+        evidence_ids: Optional[List[str]] = None,
+        policy_ids: Optional[List[str]] = None,
+        decision_path: Optional[List[str]] = None,
+        proof_status: str = "recorded",
+        related_proof_id: Optional[str] = None,
     ) -> ProofEntry:
         """
         Registra uma decisão no ledger
-        
+
         Args:
             proof_type: Tipo de prova (INPUT_SHIELD, OUTPUT_VALIDATION, etc)
             tenant_id: ID do tenant
@@ -168,23 +213,34 @@ class ProofRecorder:
             issues: Lista de problemas encontrados
             context: Contexto adicional (será hasheado)
             metadata: Metadados extras
-            
+            ontology_id: ID da ontologia usada na decisão
+            ontology_version: Versão da ontologia usada na decisão
+            policy_id: ID da policy principal avaliada
+            policy_version: Versão do pacote de policies
+            ruleset_version: Versão do ruleset de compliance
+            adapter_source: Identificador do adapter de conhecimento
+            evidence_ids: IDs de evidências que sustentaram a decisão
+            policy_ids: IDs de policies consultadas
+            decision_path: Passos de decisão executados
+            proof_status: Estado do proof (recorded, rolled_back, etc.)
+            related_proof_id: ID de prova relacionada (ex: proof de snapshot)
+
         Returns:
             ProofEntry com hash único
         """
         with self._lock:
             now = time.time()
-            
+
             # Gera ID único
             proof_id = self._generate_proof_id(proof_type, tenant_id, now)
-            
+
             # Calcula hashes
             input_hash = hashlib.sha256(input_data.encode()).hexdigest()[:32]
             context_hash = None
             if context:
-                context_str = json.dumps(context, sort_keys=True)
+                context_str = json.dumps(context, sort_keys=True, default=str)
                 context_hash = hashlib.sha256(context_str.encode()).hexdigest()[:32]
-            
+
             # Cria entrada
             entry = ProofEntry(
                 proof_id=proof_id,
@@ -199,17 +255,28 @@ class ProofRecorder:
                 threats_detected=threats or [],
                 issues_detected=issues or [],
                 previous_proof_hash=self._last_hash if self.enable_chain else None,
-                metadata=metadata or {}
+                ontology_id=ontology_id,
+                ontology_version=ontology_version,
+                policy_id=policy_id,
+                policy_version=policy_version,
+                ruleset_version=ruleset_version,
+                adapter_source=adapter_source,
+                evidence_ids=list(evidence_ids or []),
+                policy_ids=list(policy_ids or []),
+                decision_path=list(decision_path or []),
+                proof_status=proof_status,
+                related_proof_id=related_proof_id,
+                metadata=metadata or {},
             )
-            
+
             # Salva entrada
             self._save_entry(entry)
-            
+
             # Atualiza chain
             if self.enable_chain:
                 self._last_hash = entry.entry_hash
                 self._save_last_hash()
-            
+
             return entry
     
     def _generate_proof_id(
@@ -223,12 +290,19 @@ class ProofRecorder:
             ProofType.INPUT_SHIELD: "QIS",
             ProofType.OUTPUT_VALIDATION: "QOV",
             ProofType.COMPLIANCE_CHECK: "QCC",
-            ProofType.ONTOLOGY_VERIFICATION: "QON"
+            ProofType.ONTOLOGY_VERIFICATION: "QON",
+            ProofType.CLAIM_CHECK: "QCM",
+            ProofType.ANSWER_CHECK: "QAN",
+            ProofType.ACTION_CHECK: "QAC",
+            ProofType.POLICY_CHECK: "QPL",
+            ProofType.ONTOLOGY_SNAPSHOT: "QSN",
+            ProofType.ONTOLOGY_ROLLBACK: "QRB",
+            ProofType.ONTOLOGY_MIGRATION: "QMG",
         }.get(proof_type, "QPR")
-        
+
         data = f"{tenant_id}:{timestamp}:{os.urandom(8).hex()}"
         hash_part = hashlib.sha256(data.encode()).hexdigest()[:16]
-        
+
         return f"{prefix}-{hash_part}"
     
     def _save_entry(self, entry: ProofEntry):
@@ -330,37 +404,37 @@ class ProofRecorder:
     def verify_chain(self, tenant_id: str) -> Dict[str, Any]:
         """
         Verifica integridade da chain de provas de um tenant
-        
+
         Returns:
             Relatório de verificação
         """
         proofs = self.get_tenant_proofs(tenant_id, limit=10000)
-        
+
         if not proofs:
             return {
                 "valid": True,
                 "message": "Nenhuma prova encontrada",
                 "total_proofs": 0
             }
-        
+
         # Ordena por timestamp
         proofs.sort(key=lambda p: p.timestamp_unix)
-        
+
         invalid_entries = []
         broken_chain = []
-        
+
         prev_hash = None
         for proof in proofs:
             # Verifica integridade da entrada
             if not proof.verify_integrity():
                 invalid_entries.append(proof.proof_id)
-            
+
             # Verifica encadeamento
             if prev_hash and proof.previous_proof_hash != prev_hash:
                 broken_chain.append(proof.proof_id)
-            
+
             prev_hash = proof.entry_hash
-        
+
         return {
             "valid": len(invalid_entries) == 0 and len(broken_chain) == 0,
             "total_proofs": len(proofs),
@@ -369,40 +443,78 @@ class ProofRecorder:
             "first_proof": proofs[0].proof_id if proofs else None,
             "last_proof": proofs[-1].proof_id if proofs else None
         }
-    
+
+    def lookup_proof(self, proof_id: str) -> Optional[ProofEntry]:
+        """Public lookup API by proof id. Returns the entry or None."""
+        return self.get_proof(proof_id)
+
+    def list_tenant_proofs_with_provenance(
+        self,
+        tenant_id: str,
+        *,
+        ontology_id: Optional[str] = None,
+        proof_type: Optional[ProofType] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        limit: int = 200,
+    ) -> List[ProofEntry]:
+        """List proofs filtered by ontology and type, returning the enriched entries."""
+        entries = self.get_tenant_proofs(
+            tenant_id=tenant_id,
+            start_date=start_date,
+            end_date=end_date,
+            proof_type=proof_type,
+            limit=limit,
+        )
+        if ontology_id is None:
+            return entries
+        return [entry for entry in entries if entry.ontology_id == ontology_id]
+
     def get_statistics(self, tenant_id: str) -> Dict[str, Any]:
         """Retorna estatísticas de provas do tenant"""
         proofs = self.get_tenant_proofs(tenant_id, limit=10000)
-        
+
         if not proofs:
             return {"total": 0}
-        
+
         stats = {
             "total": len(proofs),
             "by_type": {},
             "by_decision": {},
             "avg_confidence": 0.0,
             "threats_detected": 0,
-            "issues_detected": 0
+            "issues_detected": 0,
+            "by_ontology": {},
+            "by_adapter": {},
         }
-        
+
         total_confidence = 0.0
-        
+
         for proof in proofs:
             # Por tipo
             ptype = proof.proof_type.value if isinstance(proof.proof_type, ProofType) else proof.proof_type
             stats["by_type"][ptype] = stats["by_type"].get(ptype, 0) + 1
-            
+
             # Por decisão
             stats["by_decision"][proof.decision] = stats["by_decision"].get(proof.decision, 0) + 1
-            
+
             # Confidence
             total_confidence += proof.confidence
-            
+
             # Contadores
             stats["threats_detected"] += len(proof.threats_detected)
             stats["issues_detected"] += len(proof.issues_detected)
-        
+
+            # Distribuição por ontologia
+            if proof.ontology_id:
+                stats["by_ontology"][proof.ontology_id] = (
+                    stats["by_ontology"].get(proof.ontology_id, 0) + 1
+                )
+            if proof.adapter_source:
+                stats["by_adapter"][proof.adapter_source] = (
+                    stats["by_adapter"].get(proof.adapter_source, 0) + 1
+                )
+
         stats["avg_confidence"] = total_confidence / len(proofs)
-        
+
         return stats

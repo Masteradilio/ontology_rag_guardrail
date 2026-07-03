@@ -291,7 +291,7 @@ Validation:
 
 ### P3-T01: Enrich Proof Ledger Schema
 
-Status: TODO
+Status: DONE
 
 Goal: record enough metadata to reproduce semantic decisions.
 
@@ -305,9 +305,20 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
+Validation:
+
+- `ProofEntry` now stores `ontology_id`, `ontology_version`, `policy_id`, `policy_version`, `ruleset_version`, `adapter_source`, `evidence_ids`, `policy_ids`, `decision_path`, `proof_status`, and `related_proof_id` in addition to the original fields.
+- The hash calculation now covers the enriched fields, so `verify_integrity` and `verify_chain` remain valid for new and historical entries.
+- `ProofRecorder.lookup_proof(proof_id)` and `list_tenant_proofs_with_provenance(tenant_id, ontology_id=...)` are the new public audit APIs.
+- New `ProofType` enum values: `CLAIM_CHECK`, `ANSWER_CHECK`, `ACTION_CHECK`, `POLICY_CHECK`, `ONTOLOGY_SNAPSHOT`, `ONTOLOGY_ROLLBACK`, `ONTOLOGY_MIGRATION`. The runtime now uses the matching `ProofType` per public method instead of the generic `ONTOLOGY_VERIFICATION`.
+- `QuimeraGuardrails` exposes `proof_lookup(proof_id)` and `list_proofs_for_ontology(ontology_id)`.
+- `get_statistics` now also reports `by_ontology` and `by_adapter` distributions.
+- Phase 3 regression tests passed: `13 passed` for `tests/product/test_phase3_proof_and_ontology_versioning.py`.
+- Full product regression passed: `42 passed` (29 prior + 13 new) without breaking the GroundCite schema/claim reference subset.
+
 ### P3-T02: Add Ontology Versioning
 
-Status: TODO
+Status: DONE
 
 Goal: support snapshots, diffs, and rollback for semantic knowledge.
 
@@ -320,6 +331,16 @@ Subtasks:
 - Run regression tests for versioning.
 - Update this backlog.
 - Update `CHANGELOG.md`.
+
+Validation:
+
+- Added `src/quimera_semantic_trust_guardrail/ontology_versioning.py` with `OntologyVersioningStore`, `OntologySnapshot`, `OntologyMigration`, and the `diff_payloads` helper.
+- Snapshots are stored under `<storage_path>/<tenant_id>/<ontology_id>/snapshots/<snapshot_id>.json`, and a `migrations.jsonl` ledger records every snapshot, rollback, and `add_fact` event.
+- `TenantOntologyManager` now exposes `snapshot_ontology`, `list_ontology_snapshots`, `get_ontology_snapshot`, `diff_ontology`, `rollback_ontology`, and `list_ontology_migrations`.
+- `QuimeraGuardrails` wraps `snapshot_ontology` and `rollback_ontology`, recording `ONTOLOGY_SNAPSHOT` and `ONTOLOGY_ROLLBACK` proofs in the chain with `decision_path` and `related_proof_id` linkage.
+- `add_fact` now records an `add_fact` migration linked to the optional `proof_id`, preserving the audit trail of ontology writes.
+- Phase 3 regression tests passed: `13 passed` for `tests/product/test_phase3_proof_and_ontology_versioning.py`.
+- Full product regression passed: `42 passed`.
 
 ## Phase 4: Evaluation And Regression Harness
 

@@ -95,7 +95,7 @@ class SemanticTrustRuntime:
             decision_path.append(f"adapter:{adapter_decision.status.value if adapter_decision.status else adapter_decision.decision.value}")
             adapter_decision.evidence.extend(evidence_records)
             adapter_decision.proof = self._build_proof_metadata(
-                proof_type=ProofType.ONTOLOGY_VERIFICATION,
+                proof_type=ProofType.CLAIM_CHECK,
                 input_data=claim,
                 decision=adapter_decision.decision,
                 confidence=adapter_decision.confidence,
@@ -114,7 +114,7 @@ class SemanticTrustRuntime:
         if ontology_decision:
             ontology_decision.evidence.extend(evidence_records)
             ontology_decision.proof = self._build_proof_metadata(
-                proof_type=ProofType.ONTOLOGY_VERIFICATION,
+                proof_type=ProofType.CLAIM_CHECK,
                 input_data=claim,
                 decision=ontology_decision.decision,
                 confidence=ontology_decision.confidence,
@@ -135,7 +135,7 @@ class SemanticTrustRuntime:
                 status=DecisionStatus.SUPPORTED,
                 subject=claim,
                 evidence=evidence_records,
-                proof_type=ProofType.ONTOLOGY_VERIFICATION,
+                proof_type=ProofType.CLAIM_CHECK,
                 input_data=claim,
                 tenant_id=tenant,
                 ontology_id=ontology_ref,
@@ -158,7 +158,7 @@ class SemanticTrustRuntime:
             status=DecisionStatus.UNSUPPORTED,
             subject=claim,
             missing_requirements=missing_requirements,
-            proof_type=ProofType.ONTOLOGY_VERIFICATION,
+            proof_type=ProofType.CLAIM_CHECK,
             input_data=claim,
             tenant_id=tenant,
             ontology_id=ontology_ref,
@@ -214,7 +214,7 @@ class SemanticTrustRuntime:
                         requirement_type="claim",
                     )
                 ],
-                proof_type=ProofType.OUTPUT_VALIDATION,
+                proof_type=ProofType.ANSWER_CHECK,
                 input_data=answer,
                 tenant_id=tenant_id or self.tenant_id,
                 ontology_id=ontology_id or self.ontology_id,
@@ -248,7 +248,7 @@ class SemanticTrustRuntime:
             missing_requirements=[
                 item for d in claim_decisions for item in d.missing_requirements
             ],
-            proof_type=ProofType.OUTPUT_VALIDATION,
+            proof_type=ProofType.ANSWER_CHECK,
             input_data=answer,
             tenant_id=tenant_id or self.tenant_id,
             ontology_id=ontology_id or self.ontology_id,
@@ -309,7 +309,7 @@ class SemanticTrustRuntime:
                     )
                     for f in denied
                 ],
-                proof_type=ProofType.ONTOLOGY_VERIFICATION,
+                proof_type=ProofType.ACTION_CHECK,
                 input_data=action_text,
                 tenant_id=tenant,
                 ontology_id=ontology_ref,
@@ -326,7 +326,7 @@ class SemanticTrustRuntime:
                 status=DecisionStatus.POLICY_ALLOWED,
                 subject=action_text,
                 evidence=[self._fact_to_evidence(f) for f in allowed],
-                proof_type=ProofType.ONTOLOGY_VERIFICATION,
+                proof_type=ProofType.ACTION_CHECK,
                 input_data=action_text,
                 tenant_id=tenant,
                 ontology_id=ontology_ref,
@@ -347,7 +347,7 @@ class SemanticTrustRuntime:
                     requirement_type="policy",
                 )
             ],
-            proof_type=ProofType.ONTOLOGY_VERIFICATION,
+            proof_type=ProofType.ACTION_CHECK,
             input_data=action_text,
             tenant_id=tenant,
             ontology_id=ontology_ref,
@@ -406,7 +406,7 @@ class SemanticTrustRuntime:
                 status=DecisionStatus.POLICY_DENIED,
                 subject=text,
                 contradictions=contradictions,
-                proof_type=ProofType.COMPLIANCE_CHECK,
+                proof_type=ProofType.POLICY_CHECK,
                 input_data=text,
                 tenant_id=tenant,
                 ontology_id=ontology_ref,
@@ -423,7 +423,7 @@ class SemanticTrustRuntime:
                 status=DecisionStatus.POLICY_MISSING,
                 subject=text,
                 evidence=[self._violation_to_evidence(v) for v in review_violations],
-                proof_type=ProofType.COMPLIANCE_CHECK,
+                proof_type=ProofType.POLICY_CHECK,
                 input_data=text,
                 tenant_id=tenant,
                 ontology_id=ontology_ref,
@@ -439,7 +439,7 @@ class SemanticTrustRuntime:
             status=DecisionStatus.POLICY_ALLOWED,
             subject=text,
             evidence=[self._fact_to_evidence(f) for f in supporting_policies],
-            proof_type=ProofType.COMPLIANCE_CHECK,
+            proof_type=ProofType.POLICY_CHECK,
             input_data=text,
             tenant_id=tenant,
             ontology_id=ontology_ref,
@@ -639,6 +639,10 @@ class SemanticTrustRuntime:
         missing_requirements: Optional[List[MissingRequirement]] = None,
         source: Optional[str] = None,
         metadata: Optional[Dict[str, Any]] = None,
+        adapter_source: Optional[str] = None,
+        policy_ids: Optional[List[str]] = None,
+        policy_version: Optional[str] = None,
+        ruleset_version: Optional[str] = None,
     ) -> SemanticTrustDecision:
         return SemanticTrustDecision(
             decision=decision,
@@ -658,6 +662,12 @@ class SemanticTrustRuntime:
                 ontology_id=ontology_id,
                 decision_path=decision_path,
                 metadata=metadata or {},
+                evidence=evidence,
+                contradictions=contradictions,
+                policy_ids=policy_ids,
+                adapter_source=adapter_source,
+                policy_version=policy_version,
+                ruleset_version=ruleset_version,
             ),
             source=source,
             metadata=metadata or {},
@@ -674,10 +684,23 @@ class SemanticTrustRuntime:
         ontology_id: Optional[str],
         decision_path: List[str],
         metadata: Dict[str, Any],
+        evidence: Optional[List[EvidenceRecord]] = None,
+        contradictions: Optional[List[ContradictionRecord]] = None,
+        policy_ids: Optional[List[str]] = None,
+        adapter_source: Optional[str] = None,
+        policy_version: Optional[str] = None,
+        ruleset_version: Optional[str] = None,
     ) -> ProofMetadata:
         ontology_version = self._ontology_version(tenant_id, ontology_id)
+        evidence_ids = self._collect_evidence_ids(evidence)
+        contradiction_ids = self._collect_contradiction_ids(contradictions)
+        all_evidence_ids = list(dict.fromkeys(evidence_ids + contradiction_ids))
         proof_id = self._local_proof_id(input_data, decision.value)
         ledger_ref = None
+        adapter_name = adapter_source or (
+            type(self.knowledge_adapter).__name__ if self.knowledge_adapter else None
+        )
+        resolved_policy_ids = self._resolve_policy_ids(policy_ids, contradictions)
         if self.proof_recorder:
             entry = self.proof_recorder.record(
                 proof_type=proof_type,
@@ -687,10 +710,16 @@ class SemanticTrustRuntime:
                 confidence=max(0.0, min(1.0, confidence)),
                 metadata={
                     **metadata,
-                    "ontology_id": ontology_id,
-                    "ontology_version": ontology_version,
                     "decision_path": decision_path,
                 },
+                ontology_id=ontology_id,
+                ontology_version=ontology_version,
+                policy_version=policy_version,
+                ruleset_version=ruleset_version,
+                adapter_source=adapter_name,
+                evidence_ids=all_evidence_ids,
+                policy_ids=resolved_policy_ids,
+                decision_path=list(decision_path),
             )
             proof_id = entry.proof_id
             ledger_ref = entry.entry_hash
@@ -698,9 +727,16 @@ class SemanticTrustRuntime:
             proof_id=proof_id,
             tenant_id=tenant_id,
             ontology_version=ontology_version,
+            policy_version=policy_version,
+            ruleset_version=ruleset_version,
             ledger_ref=ledger_ref,
-            decision_path=decision_path,
-            metadata=metadata,
+            decision_path=list(decision_path),
+            metadata={
+                **metadata,
+                "adapter_source": adapter_name,
+                "evidence_ids": all_evidence_ids,
+                "policy_ids": resolved_policy_ids,
+            },
         )
 
     def _semantic_facts(
@@ -847,6 +883,51 @@ class SemanticTrustRuntime:
             return None
         ontology = self.ontology_manager.get_ontology(tenant_id, ontology_id)
         return str(ontology.version) if ontology else None
+
+    def _collect_evidence_ids(
+        self, evidence: Optional[List[EvidenceRecord]]
+    ) -> List[str]:
+        if not evidence:
+            return []
+        ids: List[str] = []
+        for item in evidence:
+            if item.evidence_id:
+                ids.append(item.evidence_id)
+        return ids
+
+    def _collect_contradiction_ids(
+        self, contradictions: Optional[List[ContradictionRecord]]
+    ) -> List[str]:
+        if not contradictions:
+            return []
+        ids: List[str] = []
+        for item in contradictions:
+            if item.rule_id:
+                ids.append(item.rule_id)
+            elif item.source:
+                ids.append(f"{item.source}")
+        return ids
+
+    def _resolve_policy_ids(
+        self,
+        policy_ids: Optional[List[str]],
+        contradictions: Optional[List[ContradictionRecord]],
+    ) -> List[str]:
+        ids: List[str] = list(policy_ids or [])
+        if not self.compliance_engine:
+            for record in contradictions or []:
+                if record.rule_id and record.rule_id not in ids:
+                    ids.append(record.rule_id)
+            return ids
+        enabled = sorted({std.value for std in self.compliance_engine.enabled_standards})
+        for std in enabled:
+            tag = f"compliance:{std}"
+            if tag not in ids:
+                ids.append(tag)
+        for record in contradictions or []:
+            if record.rule_id and record.rule_id not in ids:
+                ids.append(record.rule_id)
+        return ids
 
     def _local_proof_id(self, input_data: str, decision: str) -> str:
         digest = hashlib.sha256(f"{self.tenant_id}:{decision}:{input_data}".encode()).hexdigest()[:16]

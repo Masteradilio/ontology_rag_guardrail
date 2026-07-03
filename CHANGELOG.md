@@ -11,6 +11,10 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added Phase 1 runtime integration for `knowledge_adapter` and `OntologySync`, including adapter-backed output validation, unified ontology fact writes, duplicate skipping, and conflict metadata.
 - Added the Phase 2 `SemanticTrustRuntime` SDK surface with `claim_check`, `answer_check`, `action_check`, and `policy_check`.
 - Exposed Phase 2 runtime methods through `QuimeraGuardrails` while keeping the existing input/output guardrail API.
+- Added the Phase 3 enriched proof ledger schema with `ontology_id`, `ontology_version`, `policy_id`, `policy_version`, `ruleset_version`, `adapter_source`, `evidence_ids`, `policy_ids`, `decision_path`, `proof_status`, and `related_proof_id`, all covered by the existing hash chain.
+- Added the Phase 3 `proof_lookup` and `list_tenant_proofs_with_provenance` audit APIs and the new `ProofType` enum values for `CLAIM_CHECK`, `ANSWER_CHECK`, `ACTION_CHECK`, `POLICY_CHECK`, `ONTOLOGY_SNAPSHOT`, `ONTOLOGY_ROLLBACK`, and `ONTOLOGY_MIGRATION`.
+- Added the Phase 3 ontology versioning module with `OntologyVersioningStore`, `OntologySnapshot`, `OntologyMigration`, and the `diff_payloads` helper, exposing `snapshot_ontology`, `list_ontology_snapshots`, `get_ontology_snapshot`, `diff_ontology`, `rollback_ontology`, and `list_ontology_migrations` on `TenantOntologyManager`.
+- Wired `QuimeraGuardrails.snapshot_ontology` and `rollback_ontology` so that snapshot and rollback operations write `ONTOLOGY_SNAPSHOT` and `ONTOLOGY_ROLLBACK` proof entries linked to the active ontology and snapshot.
 - Created the initial product workspace for Quimera Semantic Trust Guardrail.
 - Copied current `quimera_guardrails` modules into `src/quimera_semantic_trust_guardrail`.
 - Copied the original guardrail README to `docs/README_quimera_guardrail.md`.
@@ -28,6 +32,8 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Phase 1 product and GroundCite schema/claim regression passed: `28 passed`.
 - Phase 2 runtime API tests passed: `10 passed` for `tests/product/test_phase2_runtime_api.py`.
 - Phase 2 product and GroundCite schema/claim regression passed: `38 passed`.
+- Phase 3 enriched proof ledger and ontology versioning tests passed: `13 passed` for `tests/product/test_phase3_proof_and_ontology_versioning.py`.
+- Phase 3 full product regression passed: `42 passed` (29 prior + 13 new) without breaking the GroundCite schema/claim reference subset.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 

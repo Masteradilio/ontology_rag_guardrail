@@ -48,7 +48,13 @@ from .output_validator import (
 )
 from .tenant_ontology import TenantOntologyManager, OntologyEntry, Ontology, ClaimVerification, FactConfidence
 from .compliance_engine import ComplianceEngine, ComplianceStandard, ComplianceViolation, ComplianceRule
-from .proof_recorder import ProofRecorder, ProofEntry
+from .proof_recorder import ProofRecorder, ProofEntry, ProofType
+from .ontology_versioning import (
+    OntologySnapshot,
+    OntologyMigration,
+    OntologyVersioningStore,
+    diff_payloads,
+)
 from .qgsl_logic import QGSLState, LogicalQutrit, TruthValue
 from .decision_model import (
     TrivalentDecision,
@@ -128,6 +134,11 @@ __all__ = [
     # Auditoria
     "ProofRecorder",
     "ProofEntry",
+    "ProofType",
+    "OntologySnapshot",
+    "OntologyMigration",
+    "OntologyVersioningStore",
+    "diff_payloads",
     
     # Lógica QGSL
     "QGSLState",
