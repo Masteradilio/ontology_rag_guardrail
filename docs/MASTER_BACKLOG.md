@@ -72,7 +72,7 @@ Validation:
 
 ### P0-T03: Git And Remote Preparation
 
-Status: IN_PROGRESS
+Status: DONE
 
 Goal: prepare the first synchronization with `https://github.com/Masteradilio/quimera_semantic_trust_guardrail.git`.
 
@@ -88,6 +88,13 @@ Subtasks:
 - Run regression/import smoke tests before commit.
 - Update this backlog.
 - Update `CHANGELOG.md`.
+
+Validation:
+
+- Git repository initialized with `main` as the default branch.
+- Remote configured as `https://github.com/Masteradilio/quimera_semantic_trust_guardrail.git`.
+- `.gitignore` verified for `.venv`, `__pycache__`, and `.pyc`.
+- Initial project preparation committed and pushed to `origin/main`.
 
 ## Phase 1: Contract Consolidation
 

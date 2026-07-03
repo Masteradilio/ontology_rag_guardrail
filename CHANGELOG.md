@@ -14,6 +14,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added product README, PRD, master backlog, requirements, gitignore, and packaging metadata.
 - Added the missing guardrail adapter package and GroundCite package source under `src`.
 - Created `.venv`, installed `requirements.txt`, and installed the project in editable mode.
+- Initialized the Git repository, configured `origin`, committed the prepared workspace, and pushed `main` to GitHub.
 
 ### Validation
 
