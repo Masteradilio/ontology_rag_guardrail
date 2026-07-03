@@ -188,6 +188,7 @@ class QuimeraOutputValidator:
         tenant_id: str,
         ontology_manager: Optional[TenantOntologyManager] = None,
         ontology_id: Optional[str] = None,
+        knowledge_adapter: Optional[Any] = None,
         compliance_engine: Optional[ComplianceEngine] = None,
         proof_recorder: Optional[ProofRecorder] = None,
         config: Optional[Dict[str, Any]] = None
@@ -195,6 +196,7 @@ class QuimeraOutputValidator:
         self.tenant_id = tenant_id
         self.ontology_manager = ontology_manager
         self.ontology_id = ontology_id
+        self.knowledge_adapter = knowledge_adapter
         self.compliance_engine = compliance_engine
         self.proof_recorder = proof_recorder
         self.config = self._default_config()
@@ -251,9 +253,10 @@ class QuimeraOutputValidator:
                 suggestions.extend(relevance_result["suggestions"])
         
         # Layer 2: Detecção de Alucinações
-        if self.config["hallucination_check_enabled"] and self.ontology_manager and self.ontology_id:
-            hallucinations = self.ontology_manager.find_hallucinations(
-                self.tenant_id, self.ontology_id, agent_response
+        if self.config["hallucination_check_enabled"] and (self.knowledge_adapter or (self.ontology_manager and self.ontology_id)):
+            hallucinations = await self._check_hallucinations(
+                agent_response=agent_response,
+                context=context,
             )
             if hallucinations:
                 for h in hallucinations:
@@ -394,6 +397,106 @@ class QuimeraOutputValidator:
             "issues": issues,
             "suggestions": suggestions,
             "score": relevance_score
+        }
+
+    async def _check_hallucinations(
+        self,
+        agent_response: str,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> List[ClaimVerification]:
+        """Checks response claims with adapter-backed evidence and ontology fallback."""
+        if self.knowledge_adapter:
+            return await self._check_hallucinations_with_adapter(agent_response, context)
+
+        if self.ontology_manager and self.ontology_id:
+            return self.ontology_manager.find_hallucinations(
+                self.tenant_id, self.ontology_id, agent_response
+            )
+
+        return []
+
+    async def _check_hallucinations_with_adapter(
+        self,
+        agent_response: str,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> List[ClaimVerification]:
+        claims = self._extract_claims(agent_response)
+        hallucinations: List[ClaimVerification] = []
+        context_text = self._context_to_text(context)
+
+        for claim in claims:
+            try:
+                result = await self.knowledge_adapter.verify_claim(claim, context=context_text)
+                verification = self._claim_verification_from_adapter_result(claim, result)
+            except Exception as exc:
+                verification = ClaimVerification(
+                    claim=claim,
+                    verified=None,
+                    confidence=0.0,
+                    reasoning=f"Knowledge adapter failure: {exc}",
+                )
+
+            if verification.verified is not True:
+                hallucinations.append(verification)
+
+        return hallucinations
+
+    def _extract_claims(self, text: str) -> List[str]:
+        return [
+            sentence.strip()
+            for sentence in re.split(r'(?<=[.!?])\s+', text)
+            if len(sentence.strip()) >= 10
+        ]
+
+    def _context_to_text(self, context: Optional[Dict[str, Any]]) -> Optional[str]:
+        if not context:
+            return None
+        for key in ("question", "query", "context", "retrieved_context"):
+            value = context.get(key)
+            if isinstance(value, str) and value.strip():
+                return value
+        return None
+
+    def _claim_verification_from_adapter_result(
+        self,
+        claim: str,
+        result: Dict[str, Any],
+    ) -> ClaimVerification:
+        status = str(result.get("status", "")).lower()
+        supported = result.get("supported")
+        confidence = float(result.get("confidence", 0.0))
+        evidence = [self._knowledge_fact_to_dict(item) for item in result.get("evidence", [])]
+
+        if supported is True or status == "verified":
+            verified: Optional[bool] = True
+            supporting = evidence
+            contradicting: List[Dict[str, Any]] = []
+        elif status == "contradicted":
+            verified = False
+            supporting = []
+            contradicting = evidence
+        else:
+            verified = None
+            supporting = evidence
+            contradicting = []
+
+        return ClaimVerification(
+            claim=claim,
+            verified=verified,
+            confidence=confidence,
+            supporting_facts=supporting,
+            contradicting_facts=contradicting,
+            reasoning=result.get("reasoning", ""),
+        )
+
+    def _knowledge_fact_to_dict(self, fact: Any) -> Dict[str, Any]:
+        return {
+            "content": getattr(fact, "content", None),
+            "source": getattr(fact, "source", None),
+            "relevance_score": getattr(fact, "relevance_score", None),
+            "metadata": getattr(fact, "metadata", {}),
+            "chunk_id": getattr(fact, "chunk_id", None),
+            "document_id": getattr(fact, "document_id", None),
         }
     
     def _check_consistency(self, response: str) -> Dict[str, Any]:
@@ -639,5 +742,6 @@ class QuimeraOutputValidator:
             "ontology_id": self.ontology_id,
             "config": self.config,
             "has_ontology": self.ontology_manager is not None and self.ontology_id is not None,
+            "has_knowledge_adapter": self.knowledge_adapter is not None,
             "has_compliance_engine": self.compliance_engine is not None
         }

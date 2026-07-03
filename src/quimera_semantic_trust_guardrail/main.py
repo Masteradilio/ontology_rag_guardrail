@@ -159,7 +159,8 @@ class QuimeraGuardrails:
         tenant_id: str,
         config: Optional[GuardrailsConfig] = None,
         compliance_standards: Optional[List[str]] = None,
-        ontology_id: Optional[str] = None
+        ontology_id: Optional[str] = None,
+        knowledge_adapter: Optional[Any] = None
     ):
         """
         Inicializa os guardrails
@@ -173,6 +174,7 @@ class QuimeraGuardrails:
         self.tenant_id = tenant_id
         self.config = config or GuardrailsConfig()
         self.ontology_id = ontology_id
+        self.knowledge_adapter = knowledge_adapter
         
         # Inicializa Proof Recorder
         self.proof_recorder = ProofRecorder(
@@ -207,6 +209,7 @@ class QuimeraGuardrails:
             tenant_id=tenant_id,
             ontology_manager=self.ontology_manager if ontology_id else None,
             ontology_id=ontology_id,
+            knowledge_adapter=knowledge_adapter,
             compliance_engine=self.compliance_engine,
             proof_recorder=self.proof_recorder,
             config=self.config.to_output_config()
@@ -472,7 +475,8 @@ class QuimeraGuardrails:
             "ontologies_count": len(self.list_ontologies()),
             "proof_statistics": proof_stats,
             "input_shield_stats": self.input_shield.get_statistics(),
-            "output_validator_stats": self.output_validator.get_statistics()
+            "output_validator_stats": self.output_validator.get_statistics(),
+            "has_knowledge_adapter": self.knowledge_adapter is not None
         }
 
 
@@ -481,6 +485,7 @@ def create_guardrails(
     tenant_id: str,
     compliance: Optional[List[str]] = None,
     ontology_name: Optional[str] = None,
+    knowledge_adapter: Optional[Any] = None,
     **config_kwargs
 ) -> QuimeraGuardrails:
     """
@@ -514,7 +519,8 @@ def create_guardrails(
     guardrails = QuimeraGuardrails(
         tenant_id=tenant_id,
         config=config,
-        compliance_standards=compliance
+        compliance_standards=compliance,
+        knowledge_adapter=knowledge_adapter
     )
     
     if ontology_name:

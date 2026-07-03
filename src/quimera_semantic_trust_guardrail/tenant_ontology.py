@@ -22,6 +22,9 @@ from pathlib import Path
 from threading import RLock
 from enum import Enum
 
+from .decision_model import TrivalentDecision
+from .semantic_fact import SemanticFact, SemanticFactType, SemanticFactProvenance
+
 
 class FactConfidence(Enum):
     """Nível de confiança em um fato"""
@@ -81,6 +84,7 @@ class Ontology:
     domain: str
     description: str = ""
     entries: Dict[str, OntologyEntry] = field(default_factory=dict)
+    semantic_facts: List[SemanticFact] = field(default_factory=list)
     version: int = 1
     created_at: float = field(default_factory=time.time)
     updated_at: float = field(default_factory=time.time)
@@ -93,6 +97,7 @@ class Ontology:
             "domain": self.domain,
             "description": self.description,
             "entries": {k: v.to_dict() for k, v in self.entries.items()},
+            "semantic_facts": [f.model_dump(mode="json") for f in self.semantic_facts],
             "version": self.version,
             "created_at": self.created_at,
             "updated_at": self.updated_at
@@ -103,6 +108,11 @@ class Ontology:
         entries = {}
         for k, v in data.get("entries", {}).items():
             entries[k] = OntologyEntry.from_dict(v)
+
+        semantic_facts = [
+            SemanticFact.model_validate(f)
+            for f in data.get("semantic_facts", [])
+        ]
         
         return cls(
             ontology_id=data["ontology_id"],
@@ -111,6 +121,7 @@ class Ontology:
             domain=data["domain"],
             description=data.get("description", ""),
             entries=entries,
+            semantic_facts=semantic_facts,
             version=data.get("version", 1),
             created_at=data.get("created_at", time.time()),
             updated_at=data.get("updated_at", time.time())
@@ -284,6 +295,100 @@ class TenantOntologyManager:
             
             self._save_ontology(ontology)
             return True
+
+    def add_fact(
+        self,
+        tenant_id: str,
+        ontology_id: str,
+        fact: SemanticFact | str,
+        fact_type: str | SemanticFactType = SemanticFactType.FACT,
+        subject: Optional[str] = None,
+        relation: Optional[str] = None,
+        source: Optional[str] = None,
+        confidence: float = 1.0,
+        metadata: Optional[Dict[str, Any]] = None,
+        state: str | TrivalentDecision = TrivalentDecision.TRUE,
+        source_document: Optional[str] = None,
+        source_chunk: Optional[str] = None,
+        source_uri: Optional[str] = None,
+        extractor: Optional[str] = None,
+    ) -> bool:
+        """Adds a unified semantic fact to an ontology."""
+        with self._lock:
+            ontology = self.get_ontology(tenant_id, ontology_id)
+            if not ontology:
+                return False
+
+            if isinstance(fact, SemanticFact):
+                semantic_fact = fact.model_copy(
+                    update={
+                        "tenant_id": tenant_id,
+                        "ontology_id": ontology_id,
+                        "ontology_version": str(ontology.version),
+                    }
+                )
+            else:
+                semantic_fact = SemanticFact(
+                    subject=subject or self._infer_subject(str(fact), fact_type),
+                    relation=relation or self._default_relation(fact_type),
+                    object=str(fact),
+                    fact_type=SemanticFactType(
+                        fact_type.value if isinstance(fact_type, SemanticFactType) else fact_type
+                    ),
+                    state=state if isinstance(state, TrivalentDecision) else TrivalentDecision(str(state).upper()),
+                    source=source,
+                    confidence=confidence,
+                    tenant_id=tenant_id,
+                    ontology_id=ontology_id,
+                    ontology_version=str(ontology.version),
+                    provenance=SemanticFactProvenance(
+                        source=source,
+                        document_id=source_document,
+                        chunk_id=source_chunk,
+                        source_uri=source_uri,
+                        extractor=extractor,
+                        metadata=metadata or {},
+                    ),
+                    metadata=metadata or {},
+                )
+
+            duplicate = self._find_semantic_fact(
+                ontology,
+                semantic_fact.subject,
+                semantic_fact.relation,
+                semantic_fact.object,
+            )
+            if duplicate and duplicate.state == semantic_fact.state:
+                return False
+            if duplicate and duplicate.state != semantic_fact.state:
+                duplicate.metadata["conflict_detected"] = True
+                duplicate.metadata["conflicts_with_state"] = semantic_fact.state.value
+                semantic_fact.metadata["conflict_detected"] = True
+                semantic_fact.metadata["conflicts_with_state"] = duplicate.state.value
+
+            ontology.semantic_facts.append(semantic_fact)
+            ontology.version += 1
+            ontology.updated_at = time.time()
+            self._save_ontology(ontology)
+            self._cache[self._cache_key(tenant_id, ontology_id)] = ontology
+            return True
+
+    def list_facts(
+        self,
+        tenant_id: str,
+        ontology_id: str,
+        fact_type: Optional[str | SemanticFactType] = None,
+    ) -> List[SemanticFact]:
+        """Lists unified semantic facts for a tenant ontology."""
+        ontology = self.get_ontology(tenant_id, ontology_id)
+        if not ontology:
+            return []
+        if fact_type is None:
+            return list(ontology.semantic_facts)
+        target = SemanticFactType(
+            fact_type.value if isinstance(fact_type, SemanticFactType) else fact_type
+        )
+        return [fact for fact in ontology.semantic_facts if fact.fact_type == target]
     
     def update_entry(
         self,
@@ -530,6 +635,44 @@ class TenantOntologyManager:
                 return True
         
         return False
+
+    def _infer_subject(self, fact: str, fact_type: str | SemanticFactType) -> str:
+        normalized_type = fact_type.value if isinstance(fact_type, SemanticFactType) else str(fact_type)
+        if ":" in fact:
+            candidate = fact.split(":", 1)[0].strip()
+            if candidate:
+                return candidate
+        if normalized_type == SemanticFactType.CONSTRAINT.value:
+            return "constraint"
+        if normalized_type == SemanticFactType.POLICY.value:
+            return "policy"
+        return "document_fact"
+
+    def _default_relation(self, fact_type: str | SemanticFactType) -> str:
+        normalized_type = fact_type.value if isinstance(fact_type, SemanticFactType) else str(fact_type)
+        return {
+            SemanticFactType.DEFINITION.value: "defined_as",
+            SemanticFactType.CONSTRAINT.value: "constrained_by",
+            SemanticFactType.POLICY.value: "governed_by",
+            SemanticFactType.SYNONYM.value: "has_synonym",
+            SemanticFactType.CONCEPT.value: "is_a",
+        }.get(normalized_type, "has_fact")
+
+    def _find_semantic_fact(
+        self,
+        ontology: Ontology,
+        subject: str,
+        relation: str,
+        object_value: str,
+    ) -> Optional[SemanticFact]:
+        for fact in ontology.semantic_facts:
+            if (
+                fact.subject == subject
+                and fact.relation == relation
+                and fact.object == object_value
+            ):
+                return fact
+        return None
     
     def _cache_key(self, tenant_id: str, ontology_id: str) -> str:
         return f"{tenant_id}:{ontology_id}"

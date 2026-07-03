@@ -68,6 +68,7 @@ import asyncio
 import re
 import hashlib
 import logging
+import inspect
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional, Set, Tuple, Callable
@@ -75,6 +76,8 @@ from datetime import datetime
 from enum import Enum
 
 logger = logging.getLogger(__name__)
+
+from ..semantic_fact import SemanticFactType
 
 
 # =============================================================================
@@ -525,6 +528,9 @@ class OntologySync:
         file_search_adapter,
         ontology_manager,
         extractors: Optional[List[FactExtractor]] = None,
+        tenant_id: Optional[str] = None,
+        ontology_id: Optional[str] = None,
+        ontology_name: str = "Synced Knowledge",
         auto_sync_on_upload: bool = True,
         min_facts_confidence: float = 0.6,
         max_facts_per_document: int = 50
@@ -540,6 +546,9 @@ class OntologySync:
         """
         self.file_search = file_search_adapter
         self.ontology_manager = ontology_manager
+        self.tenant_id = tenant_id or getattr(file_search_adapter, 'tenant_id', None) or 'default'
+        self.ontology_id = ontology_id
+        self.ontology_name = ontology_name
         self.auto_sync = auto_sync_on_upload
         self.min_confidence = min_facts_confidence
         self.max_facts_per_doc = max_facts_per_document
@@ -781,48 +790,65 @@ class OntologySync:
         self,
         facts: List[ExtractedFact]
     ) -> int:
-        """Adiciona fatos à ontologia do tenant"""
+        """Adds extracted facts through the unified ontology fact contract."""
         added_count = 0
-        tenant_id = getattr(self.file_search, 'tenant_id', 'default')
-        
+        tenant_id = self.tenant_id
+        ontology_id = self._ensure_target_ontology(tenant_id)
+
         for fact in facts:
             try:
-                # Converte para formato de ontologia
-                entry_data = fact.to_ontology_entry()
-                
-                # Adiciona via ontology manager
-                if hasattr(self.ontology_manager, 'add_fact'):
-                    await self.ontology_manager.add_fact(
-                        tenant_id=tenant_id,
-                        fact=entry_data['content'],
-                        fact_type=entry_data['type'],
-                        source=entry_data['source'],
-                        confidence=entry_data['confidence'],
-                        metadata=entry_data['metadata']
-                    )
+                metadata = {
+                    **fact.metadata,
+                    "entities": fact.entities,
+                    "extracted_at": fact.extracted_at.isoformat(),
+                }
+                result = self.ontology_manager.add_fact(
+                    tenant_id=tenant_id,
+                    ontology_id=ontology_id,
+                    fact=fact.content,
+                    fact_type=self._semantic_fact_type(fact.fact_type),
+                    subject=fact.entities[0] if fact.entities else None,
+                    source=fact.source_document,
+                    confidence=fact.confidence,
+                    metadata=metadata,
+                    source_document=fact.source_document,
+                    source_chunk=fact.source_chunk,
+                    extractor="OntologySync",
+                )
+                if inspect.isawaitable(result):
+                    result = await result
+                if result:
                     added_count += 1
-                
-                elif hasattr(self.ontology_manager, 'add_entry'):
-                    # Interface alternativa
-                    self.ontology_manager.add_entry(
-                        tenant_id=tenant_id,
-                        content=entry_data['content'],
-                        entry_type=entry_data['type'],
-                        source=entry_data['source'],
-                        metadata=entry_data['metadata']
-                    )
-                    added_count += 1
-                
-                else:
-                    # Fallback: tenta adicionar diretamente
-                    logger.debug(f"Fato extraído: {fact.content[:50]}...")
-                    added_count += 1
-                    
             except Exception as e:
-                logger.warning(f"Erro ao adicionar fato à ontologia: {e}")
-        
+                logger.warning(f"Erro ao adicionar fato Ã  ontologia: {e}")
+
         return added_count
-    
+
+    def _ensure_target_ontology(self, tenant_id: str) -> str:
+        if self.ontology_id:
+            return self.ontology_id
+
+        existing = self.ontology_manager.list_ontologies(tenant_id)
+        if existing:
+            self.ontology_id = existing[0]["ontology_id"]
+            return self.ontology_id
+
+        self.ontology_id = self.ontology_manager.create_ontology(
+            tenant_id=tenant_id,
+            name=self.ontology_name,
+            domain="synced",
+            description="Ontology populated from document synchronization",
+        )
+        return self.ontology_id
+
+    def _semantic_fact_type(self, fact_type: FactType) -> SemanticFactType:
+        return {
+            FactType.DEFINITION: SemanticFactType.DEFINITION,
+            FactType.CONSTRAINT: SemanticFactType.CONSTRAINT,
+            FactType.RULE: SemanticFactType.POLICY,
+            FactType.ENTITY: SemanticFactType.CONCEPT,
+        }.get(fact_type, SemanticFactType.FACT)
+
     def register_fastapi_webhook(self, app, endpoint: str = "/api/guardrails/sync"):
         """
         Registra endpoint FastAPI para sincronização via webhook.

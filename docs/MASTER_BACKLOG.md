@@ -148,7 +148,7 @@ Validation:
 
 ### P1-T03: Fix Knowledge Adapter Contract
 
-Status: TODO
+Status: DONE
 
 Goal: make `knowledge_adapter` a real supported constructor/runtime dependency.
 
@@ -163,9 +163,16 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
+Validation:
+
+- `QuimeraGuardrails` and `create_guardrails` now accept `knowledge_adapter`.
+- `QuimeraOutputValidator` now runs adapter-backed claim verification when a knowledge adapter is configured.
+- Adapter `verified` results are accepted, `contradicted` results become false hallucination evidence, and `uncertain` / adapter exceptions become `ClaimVerification(verified=None)`.
+- Product integration tests cover supported, uncertain, and failing adapter paths using `SimpleKnowledgeAdapter` and a failing adapter stub.
+
 ### P1-T04: Fix OntologySync Integration
 
-Status: TODO
+Status: DONE
 
 Goal: make automatic fact extraction write into the unified ontology model.
 
@@ -179,6 +186,13 @@ Subtasks:
 - Run regression tests for sync and ontology write paths.
 - Update this backlog.
 - Update `CHANGELOG.md`.
+
+Validation:
+
+- `TenantOntologyManager` now stores unified `semantic_facts` alongside legacy `entries`, exposes `add_fact` / `list_facts`, skips exact duplicates, and marks conflicting same-triple states in fact metadata.
+- `OntologySync` now writes extracted facts through `add_fact`, creates or reuses a target ontology, maps extraction fact types to `SemanticFactType`, and stores document/chunk/extractor provenance.
+- Product integration tests cover direct sync of extracted facts into the unified ontology model.
+- Phase 1 regression passed: `28 passed` for product tests plus GroundCite schema/claim reference tests.
 
 ## Phase 2: Runtime APIs
 
@@ -392,6 +406,6 @@ Subtasks:
 
 ## Current Immediate Next Tasks
 
-1. Start P1-T03 by fixing the knowledge adapter constructor/runtime dependency.
-2. Keep the new decision and semantic fact models stable as return/storage contracts for P2 runtime APIs.
+1. Start Phase 2 with P2-T01 by implementing `claim_check`.
+2. Reuse the Phase 1 decision model as the return contract and the semantic fact model as the ontology/storage contract.
 3. Continue preserving GroundCite reference tests as regression evidence while adapting product-level tests.
