@@ -6,6 +6,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 
 ### Added
 
+- Added the Phase 1 runtime decision model with trivalent decisions, recommended actions, decision statuses, evidence records, contradiction records, missing requirements, proof metadata, serialization support, and GroundCite label mapping.
 - Created the initial product workspace for Quimera Semantic Trust Guardrail.
 - Copied current `quimera_guardrails` modules into `src/quimera_semantic_trust_guardrail`.
 - Copied the original guardrail README to `docs/README_quimera_guardrail.md`.
@@ -18,11 +19,13 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 
 ### Validation
 
+- Product decision model tests passed: `8 passed` for `tests/product/test_decision_model.py`.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 
 ### Notes
 
 - The old AGI/quantum product framing is not part of the new product positioning.
+- GroundCite `unsupported` labels now map to `UNDECIDABLE`, preserving the distinction between absent support and direct contradiction.
 - Legacy and GroundCite code is copied for adaptation; not all reference tests are expected to pass before Phase 1/Phase 4 cleanup.
 - Quimera original reference tests currently require import-path adaptation from old flat-module imports to the new `quimera_legacy` package.

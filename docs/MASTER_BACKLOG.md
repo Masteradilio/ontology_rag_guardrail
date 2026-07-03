@@ -100,7 +100,7 @@ Validation:
 
 ### P1-T01: Define Runtime Decision Model
 
-Status: TODO
+Status: DONE
 
 Goal: create a single model for semantic trust decisions.
 
@@ -114,6 +114,13 @@ Subtasks:
 - Run regression tests for model serialization and mapping.
 - Update this backlog.
 - Update `CHANGELOG.md`.
+
+Validation:
+
+- Added `src/quimera_semantic_trust_guardrail/decision_model.py` with `SemanticTrustDecision`, evidence, contradiction, missing requirement, proof metadata, trivalent decision, status, and recommended action models.
+- GroundCite label mapping is conservative: `supported` -> `TRUE`, `contradicted` -> `FALSE`, and `unsupported` / `partially_unsupported` -> `UNDECIDABLE`.
+- Product decision model tests passed: `8 passed` for `tests/product/test_decision_model.py`.
+- GroundCite reference subset still passed: `9 passed` for `tests/reference_groundcite/test_schema.py` and `tests/reference_groundcite/test_claims.py`.
 
 ### P1-T02: Unify Semantic Fact And Ontology Model
 
@@ -378,7 +385,6 @@ Subtasks:
 
 ## Current Immediate Next Tasks
 
-1. Finish Phase 0 setup.
-2. Run import smoke tests in the new venv.
-3. Commit and push the prepared repository.
-4. Start Phase 1 by defining the unified decision model.
+1. Start P1-T02 by defining the unified semantic fact and ontology model.
+2. Keep the new decision model stable as the return contract for P2 runtime APIs.
+3. Continue preserving GroundCite reference tests as regression evidence while adapting product-level tests.

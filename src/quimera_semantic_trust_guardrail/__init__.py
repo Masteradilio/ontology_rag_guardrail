@@ -50,6 +50,17 @@ from .tenant_ontology import TenantOntologyManager, OntologyEntry, Ontology, Cla
 from .compliance_engine import ComplianceEngine, ComplianceStandard, ComplianceViolation, ComplianceRule
 from .proof_recorder import ProofRecorder, ProofEntry
 from .qgsl_logic import QGSLState, LogicalQutrit, TruthValue
+from .decision_model import (
+    TrivalentDecision,
+    RecommendedAction,
+    DecisionStatus,
+    EvidenceRecord,
+    ContradictionRecord,
+    MissingRequirement,
+    ProofMetadata,
+    SemanticTrustDecision,
+    map_groundcite_label,
+)
 
 # Adapters para bases de conhecimento externas
 from .adapters import (
@@ -112,6 +123,15 @@ __all__ = [
     "QGSLState",
     "LogicalQutrit",
     "TruthValue",
+    "TrivalentDecision",
+    "RecommendedAction",
+    "DecisionStatus",
+    "EvidenceRecord",
+    "ContradictionRecord",
+    "MissingRequirement",
+    "ProofMetadata",
+    "SemanticTrustDecision",
+    "map_groundcite_label",
     
     # Adapters
     "KnowledgeAdapter",
