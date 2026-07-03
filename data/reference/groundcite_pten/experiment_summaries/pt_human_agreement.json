@@ -1,0 +1,67 @@
+{
+  "agreement_by_class": {
+    "contradicted": {
+      "agreement": 0.9231,
+      "n": 13
+    },
+    "supported": {
+      "agreement": 1.0,
+      "n": 40
+    },
+    "unsupported": {
+      "agreement": 0.7872,
+      "n": 47
+    }
+  },
+  "agreement_kind": "human_human_inter_annotator_agreement",
+  "annotator_1_label_distribution": {
+    "contradicted": 13,
+    "supported": 40,
+    "unsupported": 47
+  },
+  "annotator_2_label_distribution": {
+    "contradicted": 22,
+    "supported": 40,
+    "unsupported": 38
+  },
+  "annotator_a_column": "annotator_1_label",
+  "annotator_b_column": "annotator_2_label",
+  "cohen_kappa": 0.826169,
+  "confusion_matrix": {
+    "contradicted": {
+      "contradicted": 12,
+      "supported": 0,
+      "unsupported": 1
+    },
+    "supported": {
+      "contradicted": 0,
+      "supported": 40,
+      "unsupported": 0
+    },
+    "unsupported": {
+      "contradicted": 10,
+      "supported": 0,
+      "unsupported": 37
+    }
+  },
+  "disagreement_count": 11,
+  "invalid_row_count": 0,
+  "invalid_rows": [],
+  "labels": [
+    "supported",
+    "unsupported",
+    "contradicted"
+  ],
+  "percent_agreement": 0.89,
+  "reporting_note": "This is inter-annotator agreement between two independent human annotators. Rows with annotator disagreement require adjudication before final gold labels are claimed.",
+  "review_coverage": 1.0,
+  "review_csv": "data\\annotation\\pt_human_full_review_with_context.csv",
+  "reviewed_rows": 100,
+  "seed_label_distribution_reviewed": {
+    "contradicted": 20,
+    "supported": 40,
+    "unsupported": 40
+  },
+  "status": "ready_for_full_iaa_reporting_adjudication_required",
+  "total_rows": 100
+}

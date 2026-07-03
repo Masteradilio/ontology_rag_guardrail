@@ -1,0 +1,100 @@
+{
+  "combined": {
+    "claim_count": 225,
+    "evidence_span_count": 135,
+    "sample_count": 180,
+    "unsupported_span_count": 90
+  },
+  "files": {
+    "groundcite_bench_en.jsonl": {
+      "annotation_status_distribution": {
+        "single_pass_gold_seed": 100
+      },
+      "answer_length_stats": {
+        "max": 113,
+        "mean": 54.49,
+        "min": 21
+      },
+      "claim_count": 125,
+      "context_count_stats": {
+        "max": 1,
+        "mean": 1,
+        "min": 1
+      },
+      "evidence_span_count": 75,
+      "failure_type_distribution": {
+        "abstain_needed": 25,
+        "contradicted": 25,
+        "fully_supported": 25,
+        "partially_unsupported": 25
+      },
+      "label_distribution": {
+        "contradicted": 25,
+        "supported": 50,
+        "unsupported": 50
+      },
+      "language_distribution": {
+        "en": 100
+      },
+      "path": "data\\samples\\groundcite_bench_en.jsonl",
+      "sample_count": 100,
+      "schema_error_count": 0,
+      "schema_errors": [],
+      "sha256": "6564251a8dfac0d2c775e5b2f708514fda2ae3b17f253711d561b3edb6be3f6d",
+      "source_distribution": {
+        "data/scripts/build_groundcite_bench.py": 100
+      },
+      "split_distribution": {
+        "dev": 80,
+        "test": 20
+      },
+      "unsupported_span_count": 50
+    },
+    "groundcite_bench_pt.jsonl": {
+      "annotation_status_distribution": {
+        "single_pass_gold_seed": 80
+      },
+      "answer_length_stats": {
+        "max": 141,
+        "mean": 67.938,
+        "min": 30
+      },
+      "claim_count": 100,
+      "context_count_stats": {
+        "max": 1,
+        "mean": 1,
+        "min": 1
+      },
+      "evidence_span_count": 60,
+      "failure_type_distribution": {
+        "abstain_needed": 20,
+        "contradicted": 20,
+        "fully_supported": 20,
+        "partially_unsupported": 20
+      },
+      "label_distribution": {
+        "contradicted": 20,
+        "supported": 40,
+        "unsupported": 40
+      },
+      "language_distribution": {
+        "pt-BR": 80
+      },
+      "path": "data\\samples\\groundcite_bench_pt.jsonl",
+      "sample_count": 80,
+      "schema_error_count": 0,
+      "schema_errors": [],
+      "sha256": "01c5093f7e9e54bb2f268404d0059ad9a4c3c3caec238a56854f8599426bcacf",
+      "source_distribution": {
+        "data/scripts/build_groundcite_bench.py": 80
+      },
+      "split_distribution": {
+        "dev": 64,
+        "test": 16
+      },
+      "unsupported_span_count": 40
+    }
+  },
+  "generated_by": "data/scripts/summarize_groundcite_bench.py",
+  "schema_version": "groundcite_bench_summary_v2"
+}

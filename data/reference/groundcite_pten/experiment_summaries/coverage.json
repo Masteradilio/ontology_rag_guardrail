@@ -1,0 +1,28 @@
+{
+  "alpha": 0.1,
+  "average_set_size": 1.05,
+  "calibration_split": "reported_by_upstream_experiment",
+  "coverage_by_class": {
+    "contradicted": {
+      "empirical_coverage": 0.0,
+      "n": 20
+    },
+    "supported": {
+      "empirical_coverage": 0.925,
+      "n": 40
+    },
+    "unsupported": {
+      "empirical_coverage": 0.9,
+      "n": 40
+    }
+  },
+  "empirical_coverage": 0.73,
+  "gold_jsonl": "data\\samples\\groundcite_bench_pt.jsonl",
+  "limitation": "Coverage is interpretable only if calibration and test examples are exchangeable and prediction sets were produced by the conformal predictor.",
+  "missing_prediction_set_count": 0,
+  "n_claims": 100,
+  "results_jsonl": "experiments\\conformal_coverage\\results\\pt_lexical_eval.jsonl",
+  "schema_version": "conformal_coverage_v1",
+  "target_coverage": 0.9,
+  "test_split": "reported_by_upstream_experiment"
+}

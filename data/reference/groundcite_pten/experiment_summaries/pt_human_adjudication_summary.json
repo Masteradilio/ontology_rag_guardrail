@@ -1,0 +1,22 @@
+{
+  "adjudicated_disagreement_count": 11,
+  "adjudication_csv": "C:\\Users\\adili\\projetos_offline\\groundcite_pten\\data\\annotation\\pt_human_full_adjudication.csv",
+  "changed_from_seed_count": 8,
+  "final_label_distribution": {
+    "contradicted": 18,
+    "supported": 40,
+    "unsupported": 42
+  },
+  "final_label_source_distribution": {
+    "human_adjudication": 11,
+    "human_agreement": 89
+  },
+  "input_jsonl": "C:\\Users\\adili\\projetos_offline\\groundcite_pten\\data\\samples\\groundcite_bench_pt.jsonl",
+  "out_csv": "C:\\Users\\adili\\projetos_offline\\groundcite_pten\\data\\annotation\\pt_human_full_final_labels.csv",
+  "out_jsonl": "C:\\Users\\adili\\projetos_offline\\groundcite_pten\\data\\samples\\groundcite_bench_pt_human_validated.jsonl",
+  "review_csv": "C:\\Users\\adili\\projetos_offline\\groundcite_pten\\data\\annotation\\pt_human_full_review_with_context.csv",
+  "schema_version": "pt_human_adjudication_summary_v1",
+  "status": "human_adjudicated_gold_ready",
+  "total_claims": 100,
+  "total_samples": 80
+}
