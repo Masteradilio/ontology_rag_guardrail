@@ -46,7 +46,7 @@ from .output_validator import (
     IssueDetail,
     QualityMetrics,
 )
-from .tenant_ontology import TenantOntologyManager, OntologyEntry, Ontology, ClaimVerification
+from .tenant_ontology import TenantOntologyManager, OntologyEntry, Ontology, ClaimVerification, FactConfidence
 from .compliance_engine import ComplianceEngine, ComplianceStandard, ComplianceViolation, ComplianceRule
 from .proof_recorder import ProofRecorder, ProofEntry
 from .qgsl_logic import QGSLState, LogicalQutrit, TruthValue
@@ -60,6 +60,14 @@ from .decision_model import (
     ProofMetadata,
     SemanticTrustDecision,
     map_groundcite_label,
+)
+from .semantic_fact import (
+    SemanticFactType,
+    SemanticFactProvenance,
+    SemanticFact,
+    SemanticOntology,
+    semantic_facts_from_ontology_entry,
+    semantic_facts_from_ontology_entries,
 )
 
 # Adapters para bases de conhecimento externas
@@ -108,6 +116,7 @@ __all__ = [
     "OntologyEntry",
     "Ontology",
     "ClaimVerification",
+    "FactConfidence",
     
     # Compliance
     "ComplianceEngine",
@@ -132,6 +141,12 @@ __all__ = [
     "ProofMetadata",
     "SemanticTrustDecision",
     "map_groundcite_label",
+    "SemanticFactType",
+    "SemanticFactProvenance",
+    "SemanticFact",
+    "SemanticOntology",
+    "semantic_facts_from_ontology_entry",
+    "semantic_facts_from_ontology_entries",
     
     # Adapters
     "KnowledgeAdapter",

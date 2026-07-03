@@ -124,7 +124,7 @@ Validation:
 
 ### P1-T02: Unify Semantic Fact And Ontology Model
 
-Status: TODO
+Status: DONE
 
 Goal: converge `TenantOntologyManager`, `KnowledgeFact`, and legacy graph facts into one semantic fact contract.
 
@@ -138,6 +138,13 @@ Subtasks:
 - Run regression tests for ontology behavior.
 - Update this backlog.
 - Update `CHANGELOG.md`.
+
+Validation:
+
+- Added `src/quimera_semantic_trust_guardrail/semantic_fact.py` with `SemanticFact`, `SemanticFactProvenance`, `SemanticFactType`, and a tenant-scoped `SemanticOntology`.
+- Added migration helpers for current `OntologyEntry`, adapter `KnowledgeFact`, and legacy `quimera_legacy.knowledge_ontology.Fact`.
+- Preserved concepts, definitions, facts, constraints, synonyms, policies, trivalent state, confidence, validity windows, tenant id, ontology/policy version, and structured provenance fields.
+- Product model tests passed: `13 passed` for `tests/product/test_decision_model.py` and `tests/product/test_semantic_fact.py`.
 
 ### P1-T03: Fix Knowledge Adapter Contract
 
@@ -385,6 +392,6 @@ Subtasks:
 
 ## Current Immediate Next Tasks
 
-1. Start P1-T02 by defining the unified semantic fact and ontology model.
-2. Keep the new decision model stable as the return contract for P2 runtime APIs.
+1. Start P1-T03 by fixing the knowledge adapter constructor/runtime dependency.
+2. Keep the new decision and semantic fact models stable as return/storage contracts for P2 runtime APIs.
 3. Continue preserving GroundCite reference tests as regression evidence while adapting product-level tests.
