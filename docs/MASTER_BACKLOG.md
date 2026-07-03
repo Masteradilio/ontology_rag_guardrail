@@ -346,7 +346,7 @@ Validation:
 
 ### P4-T01: Adapt GroundCite Regression Suite
 
-Status: TODO
+Status: DONE
 
 Goal: convert selected GroundCite tests into product regression tests.
 
@@ -360,9 +360,28 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
+Validation:
+
+- Added `tests/product/test_phase4_groundcite_regression.py` with 14 adapted regression tests:
+  - Adapted from `test_claims.py`: sentence splitting, abbreviation preservation, empty/short text, and the runtime `answer_check` decomposition contract.
+  - Adapted from `test_schema.py`: `Context` schema minimal/full, `Sample` JSONL payload loading, and the `map_groundcite_label` contract between GroundCite and the trivalent decision model.
+  - Product-level **claim support quality gate**: with a fully supported answer the `claim_support_rate` is 1.0 and `AbstentionRisk` recommends NOT abstaining.
+  - Product-level **abstention quality gate (contradicted)**: any contradicted claim forces risk to 1.0 and recommends abstention.
+  - Product-level **abstention quality gate (unsupported)**: 100% unsupported claims produce risk 0.7 and recommend abstention.
+  - Product-level **runtime claim support gate**: with a populated `SimpleKnowledgeAdapter` the runtime returns `ALLOW + TRUE`.
+  - Product-level **runtime abstention gate**: with no adapter, no ontology, and no evidence the runtime returns `ABSTAIN + UNDECIDABLE` and records an `evidence` missing requirement.
+  - Lightweight integration with the vendored `Evaluator` + `LexicalBackend` so the public GroundCite surface remains import-safe.
+  - Dependency graph exposure contract from the product `answer_check` (Mermaid graph with at least two nodes for a multi-claim answer).
+- Research-only tests remain in `tests/reference_groundcite/`:
+  - `test_hybrid.py` (HybridBackend fast-path contract).
+  - `test_groundcite_bench_dataset.py` and `test_dataset_summary_integrity.py` (benchmark dataset integrity for the original research benchmark).
+  - `test_scientific_reporting_guardrails.py` (research-doc overclaim guardrails, depends on docs that are not part of the product).
+- Phase 4 regression passed: `14 passed` for `tests/product/test_phase4_groundcite_regression.py`.
+- Full product + GroundCite schema/claim regression passed: `72 passed` (63 product + 9 GroundCite).
+
 ### P4-T02: Add Product Smoke Tests
 
-Status: TODO
+Status: DONE
 
 Goal: verify the product package works from a clean install.
 
@@ -375,6 +394,19 @@ Subtasks:
 - Run regression tests.
 - Update this backlog.
 - Update `CHANGELOG.md`.
+
+Validation:
+
+- Added `tests/product/test_phase4_smoke.py` with 7 smoke tests:
+  - `test_main_package_imports` verifies all 30 public symbols of `quimera_semantic_trust_guardrail` are importable.
+  - `test_groundcite_package_imports` verifies the vendored `groundcite` package, `groundcite.claims`, `groundcite.metrics.claim_support`, and `groundcite.metrics.abstention` all import with their public surface.
+  - `test_legacy_truth_mapping_imports` verifies the `quimera_legacy.truth_mapping` module still imports.
+  - `test_minimal_claim_check_returns_trivalent_decision` runs a no-frills `claim_check` and asserts the trivalent decision + proof metadata.
+  - `test_minimal_guardrails_construct_and_run` constructs `QuimeraGuardrails` with a tempdir-backed `GuardrailsConfig`, runs `shield_input` and `claim_check`, and verifies the public `proof_lookup` API.
+  - `test_minimal_claim_check_with_adapter_supported_path` exercises the adapter-backed supported path of the runtime.
+  - `test_package_metadata_exposes_versions` verifies both packages expose string `__version__` attributes.
+- Phase 4 regression passed: `7 passed` for `tests/product/test_phase4_smoke.py`.
+- Full product + GroundCite schema/claim regression passed: `72 passed` (63 product + 9 GroundCite).
 
 ## Phase 5: Packaging And Deployment
 
@@ -449,6 +481,6 @@ Subtasks:
 
 ## Current Immediate Next Tasks
 
-1. Start Phase 3 with P3-T01 by enriching the proof ledger schema.
-2. Preserve the Phase 2 runtime API contracts as the public SDK surface.
+1. Start Phase 4 with P4-T01 by adapting the GroundCite reference suite as product regression tests.
+2. Preserve the Phase 3 enriched proof ledger and ontology versioning as the audit guarantees for the SDK.
 3. Continue preserving GroundCite reference tests as regression evidence while adapting product-level tests.
