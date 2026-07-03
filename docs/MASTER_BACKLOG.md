@@ -412,7 +412,7 @@ Validation:
 
 ### P5-T01: Package The SDK
 
-Status: TODO
+Status: DONE
 
 Goal: make the project installable as an SDK.
 
@@ -426,9 +426,20 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
+Validation:
+
+- `pyproject.toml` now declares full PyPI metadata (classifiers, keywords, project URLs, `requires-python`, `License :: MIT`, `Topic :: Scientific/Engineering :: Artificial Intelligence`) and the optional `[fastapi]` and `[dev]` extras.
+- Two console scripts are exposed: `quimera` -> `quimera_semantic_trust_guardrail.__main__:main` and `quimera-serve` -> `quimera_semantic_trust_guardrail.__main__:serve_main`.
+- `setuptools.packages.find` is scoped to `src/` and explicitly includes `quimera_semantic_trust_guardrail*`, `groundcite*`, and `quimera_legacy*` so the vendored packages are installed alongside the product.
+- The package ships a `py.typed` marker (PEP 561).
+- New `__main__.py` implements `quimera version`, `quimera claim <text>`, and `quimera serve` (the latter lazily imports FastAPI/uvicorn so the base package can be used without the optional extra).
+- Added `examples/01_claim_check_basic.py`, `examples/02_ontology_versioning.py`, and `examples/03_fastapi_server.py` as runnable scripts.
+- Phase 5 regression passed: `23 passed` for `tests/product/test_phase5_packaging_and_fastapi.py` (12 packaging tests + 11 FastAPI tests).
+- Full product + GroundCite schema/claim regression passed: `95 passed` (86 product + 9 GroundCite).
+
 ### P5-T02: Add Optional FastAPI Runtime
 
-Status: TODO
+Status: DONE
 
 Goal: expose runtime checks as HTTP endpoints.
 
@@ -437,6 +448,7 @@ Subtasks:
 - Add `/claim-check`.
 - Add `/answer-check`.
 - Add `/action-check`.
+- Add `/policy-check`.
 - Add `/proofs/{proof_id}`.
 - Add tenant authentication placeholders.
 - Add integration tests.
@@ -444,43 +456,15 @@ Subtasks:
 - Update this backlog.
 - Update `CHANGELOG.md`.
 
-## Phase 6: Documentation And Commercial Readiness
+Validation:
 
-### P6-T01: Product Documentation
-
-Status: TODO
-
-Goal: document the product as a semantic trust guardrail.
-
-Subtasks:
-
-- Write architecture guide.
-- Write integration guide for RAG.
-- Write integration guide for agents.
-- Write policy and ontology modeling guide.
-- Write proof/audit guide.
-- Run documentation link checks where possible.
-- Update this backlog.
-- Update `CHANGELOG.md`.
-
-### P6-T02: Research Positioning
-
-Status: TODO
-
-Goal: preserve scientific defensibility.
-
-Subtasks:
-
-- Draft a research note on ontology-grounded trivalent validation.
-- Reuse GroundCite claims ledger discipline.
-- Define what the product does not prove.
-- Create evaluation plan and benchmark protocol.
-- Run regression tests for evaluation scripts.
-- Update this backlog.
-- Update `CHANGELOG.md`.
-
-## Current Immediate Next Tasks
-
-1. Start Phase 4 with P4-T01 by adapting the GroundCite reference suite as product regression tests.
-2. Preserve the Phase 3 enriched proof ledger and ontology versioning as the audit guarantees for the SDK.
-3. Continue preserving GroundCite reference tests as regression evidence while adapting product-level tests.
+- Added `src/quimera_semantic_trust_guardrail/fastapi_app.py` exposing `create_app(proof_storage_path, ontology_storage_path)` which returns a configured `FastAPI` instance.
+- FastAPI is an optional dependency: the `[fastapi]` extra in `pyproject.toml` pulls in `fastapi>=0.110` and `uvicorn[standard]>=0.27`. The module raises a clear `ImportError` if the user calls `create_app` without the extra installed, and the `quimera-serve` CLI surfaces a friendly message.
+- Endpoints: `GET /health`, `POST /claim-check`, `POST /answer-check`, `POST /action-check`, `POST /policy-check`, `GET /proofs/{proof_id}`, `POST /ontologies/snapshots`, `POST /ontologies/rollback`, `GET /ontologies/snapshots`.
+- Tenant authentication placeholder: every guarded endpoint requires the `X-Tenant-ID` header (missing/empty -> 401). A real deployment should swap the dependency for JWT/API-key auth.
+- Per-tenant `QuimeraGuardrails` instances are cached on the app and lazily created with `compliance_standards=["LGPD"]` so `policy-check` works out of the box.
+- Snapshot/rollback endpoints auto-pick the active or first existing ontology (or auto-create a default) when the caller does not pass `ontology_id`.
+- `create_fastapi_app` is re-exported from the package top-level when FastAPI is available; `None` otherwise.
+- Phase 5 integration tests pass via `fastapi.testclient.TestClient`: supported/unsupported claim paths, LGPD PII policy block, snapshot/rollback success + 404 on unknown snapshot, proof lookup, tenant header enforcement, and lazy import of the FastAPI module.
+- Phase 5 regression passed: `23 passed` for `tests/product/test_phase5_packaging_and_fastapi.py`.
+- Full product + GroundCite schema/claim regression passed: `95 passed` (86 product + 9 GroundCite).

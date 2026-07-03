@@ -55,6 +55,11 @@ from .ontology_versioning import (
     OntologyVersioningStore,
     diff_payloads,
 )
+
+try:
+    from .fastapi_app import create_app as create_fastapi_app
+except ImportError:  # FastAPI is an optional extra
+    create_fastapi_app = None  # type: ignore[assignment]
 from .qgsl_logic import QGSLState, LogicalQutrit, TruthValue
 from .decision_model import (
     TrivalentDecision,
@@ -139,6 +144,8 @@ __all__ = [
     "OntologyMigration",
     "OntologyVersioningStore",
     "diff_payloads",
+    # Optional FastAPI runtime
+    "create_fastapi_app",
     
     # Lógica QGSL
     "QGSLState",

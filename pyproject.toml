@@ -9,8 +9,35 @@ description = "Auditable trivalent semantic trust guardrail for enterprise LLM, 
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
+keywords = [
+  "guardrail",
+  "semantic-trust",
+  "rag",
+  "llm",
+  "agent",
+  "trivalent",
+  "audit",
+  "proof-ledger",
+  "ontology",
+  "lgpd",
+  "ai-act",
+]
 authors = [
   { name = "Projeto Quimera" }
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
 ]
 dependencies = [
   "numpy>=1.26",
@@ -29,10 +56,34 @@ dev = [
   "pytest>=8.0",
   "pytest-cov>=5.0"
 ]
+fastapi = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.27"
+]
+
+[project.urls]
+Homepage = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail"
+Documentation = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail#readme"
+Source = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail"
+Issues = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail/issues"
+Changelog = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail/blob/main/CHANGELOG.md"
+
+[project.scripts]
+quimera = "quimera_semantic_trust_guardrail.__main__:main"
+quimera-serve = "quimera_semantic_trust_guardrail.__main__:serve_main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = [
+  "quimera_semantic_trust_guardrail*",
+  "groundcite*",
+  "quimera_legacy*",
+]
+
+[tool.setuptools.package-data]
+quimera_semantic_trust_guardrail = ["py.typed"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+addopts = "-q"

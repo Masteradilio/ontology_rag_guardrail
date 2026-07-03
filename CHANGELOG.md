@@ -17,6 +17,14 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Wired `QuimeraGuardrails.snapshot_ontology` and `rollback_ontology` so that snapshot and rollback operations write `ONTOLOGY_SNAPSHOT` and `ONTOLOGY_ROLLBACK` proof entries linked to the active ontology and snapshot.
 - Added the Phase 4 adapted GroundCite regression suite in `tests/product/test_phase4_groundcite_regression.py` (14 tests): claim-splitting contracts, abbreviation preservation, empty/short text, the runtime `answer_check` decomposition contract, the `Context` / `Sample` schemas, the `map_groundcite_label` trivalent mapping, and the product-level **claim support** and **abstention** quality gates (supported, contradicted, unsupported) covering both the GroundCite metrics and the product runtime.
 - Added the Phase 4 product smoke tests in `tests/product/test_phase4_smoke.py` (7 tests): public symbol imports for the product, vendored GroundCite, and selected `quimera_legacy` modules, plus minimal `claim_check` and full `QuimeraGuardrails` construction paths.
+- Added the Phase 5 SDK packaging metadata in `pyproject.toml` (full PyPI metadata, optional `[fastapi]` and `[dev]` extras, console scripts `quimera` and `quimera-serve`, scoped `setuptools.packages.find` for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy`, and the `py.typed` marker).
+- Added the `quimera_semantic_trust_guardrail.__main__` module with the `quimera` CLI (`version`, `claim`, `serve`) and the `quimera-serve` entry point that lazily imports FastAPI/uvicorn.
+- Added the `examples/` folder with `01_claim_check_basic.py`, `02_ontology_versioning.py`, and `03_fastapi_server.py` as runnable end-to-end examples.
+- Added the optional FastAPI HTTP runtime in `quimera_semantic_trust_guardrail.fastapi_app` exposing `GET /health`, `POST /claim-check`, `POST /answer-check`, `POST /action-check`, `POST /policy-check`, `GET /proofs/{proof_id}`, `POST /ontologies/snapshots`, `POST /ontologies/rollback`, and `GET /ontologies/snapshots`.
+- Added the `X-Tenant-ID` header as the tenant authentication placeholder (missing/empty header returns 401); per-tenant `QuimeraGuardrails` instances are cached lazily and default to `compliance_standards=["LGPD"]` so `policy-check` works out of the box.
+- Added `create_fastapi_app` re-export on the package top-level when FastAPI is available, and `None` otherwise, so the base package can be used without the optional extra.
+- Research-only GroundCite tests (`test_hybrid.py`, `test_groundcite_bench_dataset.py`, `test_dataset_summary_integrity.py`, `test_scientific_reporting_guardrails.py`) remain under `tests/reference_groundcite/` and are NOT part of the product regression gate.
+- Created the initial product workspace for Quimera Semantic Trust Guardrail.
 - Research-only GroundCite tests (`test_hybrid.py`, `test_groundcite_bench_dataset.py`, `test_dataset_summary_integrity.py`, `test_scientific_reporting_guardrails.py`) remain under `tests/reference_groundcite/` and are NOT part of the product regression gate.
 - Created the initial product workspace for Quimera Semantic Trust Guardrail.
 - Copied current `quimera_guardrails` modules into `src/quimera_semantic_trust_guardrail`.
@@ -40,6 +48,13 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Phase 4 adapted GroundCite regression tests passed: `14 passed` for `tests/product/test_phase4_groundcite_regression.py`.
 - Phase 4 product smoke tests passed: `7 passed` for `tests/product/test_phase4_smoke.py`.
 - Phase 4 full product + GroundCite schema/claim regression passed: `72 passed` (63 product + 9 GroundCite).
+- Phase 4 adapted GroundCite regression tests passed: `14 passed` for `tests/product/test_phase4_groundcite_regression.py`.
+- Phase 4 product smoke tests passed: `7 passed` for `tests/product/test_phase4_smoke.py`.
+- Phase 4 full product + GroundCite schema/claim regression passed: `72 passed` (63 product + 9 GroundCite).
+- Phase 5 packaging and FastAPI HTTP runtime tests passed: `23 passed` for `tests/product/test_phase5_packaging_and_fastapi.py` (12 packaging + 11 FastAPI integration tests).
+- Phase 5 full product + GroundCite schema/claim regression passed: `95 passed` (86 product + 9 GroundCite).
+- Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
+- GroundCite reference subset passed: `9 passed` for schema and claim tests.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 
