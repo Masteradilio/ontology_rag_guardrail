@@ -21,6 +21,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added `docs/comercial_cientific_backlog.md` to plan the scientific and commercial validation tracks, including MiniMax M3 provider priority through NVIDIA first and OpenRouter fallback.
 - Added Phase S0 scientific evaluation infrastructure with provider fallback clients, evaluation artifact schemas, and a controlled seed dataset package.
 - Added a deterministic Phase S1 scientific baseline runner and CLI command that evaluate claim/answer, abstention, agent action, and policy/compliance seed cases and write reproducible artifacts.
+- Added Phase S2 scientific reporting package with a Quimera claims ledger, technical report, and external research decision.
 - Added packaged compatibility shims for copied Quimera original reference tests: `core.*` modules and legacy flat-module imports now re-export the selected `quimera_legacy` modules.
 
 ### Changed
@@ -45,7 +46,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Phase 5 packaging and FastAPI HTTP runtime tests passed: `23 passed` for `tests/product/test_phase5_packaging_and_fastapi.py`.
 - Phase 5 full product + GroundCite schema/claim regression passed: `95 passed`.
 - Quimera original reference compatibility tests passed: `tests/reference_quimera_original`.
-- Full repository regression passed: `204 passed` via `python -m pytest -q`.
+- Full repository regression passed: `209 passed` via `python -m pytest -q`.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 

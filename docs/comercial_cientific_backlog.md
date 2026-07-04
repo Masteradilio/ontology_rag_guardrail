@@ -213,7 +213,7 @@ Validation:
 
 ## Phase S2: Scientific Reporting Package
 
-Status: TODO
+Status: DONE
 
 Goal: turn baseline runs into a conservative scientific evidence package.
 
@@ -232,6 +232,12 @@ Acceptance criteria:
 - Every public-facing claim has evidence status.
 - Unsupported claims are either blocked or removed.
 
+Validation:
+
+- Added `docs/scientific_claims_ledger_quimera.md`.
+- Claims are classified as `supported`, `preliminary`, `blocked`, `engineering_only`, or `remove`.
+- Forbidden claims include real-world truth proof, hallucination elimination, legal compliance certification, autonomous safety, and production accuracy from the seed dataset.
+
 ### S2-T02: Technical Report Draft
 
 Subtasks:
@@ -247,6 +253,12 @@ Acceptance criteria:
 - Report is draft-ready for technical reviewers.
 - It clearly states that Quimera validates support under configured evidence/policy, not global truth.
 
+Validation:
+
+- Added `docs/scientific_technical_report.md`.
+- The report records the deterministic seed baseline: 12 samples, 11 correct decisions, false allow rate 0.0833, false block rate 0.0, useful abstention rate 0.8, harmful abstention rate 0.0.
+- The report explicitly records `policy-undecidable-001` as a false allow and product-hardening target.
+
 ### S2-T03: External Research Decision
 
 Subtasks:
@@ -260,6 +272,14 @@ Acceptance criteria:
 
 - Clear go/no-go decision for public scientific positioning.
 - No public claim depends only on anecdotal demos.
+
+Validation:
+
+- Added `docs/scientific_external_research_decision.md`.
+- Current decision: do not submit a formal paper yet; prepare an internal technical note and only a conservative technical blog or whitepaper after benchmark expansion.
+- Added product tests for the S2 reporting package and conservative-claim guardrails.
+- Focused S2 reporting regression passed: `5 passed`.
+- Full repository regression passed after S2 implementation: `209 passed`.
 
 ## Phase C0: Commercial Discovery Preparation
 

@@ -106,6 +106,9 @@ examples/
 - [Proof and audit guide](docs/proof_audit.md)
 - [Research positioning note](docs/research_positioning.md)
 - [Evaluation plan](docs/evaluation_plan.md)
+- [Quimera scientific claims ledger](docs/scientific_claims_ledger_quimera.md)
+- [Scientific technical report](docs/scientific_technical_report.md)
+- [External research decision](docs/scientific_external_research_decision.md)
 - [Execution backlog](docs/MASTER_BACKLOG.md)
 - [Change history](CHANGELOG.md)
 
