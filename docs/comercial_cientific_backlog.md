@@ -283,7 +283,7 @@ Validation:
 
 ## Phase C0: Commercial Discovery Preparation
 
-Status: TODO
+Status: DONE
 
 Goal: convert the scientific evidence package into buyer-facing hypotheses and pilot workflows.
 
@@ -304,6 +304,11 @@ Acceptance criteria:
 - Each ICP has a concrete workflow and measurable pain.
 - No ICP depends on broad "trust AI" messaging.
 
+Validation:
+
+- Added `docs/commercial_icp_use_cases.md` with three ICPs: enterprise RAG platform teams, SaaS agent teams, and compliance/risk teams.
+- Each ICP includes buyer, users, pain, current workaround, workflow, and pilot success criteria.
+
 ### C0-T02: Demo Dataset And Script
 
 Subtasks:
@@ -319,6 +324,12 @@ Acceptance criteria:
 - Demo can run without external APIs.
 - LLM mode is optional and records provider fallback transparently.
 
+Validation:
+
+- Added `quimera_semantic_trust_guardrail.evaluation.commercial_demo.run_commercial_demo`.
+- Added `quimera commercial-demo` CLI with deterministic offline default and optional `--use-llm`.
+- Demo covers RAG answer approval, agent refund authorization, missing authorization, policy/compliance review, proof ids, and ontology snapshot metadata.
+
 ### C0-T03: Buyer Evidence Pack
 
 Subtasks:
@@ -333,6 +344,13 @@ Acceptance criteria:
 
 - Buyer-facing materials use only claims allowed by the scientific claims ledger.
 - The value proposition is audit-ready semantic governance, not generic hallucination elimination.
+
+Validation:
+
+- Added `docs/commercial_one_pager.md`, `docs/commercial_security_compliance_faq.md`, `docs/commercial_pilot_proposal_template.md`, `docs/commercial_metrics_sheet.md`, and `docs/commercial_integration_diagram.md`.
+- Added product tests that enforce conservative commercial wording and run the offline commercial demo/CLI.
+- Focused C0 commercial discovery regression passed: `3 passed`.
+- Full repository regression passed after C0 implementation: `212 passed`.
 
 ## Phase C1: Commercial Pilot Validation
 

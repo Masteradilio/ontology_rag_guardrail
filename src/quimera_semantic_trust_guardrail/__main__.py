@@ -88,6 +88,26 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Dataset manifest path.",
     )
 
+    p_commercial = sub.add_parser(
+        "commercial-demo",
+        help="Run the deterministic commercial discovery demo.",
+    )
+    p_commercial.add_argument(
+        "--output-dir",
+        default="artifacts/commercial",
+        help="Commercial demo artifact directory (default: artifacts/commercial).",
+    )
+    p_commercial.add_argument(
+        "--run-id",
+        default="commercial-demo",
+        help="Run identifier (default: commercial-demo).",
+    )
+    p_commercial.add_argument(
+        "--use-llm",
+        action="store_true",
+        help="Optionally call NVIDIA MiniMax M3 first and OpenRouter fallback.",
+    )
+
     return parser
 
 
@@ -150,6 +170,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             manifest_path=args.manifest,
             output_dir=args.output_dir,
             run_id=args.run_id,
+        )
+        _print_json({"run_dir": str(run_dir)})
+        return 0
+
+    if args.command == "commercial-demo":
+        from .evaluation import run_commercial_demo
+
+        run_dir = run_commercial_demo(
+            output_dir=args.output_dir,
+            run_id=args.run_id,
+            use_llm=args.use_llm,
         )
         _print_json({"run_dir": str(run_dir)})
         return 0

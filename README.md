@@ -109,6 +109,9 @@ examples/
 - [Quimera scientific claims ledger](docs/scientific_claims_ledger_quimera.md)
 - [Scientific technical report](docs/scientific_technical_report.md)
 - [External research decision](docs/scientific_external_research_decision.md)
+- [Commercial ICP and use cases](docs/commercial_icp_use_cases.md)
+- [Commercial technical one-pager](docs/commercial_one_pager.md)
+- [Commercial pilot proposal template](docs/commercial_pilot_proposal_template.md)
 - [Execution backlog](docs/MASTER_BACKLOG.md)
 - [Change history](CHANGELOG.md)
 

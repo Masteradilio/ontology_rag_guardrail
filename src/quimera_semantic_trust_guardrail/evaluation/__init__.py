@@ -27,6 +27,7 @@ from .llm_providers import (
     load_env_file,
     redact_secrets,
 )
+from .commercial_demo import run_commercial_demo
 from .scientific_baseline import ControlledClaimAdapter, run_scientific_baseline
 
 __all__ = [
@@ -51,6 +52,7 @@ __all__ = [
     "load_env_file",
     "load_jsonl_records",
     "redact_secrets",
+    "run_commercial_demo",
     "run_scientific_baseline",
     "write_jsonl",
 ]
