@@ -51,7 +51,7 @@ Provider behavior rules:
 
 ## Phase S0: Evaluation Infrastructure
 
-Status: TODO
+Status: DONE
 
 Goal: create a reproducible evaluation harness that can call NVIDIA first and OpenRouter only as fallback.
 
@@ -72,6 +72,11 @@ Acceptance criteria:
 - Real API calls are behind an explicit opt-in marker or script flag.
 - Logs never include API key values.
 
+Validation:
+
+- Added `quimera_semantic_trust_guardrail.evaluation.llm_providers` with `NVIDIAProvider`, `OpenRouterProvider`, `FallbackLLMClient`, secret redaction, and `.env` parsing.
+- Tests cover NVIDIA-first success, NVIDIA failure with OpenRouter fallback, all-providers failure, env var mapping, and secret redaction without real API calls.
+
 ### S0-T02: Evaluation Artifact Layout
 
 Subtasks:
@@ -86,6 +91,12 @@ Acceptance criteria:
 
 - A run can be reproduced from committed code plus recorded config metadata.
 - Generated artifacts remain out of Git unless intentionally promoted as sanitized examples.
+
+Validation:
+
+- Added `quimera_semantic_trust_guardrail.evaluation.artifacts` with pydantic schemas for run metadata, provider traces, sample results, proof traces, and summary metrics.
+- Added `artifacts/` to `.gitignore`.
+- Tests cover run directory creation, JSONL artifact writing, and the `quimera scientific-baseline` CLI path.
 
 ### S0-T03: Baseline Dataset Selection
 
@@ -102,9 +113,14 @@ Acceptance criteria:
 - Dataset card exists for the first benchmark package.
 - Unsupported, contradicted, and undecidable examples are explicitly represented.
 
+Validation:
+
+- Added `data/evaluation/scientific_seed/README.md`, `manifest.json`, `claim_answer_seed.jsonl`, `agent_action_seed.jsonl`, and `policy_seed.jsonl`.
+- Tests verify manifest loading, sample counts, label distributions, and coverage of `TRUE`, `FALSE`, `UNDECIDABLE`, `partially_unsupported`, and `missing_authorization`.
+
 ## Phase S1: Scientific Validation Baseline
 
-Status: TODO
+Status: DONE
 
 Goal: produce a defensible baseline for ontology-grounded trivalent validation.
 
@@ -124,6 +140,12 @@ Acceptance criteria:
 - Every reported metric links to dataset version and code commit.
 - At least one failure analysis table is produced.
 
+Validation:
+
+- Added `quimera_semantic_trust_guardrail.evaluation.scientific_baseline.run_scientific_baseline`.
+- The deterministic seed baseline writes `metadata.json`, `sample_results.jsonl`, `summary.json`, and `failure_analysis.json`.
+- Tests verify reproducible artifacts, task coverage, trivalent output coverage, summary metrics, and explicit failure analysis.
+
 ### S1-T02: Abstention Quality Evaluation
 
 Subtasks:
@@ -138,6 +160,14 @@ Acceptance criteria:
 
 - The report quantifies useful abstention and harmful abstention separately.
 - No claim is made that abstention eliminates hallucinations.
+
+Validation:
+
+- The deterministic baseline summary records `useful_abstention_rate` and `harmful_abstention_rate`.
+- Seed data includes unsupported, partially unsupported, missing authorization, and wrong-tenant cases.
+- The summary limitations explicitly state that the seed does not estimate hallucination elimination.
+- Focused S0/S1 regression passed: `14 passed`.
+- Full repository regression passed after S0/S1 implementation: `204 passed`.
 
 ### S1-T03: Agent Action Authorization Evaluation
 
@@ -154,6 +184,12 @@ Acceptance criteria:
 - Missing authorization defaults to `UNDECIDABLE` unless an explicit deny policy applies.
 - At least one audit trace reconstructs why a tool call was allowed or blocked.
 
+Validation:
+
+- The seed runner creates controlled tenant policy facts for allow and deny cases.
+- The action seed covers allowed, denied, missing-authorization, and wrong-tenant scenarios.
+- Each sample result includes proof metadata and decision path.
+
 ### S1-T04: Policy And Compliance Evaluation
 
 Subtasks:
@@ -168,6 +204,12 @@ Acceptance criteria:
 
 - Reports distinguish compliance-rule evidence from legal conclusions.
 - Rollback and snapshot decisions preserve audit linkage.
+
+Validation:
+
+- The policy seed covers LGPD, custom policy violation, allowed text, and an intentionally undecidable policy expectation.
+- Baseline artifacts preserve policy/compliance disagreements in `failure_analysis.json` instead of hiding them.
+- Snapshot/rollback proof linkage remains covered by Phase 3 product tests; this S1 baseline focuses on policy decision behavior.
 
 ## Phase S2: Scientific Reporting Package
 

@@ -68,6 +68,26 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Ontology storage path (default: .quimera_cli_ontologies).",
     )
 
+    p_science = sub.add_parser(
+        "scientific-baseline",
+        help="Run the deterministic scientific seed baseline.",
+    )
+    p_science.add_argument(
+        "--output-dir",
+        default="artifacts/evaluation",
+        help="Evaluation artifact directory (default: artifacts/evaluation).",
+    )
+    p_science.add_argument(
+        "--run-id",
+        default="scientific-seed-baseline",
+        help="Run identifier (default: scientific-seed-baseline).",
+    )
+    p_science.add_argument(
+        "--manifest",
+        default="data/evaluation/scientific_seed/manifest.json",
+        help="Dataset manifest path.",
+    )
+
     return parser
 
 
@@ -122,6 +142,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             proof_storage=args.proof_storage,
             ontology_storage=args.ontology_storage,
         )
+
+    if args.command == "scientific-baseline":
+        from .evaluation import run_scientific_baseline
+
+        run_dir = run_scientific_baseline(
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            run_id=args.run_id,
+        )
+        _print_json({"run_dir": str(run_dir)})
+        return 0
 
     parser.print_help()
     return 1

@@ -42,6 +42,7 @@ Thumbs.db
 .vscode/
 
 # Large/generated experiment outputs
+artifacts/
 experiments/**/results/
 scratch/
 *.sqlite

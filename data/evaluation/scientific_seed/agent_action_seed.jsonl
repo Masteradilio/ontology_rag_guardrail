@@ -1,0 +1,4 @@
+{"sample_id":"action-allow-001","actor":"support_agent","action":"refund","resource":"order","purpose":"customer_support","tenant_id":"tenant_a","expected_label":"allow","expected_decision":"TRUE"}
+{"sample_id":"action-deny-001","actor":"contractor","action":"export","resource":"customer_data","purpose":"analytics","tenant_id":"tenant_a","expected_label":"deny","expected_decision":"FALSE"}
+{"sample_id":"action-missing-001","actor":"support_agent","action":"delete","resource":"customer_account","purpose":"customer_support","tenant_id":"tenant_a","expected_label":"missing_authorization","expected_decision":"UNDECIDABLE"}
+{"sample_id":"action-wrong-tenant-001","actor":"support_agent","action":"refund","resource":"order","purpose":"customer_support","tenant_id":"tenant_b","expected_label":"wrong_tenant","expected_decision":"UNDECIDABLE"}

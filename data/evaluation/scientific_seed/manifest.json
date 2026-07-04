@@ -1,0 +1,55 @@
+{
+  "schema_version": "quimera_scientific_dataset_manifest_v1",
+  "package_id": "quimera_scientific_seed",
+  "version": "2026-07-04-v1",
+  "datasets": [
+    {
+      "dataset_id": "quimera_claim_answer_seed",
+      "version": "2026-07-04-v1",
+      "task": "claim_answer_validation",
+      "path": "data/evaluation/scientific_seed/claim_answer_seed.jsonl",
+      "sample_count": 4,
+      "label_distribution": {
+        "supported": 1,
+        "contradicted": 1,
+        "unsupported": 1,
+        "partially_unsupported": 1
+      },
+      "limitations": [
+        "Synthetic examples for runtime validation only.",
+        "Does not estimate production RAG accuracy."
+      ]
+    },
+    {
+      "dataset_id": "quimera_agent_action_seed",
+      "version": "2026-07-04-v1",
+      "task": "agent_action_authorization",
+      "path": "data/evaluation/scientific_seed/agent_action_seed.jsonl",
+      "sample_count": 4,
+      "label_distribution": {
+        "allow": 1,
+        "deny": 1,
+        "missing_authorization": 1,
+        "wrong_tenant": 1
+      },
+      "limitations": [
+        "Synthetic policy scenarios for authorization contract validation."
+      ]
+    },
+    {
+      "dataset_id": "quimera_policy_seed",
+      "version": "2026-07-04-v1",
+      "task": "policy_compliance",
+      "path": "data/evaluation/scientific_seed/policy_seed.jsonl",
+      "sample_count": 4,
+      "label_distribution": {
+        "policy_allow": 1,
+        "policy_violation": 2,
+        "policy_undecidable": 1
+      },
+      "limitations": [
+        "Synthetic compliance examples; not legal advice."
+      ]
+    }
+  ]
+}
