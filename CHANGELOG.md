@@ -18,6 +18,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added the optional FastAPI HTTP runtime with `/health`, `/claim-check`, `/answer-check`, `/action-check`, `/policy-check`, `/proofs/{proof_id}`, and ontology snapshot/rollback endpoints.
 - Added Phase 6 product documentation: architecture, RAG integration, agent integration, policy/ontology modeling, and proof/audit guides.
 - Added Phase 6 research positioning and evaluation plan documents with conservative scientific claims, explicit non-claims, benchmark protocol, and commercial evaluation axes.
+- Added `docs/comercial_cientific_backlog.md` to plan the scientific and commercial validation tracks, including MiniMax M3 provider priority through NVIDIA first and OpenRouter fallback.
 - Added packaged compatibility shims for copied Quimera original reference tests: `core.*` modules and legacy flat-module imports now re-export the selected `quimera_legacy` modules.
 
 ### Changed
