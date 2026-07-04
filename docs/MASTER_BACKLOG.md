@@ -43,7 +43,7 @@ Validation:
 
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for `tests/reference_groundcite/test_schema.py` and `tests/reference_groundcite/test_claims.py`.
-- Quimera original reference tests are copied but still need import-path adaptation; current legacy test collection fails on direct old import `from truth_mapping import ...`.
+- Quimera original reference tests are copied for legacy compatibility coverage. The old flat and `core.*` import paths are now preserved through compatibility shims, and `tests/reference_quimera_original` passes.
 
 ### P0-T02: Python Environment Bootstrap
 
@@ -468,3 +468,57 @@ Validation:
 - Phase 5 integration tests pass via `fastapi.testclient.TestClient`: supported/unsupported claim paths, LGPD PII policy block, snapshot/rollback success + 404 on unknown snapshot, proof lookup, tenant header enforcement, and lazy import of the FastAPI module.
 - Phase 5 regression passed: `23 passed` for `tests/product/test_phase5_packaging_and_fastapi.py`.
 - Full product + GroundCite schema/claim regression passed: `95 passed` (86 product + 9 GroundCite).
+
+## Phase 6: Product Documentation And Research Positioning
+
+### P6-T01: Complete Product Documentation
+
+Status: DONE
+
+Goal: document the runtime architecture and integration patterns so the SDK can be evaluated by technical users without relying on backlog notes.
+
+Subtasks:
+
+- Write an architecture guide.
+- Write an integration guide for RAG systems.
+- Write an integration guide for agent systems.
+- Write a policy and ontology modeling guide.
+- Write a proof and audit guide.
+- Refresh the root README so it reflects the implemented SDK/runtime surface.
+- Run documentation link checks where possible.
+- Update this backlog.
+- Update `CHANGELOG.md`.
+
+Validation:
+
+- Added `docs/architecture.md`, `docs/integration_rag.md`, `docs/integration_agents.md`, `docs/policy_ontology_modeling.md`, and `docs/proof_audit.md`.
+- Rewrote the root `README.md` to describe the current SDK methods, optional FastAPI runtime, local setup, examples, documentation index, and scientific/commercial boundaries.
+- Documentation uses conservative positioning: the runtime records evidence-grounded decisions and proof metadata; it does not claim to prove real-world truth or eliminate hallucinations.
+- Documentation links were checked with a local Markdown link scanner script.
+
+### P6-T02: Complete Research Positioning And Evaluation Plan
+
+Status: DONE
+
+Goal: define a defensible scientific/commercial evaluation path for ontology-grounded trivalent validation.
+
+Subtasks:
+
+- Draft a research positioning note for ontology-grounded trivalent validation.
+- Reuse the GroundCite claims-ledger discipline.
+- Define what the product does not prove.
+- Create an evaluation plan and benchmark protocol.
+- Keep research-only tests separated from product regression gates.
+- Run regression tests for product and reference compatibility.
+- Update this backlog.
+- Update `CHANGELOG.md`.
+
+Validation:
+
+- Added `docs/research_positioning.md` with a narrow, defensible claim: given configured evidence, ontology facts, policy facts, and compliance rules, the runtime can produce auditable trivalent decisions that distinguish support, contradiction, and insufficient evidence.
+- Added `docs/evaluation_plan.md` with evaluation axes for claim support, abstention quality, action authorization, policy compliance, and auditability.
+- The evaluation plan defines baseline reporting fields including dataset version, ontology version, policy version, proof id, and code commit.
+- Research boundaries explicitly reject claims of real-world truth proof, legal compliance without review, hallucination elimination, corpus completeness, and autonomous safety without system-level controls.
+- GroundCite research reference tests were adjusted to read vendored dataset and scientific documentation from `data/reference/groundcite_pten` and `docs/reference/groundcite_pten`.
+- Legacy import compatibility was restored with packaged `core.*` and old flat-module shims so `tests/reference_quimera_original` now passes.
+- Full repository regression now passes with `python -m pytest -q`: `190 passed`.

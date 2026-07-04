@@ -75,9 +75,22 @@ quimera-serve = "quimera_semantic_trust_guardrail.__main__:serve_main"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = [
+  "core*",
   "quimera_semantic_trust_guardrail*",
   "groundcite*",
   "quimera_legacy*",
+]
+
+[tool.setuptools]
+py-modules = [
+  "bounded_reasoning",
+  "knowledge_ontology",
+  "llm_hypothesis_parser",
+  "proof_ledger",
+  "qgsl_core",
+  "symbolic_inference",
+  "truth_mapping",
+  "validation_cascade",
 ]
 
 [tool.setuptools.package-data]

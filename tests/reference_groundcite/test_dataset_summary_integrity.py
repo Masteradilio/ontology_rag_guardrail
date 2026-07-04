@@ -2,8 +2,8 @@ import json
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
-SUMMARY = ROOT / "data" / "samples" / "groundcite_bench_summary.json"
+ROOT = Path(__file__).resolve().parents[2]
+SUMMARY = ROOT / "data" / "reference" / "groundcite_pten" / "samples" / "groundcite_bench_summary.json"
 
 
 def test_dataset_summary_has_hashes_and_annotation_status():

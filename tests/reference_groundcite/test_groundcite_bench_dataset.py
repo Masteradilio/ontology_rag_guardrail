@@ -4,7 +4,8 @@ from pathlib import Path
 from groundcite.schema import Sample
 
 
-DATA_DIR = Path("data/samples")
+ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = ROOT / "data" / "reference" / "groundcite_pten" / "samples"
 
 
 def _load_jsonl(path: Path):
