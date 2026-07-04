@@ -28,6 +28,14 @@ from .llm_providers import (
     redact_secrets,
 )
 from .commercial_demo import run_commercial_demo
+from .commercial_pilot import (
+    PilotMetrics,
+    PilotReviewSample,
+    PilotScope,
+    compute_pilot_metrics,
+    default_pilot_scopes,
+    write_default_pilot_package,
+)
 from .scientific_baseline import ControlledClaimAdapter, run_scientific_baseline
 
 __all__ = [
@@ -43,6 +51,9 @@ __all__ = [
     "LLMResponse",
     "NVIDIAProvider",
     "OpenRouterProvider",
+    "PilotMetrics",
+    "PilotReviewSample",
+    "PilotScope",
     "ProviderConfig",
     "ProviderTrace",
     "ProofTrace",
@@ -55,4 +66,7 @@ __all__ = [
     "run_commercial_demo",
     "run_scientific_baseline",
     "write_jsonl",
+    "compute_pilot_metrics",
+    "default_pilot_scopes",
+    "write_default_pilot_package",
 ]

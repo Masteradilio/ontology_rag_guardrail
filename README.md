@@ -112,6 +112,9 @@ examples/
 - [Commercial ICP and use cases](docs/commercial_icp_use_cases.md)
 - [Commercial technical one-pager](docs/commercial_one_pager.md)
 - [Commercial pilot proposal template](docs/commercial_pilot_proposal_template.md)
+- [Commercial pilot design](docs/commercial_pilot_design.md)
+- [Commercial pilot metrics protocol](docs/commercial_pilot_metrics_protocol.md)
+- [Commercial pricing and packaging hypotheses](docs/commercial_pricing_packaging_hypotheses.md)
 - [Execution backlog](docs/MASTER_BACKLOG.md)
 - [Change history](CHANGELOG.md)
 

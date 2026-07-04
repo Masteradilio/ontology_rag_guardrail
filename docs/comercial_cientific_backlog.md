@@ -354,7 +354,7 @@ Validation:
 
 ## Phase C1: Commercial Pilot Validation
 
-Status: TODO
+Status: DONE
 
 Goal: test whether real buyers value the product enough to pilot or pay.
 
@@ -373,6 +373,12 @@ Acceptance criteria:
 - Each pilot can be run with synthetic data first and customer data only after approval.
 - Success metrics are measurable in runtime logs and proof artifacts.
 
+Validation:
+
+- Added `docs/commercial_pilot_design.md` with 2-week pilot scopes for RAG answer approval, agent tool-call authorization, and policy/compliance audit.
+- Added `quimera_semantic_trust_guardrail.evaluation.commercial_pilot.default_pilot_scopes`.
+- Pilot scopes include input data, integration points, success metrics, exit criteria, and security constraints.
+
 ### C1-T02: Pilot Metrics
 
 Subtasks:
@@ -388,6 +394,12 @@ Acceptance criteria:
 
 - Pilot report separates product value from implementation friction.
 - Results include both positive outcomes and blockers.
+
+Validation:
+
+- Added `PilotReviewSample`, `PilotMetrics`, `compute_pilot_metrics`, and `write_default_pilot_package`.
+- Added `docs/commercial_pilot_metrics_protocol.md` and `docs/commercial_pilot_report_template.md`.
+- Tests cover useful abstention, false allow, proof lookup success, setup hours, audit reconstruction delta, reviewer usefulness, and blockers.
 
 ### C1-T03: Pricing And Packaging Hypotheses
 
@@ -406,6 +418,14 @@ Acceptance criteria:
 
 - At least one pricing/package hypothesis is backed by buyer feedback.
 - Paid OpenRouter fallback cost is explicitly modeled and not hidden in margins.
+
+Validation:
+
+- Added `docs/commercial_pricing_packaging_hypotheses.md`.
+- Pricing remains explicitly marked as hypotheses, not validated pricing.
+- The provider cost rule states NVIDIA first and paid OpenRouter fallback must be explicitly modeled.
+- Focused C1 commercial pilot regression passed: `5 passed`.
+- Full repository regression passed after C1 implementation: `217 passed`.
 
 ## Phase C2: Productization Decision
 
