@@ -1,0 +1,26 @@
+{
+  "case_type_counts": {
+    "contradicted": 24,
+    "insufficient": 24,
+    "partial": 24,
+    "supported": 24
+  },
+  "limitations": [
+    "Cases are semisynthetic enterprise-policy scenarios, not extracted customer records.",
+    "The four case patterns are balanced by construction.",
+    "Threshold curves estimate behavior on this corpus and do not establish production quality."
+  ],
+  "package_id": "quimera_rag_enterprise_anonymized",
+  "path": "data/evaluation/rag_enterprise_v1/cases.jsonl",
+  "provenance": {
+    "anonymization_status": "synthetic_identifiers_only",
+    "contains_personal_data": false,
+    "contains_production_records": false,
+    "review_status": "not_a_real_customer_dataset",
+    "source_type": "template_generated_semisynthetic"
+  },
+  "sample_count": 96,
+  "scenario_family_count": 24,
+  "schema_version": "quimera_rag_evaluation_manifest_v2",
+  "version": "2026-08-20-v1"
+}

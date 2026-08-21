@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420" role="img" aria-labelledby="title desc">
+<title id="title">RAG threshold sweep</title>
+<desc id="desc">Precision, recall, F1, and abstention by similarity threshold.</desc>
+<rect width="760" height="420" fill="#ffffff" />
+<line x1="64" y1="32" x2="64" y2="362" stroke="#374151" stroke-width="1" />
+<line x1="64" y1="362" x2="738" y2="362" stroke="#374151" stroke-width="1" />
+<line x1="64" y1="362.00" x2="738" y2="362.00" stroke="#e5e7eb" stroke-width="1" />
+<text x="56" y="366.00" text-anchor="end" font-size="11" fill="#374151">0.0</text>
+<line x1="64" y1="296.00" x2="738" y2="296.00" stroke="#e5e7eb" stroke-width="1" />
+<text x="56" y="300.00" text-anchor="end" font-size="11" fill="#374151">0.2</text>
+<line x1="64" y1="230.00" x2="738" y2="230.00" stroke="#e5e7eb" stroke-width="1" />
+<text x="56" y="234.00" text-anchor="end" font-size="11" fill="#374151">0.4</text>
+<line x1="64" y1="164.00" x2="738" y2="164.00" stroke="#e5e7eb" stroke-width="1" />
+<text x="56" y="168.00" text-anchor="end" font-size="11" fill="#374151">0.6</text>
+<line x1="64" y1="98.00" x2="738" y2="98.00" stroke="#e5e7eb" stroke-width="1" />
+<text x="56" y="102.00" text-anchor="end" font-size="11" fill="#374151">0.8</text>
+<line x1="64" y1="32.00" x2="738" y2="32.00" stroke="#e5e7eb" stroke-width="1" />
+<text x="56" y="36.00" text-anchor="end" font-size="11" fill="#374151">1.0</text>
+<text x="64.00" y="382" text-anchor="middle" font-size="10" fill="#374151">0.2</text>
+<text x="75.23" y="382" text-anchor="middle" font-size="10" fill="#374151">0.21</text>
+<text x="86.47" y="382" text-anchor="middle" font-size="10" fill="#374151">0.22</text>
+<text x="97.70" y="382" text-anchor="middle" font-size="10" fill="#374151">0.23</text>
+<text x="108.93" y="382" text-anchor="middle" font-size="10" fill="#374151">0.24</text>
+<text x="120.17" y="382" text-anchor="middle" font-size="10" fill="#374151">0.25</text>
+<text x="131.40" y="382" text-anchor="middle" font-size="10" fill="#374151">0.26</text>
+<text x="142.63" y="382" text-anchor="middle" font-size="10" fill="#374151">0.27</text>
+<text x="153.87" y="382" text-anchor="middle" font-size="10" fill="#374151">0.28</text>
+<text x="165.10" y="382" text-anchor="middle" font-size="10" fill="#374151">0.29</text>
+<text x="176.33" y="382" text-anchor="middle" font-size="10" fill="#374151">0.3</text>
+<text x="187.57" y="382" text-anchor="middle" font-size="10" fill="#374151">0.31</text>
+<text x="198.80" y="382" text-anchor="middle" font-size="10" fill="#374151">0.32</text>
+<text x="210.03" y="382" text-anchor="middle" font-size="10" fill="#374151">0.33</text>
+<text x="221.27" y="382" text-anchor="middle" font-size="10" fill="#374151">0.34</text>
+<text x="232.50" y="382" text-anchor="middle" font-size="10" fill="#374151">0.35</text>
+<text x="243.73" y="382" text-anchor="middle" font-size="10" fill="#374151">0.36</text>
+<text x="254.97" y="382" text-anchor="middle" font-size="10" fill="#374151">0.37</text>
+<text x="266.20" y="382" text-anchor="middle" font-size="10" fill="#374151">0.38</text>
+<text x="277.43" y="382" text-anchor="middle" font-size="10" fill="#374151">0.39</text>
+<text x="288.67" y="382" text-anchor="middle" font-size="10" fill="#374151">0.4</text>
+<text x="299.90" y="382" text-anchor="middle" font-size="10" fill="#374151">0.41</text>
+<text x="311.13" y="382" text-anchor="middle" font-size="10" fill="#374151">0.42</text>
+<text x="322.37" y="382" text-anchor="middle" font-size="10" fill="#374151">0.43</text>
+<text x="333.60" y="382" text-anchor="middle" font-size="10" fill="#374151">0.44</text>
+<text x="344.83" y="382" text-anchor="middle" font-size="10" fill="#374151">0.45</text>
+<text x="356.07" y="382" text-anchor="middle" font-size="10" fill="#374151">0.46</text>
+<text x="367.30" y="382" text-anchor="middle" font-size="10" fill="#374151">0.47</text>
+<text x="378.53" y="382" text-anchor="middle" font-size="10" fill="#374151">0.48</text>
+<text x="389.77" y="382" text-anchor="middle" font-size="10" fill="#374151">0.49</text>
+<text x="401.00" y="382" text-anchor="middle" font-size="10" fill="#374151">0.5</text>
+<text x="412.23" y="382" text-anchor="middle" font-size="10" fill="#374151">0.51</text>
+<text x="423.47" y="382" text-anchor="middle" font-size="10" fill="#374151">0.52</text>
+<text x="434.70" y="382" text-anchor="middle" font-size="10" fill="#374151">0.53</text>
+<text x="445.93" y="382" text-anchor="middle" font-size="10" fill="#374151">0.54</text>
+<text x="457.17" y="382" text-anchor="middle" font-size="10" fill="#374151">0.55</text>
+<text x="468.40" y="382" text-anchor="middle" font-size="10" fill="#374151">0.56</text>
+<text x="479.63" y="382" text-anchor="middle" font-size="10" fill="#374151">0.57</text>
+<text x="490.87" y="382" text-anchor="middle" font-size="10" fill="#374151">0.58</text>
+<text x="502.10" y="382" text-anchor="middle" font-size="10" fill="#374151">0.59</text>
+<text x="513.33" y="382" text-anchor="middle" font-size="10" fill="#374151">0.6</text>
+<text x="524.57" y="382" text-anchor="middle" font-size="10" fill="#374151">0.61</text>
+<text x="535.80" y="382" text-anchor="middle" font-size="10" fill="#374151">0.62</text>
+<text x="547.03" y="382" text-anchor="middle" font-size="10" fill="#374151">0.63</text>
+<text x="558.27" y="382" text-anchor="middle" font-size="10" fill="#374151">0.64</text>
+<text x="569.50" y="382" text-anchor="middle" font-size="10" fill="#374151">0.65</text>
+<text x="580.73" y="382" text-anchor="middle" font-size="10" fill="#374151">0.66</text>
+<text x="591.97" y="382" text-anchor="middle" font-size="10" fill="#374151">0.67</text>
+<text x="603.20" y="382" text-anchor="middle" font-size="10" fill="#374151">0.68</text>
+<text x="614.43" y="382" text-anchor="middle" font-size="10" fill="#374151">0.69</text>
+<text x="625.67" y="382" text-anchor="middle" font-size="10" fill="#374151">0.7</text>
+<text x="636.90" y="382" text-anchor="middle" font-size="10" fill="#374151">0.71</text>
+<text x="648.13" y="382" text-anchor="middle" font-size="10" fill="#374151">0.72</text>
+<text x="659.37" y="382" text-anchor="middle" font-size="10" fill="#374151">0.73</text>
+<text x="670.60" y="382" text-anchor="middle" font-size="10" fill="#374151">0.74</text>
+<text x="681.83" y="382" text-anchor="middle" font-size="10" fill="#374151">0.75</text>
+<text x="693.07" y="382" text-anchor="middle" font-size="10" fill="#374151">0.76</text>
+<text x="704.30" y="382" text-anchor="middle" font-size="10" fill="#374151">0.77</text>
+<text x="715.53" y="382" text-anchor="middle" font-size="10" fill="#374151">0.78</text>
+<text x="726.77" y="382" text-anchor="middle" font-size="10" fill="#374151">0.79</text>
+<text x="738.00" y="382" text-anchor="middle" font-size="10" fill="#374151">0.8</text>
+<polyline fill="none" stroke="#2563eb" stroke-width="2" points="64.00,143.72 75.23,143.72 86.47,143.72 97.70,143.72 108.93,143.72 120.17,143.72 131.40,143.72 142.63,141.42 153.87,141.42 165.10,141.42 176.33,139.07 187.57,136.68 198.80,136.68 210.03,136.68 221.27,136.68 232.50,136.68 243.73,136.68 254.97,134.23 266.20,126.55 277.43,126.55 288.67,121.14 299.90,118.34 311.13,118.34 322.37,118.34 333.60,118.34 344.83,115.47 356.07,115.47 367.30,115.47 378.53,112.54 389.77,113.51 401.00,107.79 412.23,101.44 423.47,97.44 434.70,89.17 445.93,83.99 457.17,77.83 468.40,76.15 479.63,76.79 490.87,76.79 502.10,77.43 513.33,77.43 524.57,78.79 535.80,70.08 547.03,70.67 558.27,66.05 569.50,62.76 580.73,53.00 591.97,47.00 603.20,41.17 614.43,41.52 625.67,41.90 636.90,39.33 648.13,40.68 659.37,41.17 670.60,32.00 681.83,32.00 693.07,32.00 704.30,32.00 715.53,32.00 726.77,32.00 738.00,32.00" />
+<polyline fill="none" stroke="#059669" stroke-width="2" points="64.00,32.00 75.23,32.00 86.47,32.00 97.70,32.00 108.93,32.00 120.17,32.00 131.40,32.00 142.63,32.00 153.87,32.00 165.10,32.00 176.33,32.00 187.57,32.00 198.80,32.00 210.03,32.00 221.27,32.00 232.50,32.00 243.73,32.00 254.97,32.00 266.20,32.00 277.43,32.00 288.67,32.00 299.90,32.00 311.13,32.00 322.37,32.00 333.60,32.00 344.83,32.00 356.07,32.00 367.30,32.00 378.53,32.00 389.77,36.58 401.00,36.58 412.23,36.58 423.47,36.58 434.70,41.17 445.93,50.33 457.17,50.33 468.40,59.50 479.63,64.08 490.87,64.08 502.10,68.67 513.33,73.25 524.57,82.42 535.80,87.00 547.03,91.58 558.27,91.58 569.50,105.33 580.73,114.50 591.97,119.08 603.20,119.08 614.43,128.25 625.67,137.42 636.90,160.33 648.13,192.42 659.37,201.58 670.60,201.58 681.83,215.33 693.07,215.33 704.30,224.50 715.53,233.67 726.77,261.17 738.00,284.08" />
+<polyline fill="none" stroke="#dc2626" stroke-width="2" points="64.00,99.24 75.23,99.24 86.47,99.24 97.70,99.24 108.93,99.24 120.17,99.24 131.40,99.24 142.63,97.58 153.87,97.58 165.10,97.58 176.33,95.90 187.57,94.20 198.80,94.20 210.03,94.20 221.27,94.20 232.50,94.20 243.73,94.20 254.97,92.48 266.20,87.18 277.43,87.18 288.67,83.53 299.90,81.67 311.13,81.67 322.37,81.67 333.60,81.67 344.83,79.78 356.07,79.78 367.30,79.78 378.53,77.86 389.77,80.20 401.00,76.56 412.23,72.60 423.47,70.15 434.70,67.11 445.93,68.12 457.17,64.72 468.40,68.06 479.63,70.57 490.87,70.57 502.10,73.12 513.33,75.36 524.57,80.62 535.80,78.79 547.03,81.52 558.27,79.39 569.50,85.68 580.73,87.15 591.97,87.70 603.20,85.51 614.43,91.67 625.67,98.03 636.90,113.79 648.13,140.00 659.37,148.11 670.60,146.11 681.83,158.92 693.07,158.92 704.30,167.88 715.53,177.20 726.77,207.53 738.00,235.93" />
+<polyline fill="none" stroke="#d97706" stroke-width="2" points="64.00,362.00 75.23,362.00 86.47,362.00 97.70,362.00 108.93,362.00 120.17,362.00 131.40,362.00 142.63,358.56 153.87,358.56 165.10,358.56 176.33,355.12 187.57,351.69 198.80,351.69 210.03,351.69 221.27,351.69 232.50,351.69 243.73,351.69 254.97,348.25 266.20,337.94 277.43,337.94 288.67,331.06 299.90,327.62 311.13,327.62 322.37,327.62 333.60,327.62 344.83,324.19 356.07,324.19 367.30,324.19 378.53,320.75 389.77,317.31 401.00,313.88 412.23,307.00 423.47,303.56 434.70,293.25 445.93,282.94 457.17,279.50 468.40,276.06 479.63,272.62 490.87,272.62 502.10,269.19 513.33,269.19 524.57,262.31 535.80,255.44 547.03,252.00 558.27,248.56 569.50,234.81 580.73,221.06 591.97,221.06 603.20,217.62 614.43,210.75 625.67,203.87 636.90,186.69 648.13,162.62 659.37,155.75 670.60,152.31 681.83,142.00 693.07,142.00 704.30,135.12 715.53,128.25 726.77,107.62 738.00,90.44" />
+<line x1="64" y1="18" x2="82" y2="18" stroke="#2563eb" stroke-width="3" />
+<text x="88" y="22" font-size="11" fill="#374151">Precision</text>
+<line x1="176" y1="18" x2="194" y2="18" stroke="#059669" stroke-width="3" />
+<text x="200" y="22" font-size="11" fill="#374151">Recall</text>
+<line x1="288" y1="18" x2="306" y2="18" stroke="#dc2626" stroke-width="3" />
+<text x="312" y="22" font-size="11" fill="#374151">F1</text>
+<line x1="400" y1="18" x2="418" y2="18" stroke="#d97706" stroke-width="3" />
+<text x="424" y="22" font-size="11" fill="#374151">Abstention</text>
+<text x="380.00" y="410" text-anchor="middle" font-size="11" fill="#374151">Absolute similarity threshold</text>
+</svg>
