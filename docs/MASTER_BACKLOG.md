@@ -428,7 +428,7 @@ Subtasks:
 
 Validation:
 
-- `pyproject.toml` now declares full PyPI metadata (classifiers, keywords, project URLs, `requires-python`, `License :: MIT`, `Topic :: Scientific/Engineering :: Artificial Intelligence`) and the optional `[fastapi]` and `[dev]` extras.
+- `pyproject.toml` now declares full PyPI metadata (classifiers, keywords, project URLs, `requires-python`, `License :: GNU AGPLv3+`, `Topic :: Scientific/Engineering :: Artificial Intelligence`) and the optional `[fastapi]` and `[dev]` extras.
 - Two console scripts are exposed: `quimera` -> `quimera_semantic_trust_guardrail.__main__:main` and `quimera-serve` -> `quimera_semantic_trust_guardrail.__main__:serve_main`.
 - `setuptools.packages.find` is scoped to `src/` and explicitly includes `quimera_semantic_trust_guardrail*`, `groundcite*`, and `quimera_legacy*` so the vendored packages are installed alongside the product.
 - The package ships a `py.typed` marker (PEP 561).

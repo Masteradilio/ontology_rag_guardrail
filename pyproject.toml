@@ -8,7 +8,7 @@ version = "0.1.0.dev0"
 description = "Auditable trivalent semantic trust guardrail for enterprise LLM, RAG, and agent systems."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = { text = "GNU Affero General Public License v3 or later (AGPLv3+)" }
 keywords = [
   "guardrail",
   "semantic-trust",
@@ -29,7 +29,7 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "Intended Audience :: Information Technology",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",

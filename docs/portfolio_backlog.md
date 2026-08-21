@@ -29,14 +29,14 @@ Status: DONE
 
 Subtasks:
 
-- Add a real MIT `LICENSE` file and `.env.example`.
+- Add a real GNU AGPLv3+ `LICENSE` file and `.env.example`.
 - Add CI for supported Python versions.
 - Add `SECURITY.md`, contribution guidance, and developer quality tooling.
 - Link all active portfolio documents from the README.
 
 Acceptance: a reviewer can clone, install, test, and understand the project without private context.
 
-Validation: added `LICENSE`, `.env.example`, `SECURITY.md`, `CONTRIBUTING.md`, and a GitHub Actions matrix for Python 3.10-3.12.
+Validation: added the GNU AGPLv3+ `LICENSE`, `.env.example`, `SECURITY.md`, `CONTRIBUTING.md`, and a GitHub Actions matrix for Python 3.10-3.12.
 
 ## Phase P1: Semantic Runtime And Ontology Showcase
 

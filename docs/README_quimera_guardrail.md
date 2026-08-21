@@ -3,7 +3,7 @@
 > Sistema Avançado de Proteção para Agentes de IA baseado em Lógica Simbólica Quântica (QGSL)
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: AGPLv3+](https://img.shields.io/badge/License-AGPLv3%2B-blue.svg)](../LICENSE)
 
 ## 📋 Índice
 
@@ -1109,7 +1109,7 @@ if HAS_GOOGLE_ADAPTER:
 
 ## 📝 Licença
 
-MIT License - Use livremente em projetos comerciais.
+O código original deste repositório é licenciado sob a GNU Affero General Public License v3 ou posterior (AGPLv3+). Consulte a [licença na raiz do repositório](../LICENSE). Uso proprietário ou fora dos termos da AGPLv3+ exige autorização escrita separada do titular dos direitos autorais.
 
 ## 🤝 Contribuição
 

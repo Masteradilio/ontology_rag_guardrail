@@ -37,6 +37,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added NVIDIA model-card URL normalization so a documentation URL in `NVIDIA_URL_REFERENCE_MODEL` cannot silently force every LLM call into the paid fallback.
 - Added the offline `quimera showcase` command, repository license, security/contribution guidance, `.env.example`, and Python 3.10-3.12 CI workflow.
 - Added an explicit repository-wide Ruff gate in `pyproject.toml` for `E4`, `E7`, `E9`, and `F` findings, matching the CI quality contract.
+- Added the official GNU AGPLv3+ license text and replaced the package's MIT metadata/classifier with AGPLv3+.
 
 ### Changed
 
@@ -48,6 +49,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Changed the default RAG benchmark to adaptive context assembly; the original noisy declared context remains visible as a candidate metric instead of being silently discarded.
 - Clarified `.env.example`, README, and evaluation guidance for the NVIDIA inference endpoint versus the NVIDIA model-card URL.
 - Made `ruff check .` use the same explicit lint scope as CI so local and hosted validation do not depend on implicit Ruff defaults.
+- Made the root README bilingual and documented the AGPLv3+ copyleft, remote-network source requirement, upstream-license boundary, and need for separate written permission for proprietary use outside the license.
 
 ### Validation
 
@@ -74,6 +76,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Recruiter-style reproduction passed for setup, imports, examples, showcase, offline benchmarks, threshold artifacts, trace replay, proof explanation, HTTP endpoints, and optional LLM evaluation. After URL normalization, NVIDIA handled `3/4` cases and OpenRouter handled `1/4` after NVIDIA returned `HTTP 429`; all four structured decisions were valid and both raw/guardrailed accuracy metrics were `1.0`.
 - Final regression after the provider configuration fix: `247 passed`, product coverage `67.49%`, focused Ruff/mypy/compileall/pip checks passed.
 - Repository-wide lint debt was cleared: `.venv\Scripts\ruff.exe check .` passes with zero `E4`, `E7`, `E9`, or `F` findings; product coverage remains above the `60%` gate at `67.70%`.
+- License metadata and README license references now consistently identify GNU AGPLv3+ for original project material.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 

@@ -1,5 +1,9 @@
 # Quimera Semantic Trust Guardrail
 
+[![License: AGPLv3+](https://img.shields.io/badge/License-AGPLv3%2B-blue.svg)](LICENSE)
+
+[English](#quimera-semantic-trust-guardrail) | [Português](#quimera-semantic-trust-guardrail-português)
+
 Quimera Semantic Trust Guardrail is an experimental Python SDK/runtime for ontology-grounded semantic trust decisions in LLM, RAG, and agent systems.
 
 This repository is a technical portfolio project focused on RAG, guardrails, EVALs, observability, SDK architecture, trivalent validation, and auditability. It is not presented as a production security boundary, commercial service, or scientific paper result.
@@ -178,3 +182,69 @@ examples/
 ## Scientific And Commercial Boundaries
 
 Quimera estimates whether a runtime decision is supported, contradicted, authorized, or underdetermined by configured evidence, ontology, and policy. It does not prove real-world truth, replace legal judgment, or eliminate hallucinations. The defensible value proposition is audit-ready semantic governance for AI systems that need explicit abstention and reproducible proof records.
+
+## License
+
+Original project code in this repository is licensed under the [GNU Affero General Public License v3 or later (AGPLv3+)](LICENSE).
+
+AGPLv3 is a strong copyleft license: redistribution and modified versions must preserve the license and provide the corresponding source under the license terms. For modified versions used through a network, Section 13 requires users interacting with the version remotely to be offered access to the corresponding source. AGPLv3 does not prohibit compliant commercial use; a proprietary or other use outside the AGPLv3+ terms requires a separate written permission from the copyright holder.
+
+This repository also contains selected vendored/reference material. Code and data that carry their own upstream notices remain subject to those notices and licenses; the root AGPLv3+ notice applies to the original Quimera project material to the extent that no more specific notice says otherwise.
+
+## Quimera Semantic Trust Guardrail (Português)
+
+O Quimera Semantic Trust Guardrail é um SDK/runtime Python experimental para decisões semânticas baseadas em ontologia em sistemas de LLM, RAG e agentes.
+
+Este repositório é um projeto de portfólio técnico focado em RAG, guardrails, EVALs, observabilidade, arquitetura de SDK, validação trivalente e auditabilidade. Ele não é apresentado como uma fronteira de segurança de produção, serviço comercial ou resultado de artigo científico.
+
+O contrato central é conservador e auditável: cada verificação pública retorna uma decisão trivalente, ação recomendada, evidências, proveniência de política/ontologia e metadados de prova.
+
+- `TRUE`: a afirmação, resposta, política ou ação possui suporte na evidência ou autorização disponível.
+- `FALSE`: ela é contradita, negada ou viola uma regra aplicável.
+- `UNDECIDABLE`: o suporte ou a autorização são insuficientes; o chamador deve tentar novamente, abster-se, emitir um alerta ou escalar.
+
+### Superfície do runtime
+
+- `claim_check`: valida uma afirmação contra evidências, ontologia, adaptadores, compliance e política.
+- `answer_check`: divide uma resposta em afirmações, valida cada uma e agrega o resultado.
+- `action_check`: valida se uma ação de agente é semanticamente e politicamente autorizada.
+- `policy_check`: avalia regras de compliance e fatos de política do tenant.
+- `proof_lookup`: recupera metadados de prova registrados.
+- `snapshot_ontology` / `rollback_ontology`: versiona e restaura a ontologia do tenant com vínculo de prova.
+
+### Instalação e testes
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python -m pip install --upgrade pip
+.\.venv\Scripts\pip install -r requirements.txt
+.\.venv\Scripts\pip install -e ".[dev]"
+.\.venv\Scripts\python -m pytest -q
+```
+
+O benchmark RAG offline usa `sentence-transformers==5.6.1` e não exige uma chave de API de LLM. O benchmark LLM opcional tenta o MiniMax M3 pela NVIDIA primeiro e usa o OpenRouter pago somente como fallback.
+
+### Documentação
+
+- [Requisitos do produto](docs/PRD.md)
+- [Arquitetura](docs/architecture.md)
+- [Integração RAG](docs/integration_rag.md)
+- [Integração com agentes](docs/integration_agents.md)
+- [Modelagem de política e ontologia](docs/policy_ontology_modeling.md)
+- [Provas e auditoria](docs/proof_audit.md)
+- [Escopo do portfólio](docs/portfolio_scope.md)
+- [Backlog do portfólio](docs/portfolio_backlog.md)
+- [Limitações conhecidas](docs/known_limitations.md)
+- [Backlog de execução](docs/MASTER_BACKLOG.md)
+
+### Limites científicos e comerciais
+
+O Quimera estima se uma decisão é suportada, contradita, autorizada ou indeterminada pela evidência, ontologia e política configuradas. Ele não prova a verdade no mundo real, não substitui análise jurídica e não elimina alucinações.
+
+### Licença
+
+O código original deste repositório é licenciado sob a [GNU Affero General Public License v3 ou posterior (AGPLv3+)](LICENSE).
+
+A AGPLv3 é uma licença copyleft forte: redistribuições e versões modificadas devem preservar a licença e disponibilizar o código-fonte correspondente conforme seus termos. Para versões modificadas usadas por uma rede, a Seção 13 exige que usuários que interagem remotamente recebam uma oferta de acesso ao código-fonte correspondente. A AGPLv3 não proíbe uso comercial em conformidade com a licença; uso proprietário ou qualquer uso fora dos termos da AGPLv3+ exige autorização escrita separada do titular dos direitos autorais.
+
+O repositório também contém materiais selecionados de referência e vendorizados. Código e dados com avisos upstream próprios continuam sujeitos a esses avisos e licenças; o aviso AGPLv3+ da raiz se aplica ao material original do projeto Quimera quando não houver um aviso mais específico.
