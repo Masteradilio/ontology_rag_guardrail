@@ -1,6 +1,6 @@
 # Agent Integration Guide
 
-Quimera can be placed in front of agent tool calls so actions require semantic and policy authorization before execution.
+Ontology RAG Guardrail can be placed in front of agent tool calls so actions require semantic and policy authorization before execution.
 
 ## Minimal Pattern
 

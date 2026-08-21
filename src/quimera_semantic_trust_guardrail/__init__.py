@@ -1,5 +1,5 @@
 """
-Quimera Guardrails - Sistema Avançado de Proteção para Agentes de IA
+Ontology RAG Guardrail - Sistema Avançado de Proteção para Agentes de IA
 =====================================================================
 
 Módulo de guardrails baseado em lógica simbólica quântica (QGSL) para

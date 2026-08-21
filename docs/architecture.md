@@ -1,6 +1,6 @@
 # Architecture Guide
 
-Quimera Semantic Trust Guardrail is organized as a runtime layer that can sit before or after an LLM, RAG pipeline, or agent tool call. Its job is to convert evidence, ontology facts, policy facts, and compliance rules into an auditable trivalent decision.
+Ontology RAG Guardrail is organized as a runtime layer that can sit before or after an LLM, RAG pipeline, or agent tool call. Its job is to convert evidence, ontology facts, policy facts, and compliance rules into an auditable trivalent decision.
 
 ## Runtime Flow
 

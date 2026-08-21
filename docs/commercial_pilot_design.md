@@ -73,4 +73,4 @@ Status: Phase C1 planning artifact. This is not evidence of buyer demand yet.
 - Customer data only after written approval.
 - No external LLM provider calls unless approved.
 - Proof logs must not include raw secrets or unnecessary personal data.
-- Legal review remains outside Quimera scope.
+- Legal review remains outside Ontology RAG Guardrail scope.

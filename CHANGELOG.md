@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Quimera Semantic Trust Guardrail will be documented here.
+All notable changes to Ontology RAG Guardrail will be documented here.
 
 ## [Unreleased]
 
@@ -21,10 +21,10 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added `docs/comercial_cientific_backlog.md` to plan the scientific and commercial validation tracks, including MiniMax M3 provider priority through NVIDIA first and OpenRouter fallback.
 - Added Phase S0 scientific evaluation infrastructure with provider fallback clients, evaluation artifact schemas, and a controlled seed dataset package.
 - Added a deterministic Phase S1 scientific baseline runner and CLI command that evaluate claim/answer, abstention, agent action, and policy/compliance seed cases and write reproducible artifacts.
-- Added Phase S2 scientific reporting package with a Quimera claims ledger, technical report, and external research decision.
+- Added Phase S2 scientific reporting package with an Ontology RAG Guardrail claims ledger, technical report, and external research decision.
 - Added Phase C0 commercial discovery materials and an offline commercial demo runner/CLI for RAG approval, agent authorization, and policy review workflows.
 - Added Phase C1 commercial pilot planning, metrics helpers, pricing hypotheses, and pilot report templates.
-- Added packaged compatibility shims for copied Quimera original reference tests: `core.*` modules and legacy flat-module imports now re-export the selected `quimera_legacy` modules.
+- Added packaged compatibility shims for copied legacy Quimera original reference tests: `core.*` modules and legacy flat-module imports now re-export the selected `quimera_legacy` modules.
 - Added the active technical portfolio scope and backlog for RAG, guardrails, EVALs, observability, SDK architecture, trivalent validation, and ontology auditability.
 - Added three-stage RAG EVAL contracts for pre-RAG retrieval, during-RAG context quality, and post-RAG trivalent answer decisions.
 - Added lazy Sentence Transformers embeddings pinned to `5.6.1`, deterministic test/showcase embeddings, a committed RAG seed, and the `quimera rag-benchmark` command.
@@ -41,9 +41,10 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 
 ### Changed
 
+- Renamed the public project identity from Quimera Semantic Trust Guardrail to Ontology RAG Guardrail while retaining the existing Python package, CLI, and class identifiers for backward compatibility.
 - Rewrote the root `README.md` so it reflects the implemented SDK/runtime surface instead of the initial workspace plan.
 - Cleaned the changelog to remove duplicated initial workspace and validation entries.
-- Updated `docs/MASTER_BACKLOG.md` to restore and close Phase 6 and to reflect that Quimera original reference tests now pass through compatibility shims.
+- Updated `docs/MASTER_BACKLOG.md` to restore and close Phase 6 and to reflect that legacy Quimera original reference tests now pass through compatibility shims.
 - Updated GroundCite research reference tests to resolve vendored dataset and scientific documentation paths inside the new product repository layout.
 - Aligned the runtime-reported version with the experimental package version declared in `pyproject.toml` (`0.1.0.dev0`).
 - Changed the default RAG benchmark to adaptive context assembly; the original noisy declared context remains visible as a candidate metric instead of being silently discarded.
@@ -65,7 +66,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Phase 4 full product + GroundCite schema/claim regression passed: `72 passed`.
 - Phase 5 packaging and FastAPI HTTP runtime tests passed: `23 passed` for `tests/product/test_phase5_packaging_and_fastapi.py`.
 - Phase 5 full product + GroundCite schema/claim regression passed: `95 passed`.
-- Quimera original reference compatibility tests passed: `tests/reference_quimera_original`.
+- legacy Quimera original reference compatibility tests passed: `tests/reference_quimera_original`.
 - Full repository regression passed: `217 passed` via `python -m pytest -q`.
 - Focused three-stage RAG EVAL, benchmark, observability, replay, and LLM benchmark regression passed: `21 passed`.
 - Current full repository regression passed: `240 passed`, with one pre-existing FastAPI/Starlette deprecation warning.
@@ -85,7 +86,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - The old AGI/quantum product framing is not part of the new product positioning.
 - GroundCite `unsupported` labels map to `UNDECIDABLE`, preserving the distinction between absent support and direct contradiction.
 - Research-only GroundCite tests (`test_hybrid.py`, `test_groundcite_bench_dataset.py`, `test_dataset_summary_integrity.py`, `test_scientific_reporting_guardrails.py`) remain under `tests/reference_groundcite/` and are not part of the product regression gate.
-- Quimera estimates support, contradiction, authorization, and insufficient evidence under configured evidence, ontology, and policy. It does not prove real-world truth, replace legal review, or eliminate hallucinations.
+- Ontology RAG Guardrail estimates support, contradiction, authorization, and insufficient evidence under configured evidence, ontology, and policy. It does not prove real-world truth, replace legal review, or eliminate hallucinations.
 - Commercial and formal-paper validation are historical objectives for this repository; the active portfolio roadmap is `docs/portfolio_backlog.md`.
 - The RAG seed benchmark is synthetic and controlled. Its post-RAG evaluator is deterministic, and its metrics do not estimate production RAG quality.
 - The expanded enterprise benchmark is template-generated semisynthetic data, not real anonymized customer data. Its published curve demonstrates calibration and trade-off measurement; it is not an out-of-sample or production-quality claim.
@@ -95,11 +96,11 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 
 ### Added
 
-- Created the initial product workspace for Quimera Semantic Trust Guardrail.
+- Created the initial product workspace for Ontology RAG Guardrail.
 - Copied current `quimera_guardrails` modules into `src/quimera_semantic_trust_guardrail`.
 - Copied the original guardrail README to `docs/README_quimera_guardrail.md`.
 - Vendored selected GroundCite-PTEN source, docs, data samples, annotation artifacts, experiment summaries, and reference tests.
-- Copied selected Quimera original legacy modules for adaptation under `src/quimera_legacy`.
+- Copied selected legacy Quimera original legacy modules for adaptation under `src/quimera_legacy`.
 - Added product README, PRD, master backlog, requirements, gitignore, and packaging metadata.
 - Added the missing guardrail adapter package and GroundCite package source under `src`.
 

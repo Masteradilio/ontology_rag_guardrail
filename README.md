@@ -1,10 +1,14 @@
-# Quimera Semantic Trust Guardrail
+# Ontology RAG Guardrail
 
 [![License: AGPLv3+](https://img.shields.io/badge/License-AGPLv3%2B-blue.svg)](LICENSE)
 
-[English](#quimera-semantic-trust-guardrail) | [Português](#quimera-semantic-trust-guardrail-português)
+[English](#ontology-rag-guardrail) | [Português](#ontology-rag-guardrail-português)
 
-Quimera Semantic Trust Guardrail is an experimental Python SDK/runtime for ontology-grounded semantic trust decisions in LLM, RAG, and agent systems.
+Ontology RAG Guardrail is an experimental Python SDK/runtime for ontology-grounded semantic trust decisions in LLM, RAG, and agent systems.
+
+The public project name is Ontology RAG Guardrail. The Python import package and
+console command retain their `quimera_semantic_trust_guardrail` / `quimera`
+identifiers for backward compatibility.
 
 This repository is a technical portfolio project focused on RAG, guardrails, EVALs, observability, SDK architecture, trivalent validation, and auditability. It is not presented as a production security boundary, commercial service, or scientific paper result.
 
@@ -163,7 +167,7 @@ examples/
 - [Portfolio demo walkthrough](docs/demo_walkthrough.md)
 - [Three-stage EVAL guide](docs/evaluation_guide.md)
 - [Published threshold benchmark](docs/benchmarks/rag-enterprise-threshold-20260820/summary.md)
-- [Quimera scientific claims ledger](docs/scientific_claims_ledger_quimera.md)
+- [Ontology RAG Guardrail scientific claims ledger](docs/scientific_claims_ledger_quimera.md)
 - [Scientific technical report](docs/scientific_technical_report.md)
 - [External research decision](docs/scientific_external_research_decision.md)
 - [Commercial ICP and use cases](docs/commercial_icp_use_cases.md)
@@ -181,7 +185,7 @@ examples/
 
 ## Scientific And Commercial Boundaries
 
-Quimera estimates whether a runtime decision is supported, contradicted, authorized, or underdetermined by configured evidence, ontology, and policy. It does not prove real-world truth, replace legal judgment, or eliminate hallucinations. The defensible value proposition is audit-ready semantic governance for AI systems that need explicit abstention and reproducible proof records.
+Ontology RAG Guardrail estimates whether a runtime decision is supported, contradicted, authorized, or underdetermined by configured evidence, ontology, and policy. It does not prove real-world truth, replace legal judgment, or eliminate hallucinations. The defensible value proposition is audit-ready semantic governance for AI systems that need explicit abstention and reproducible proof records.
 
 ## License
 
@@ -189,11 +193,15 @@ Original project code in this repository is licensed under the [GNU Affero Gener
 
 AGPLv3 is a strong copyleft license: redistribution and modified versions must preserve the license and provide the corresponding source under the license terms. For modified versions used through a network, Section 13 requires users interacting with the version remotely to be offered access to the corresponding source. AGPLv3 does not prohibit compliant commercial use; a proprietary or other use outside the AGPLv3+ terms requires a separate written permission from the copyright holder.
 
-This repository also contains selected vendored/reference material. Code and data that carry their own upstream notices remain subject to those notices and licenses; the root AGPLv3+ notice applies to the original Quimera project material to the extent that no more specific notice says otherwise.
+This repository also contains selected vendored/reference material. Code and data that carry their own upstream notices remain subject to those notices and licenses; the root AGPLv3+ notice applies to the original Ontology RAG Guardrail project material to the extent that no more specific notice says otherwise.
 
-## Quimera Semantic Trust Guardrail (Português)
+## Ontology RAG Guardrail (Português)
 
-O Quimera Semantic Trust Guardrail é um SDK/runtime Python experimental para decisões semânticas baseadas em ontologia em sistemas de LLM, RAG e agentes.
+O Ontology RAG Guardrail é um SDK/runtime Python experimental para decisões semânticas baseadas em ontologia em sistemas de LLM, RAG e agentes.
+
+O nome público do projeto é Ontology RAG Guardrail. O pacote Python importável e
+os comandos de terminal mantêm os identificadores `quimera_semantic_trust_guardrail`
+e `quimera` por compatibilidade retroativa.
 
 Este repositório é um projeto de portfólio técnico focado em RAG, guardrails, EVALs, observabilidade, arquitetura de SDK, validação trivalente e auditabilidade. Ele não é apresentado como uma fronteira de segurança de produção, serviço comercial ou resultado de artigo científico.
 
@@ -239,7 +247,7 @@ O benchmark RAG offline usa `sentence-transformers==5.6.1` e não exige uma chav
 
 ### Limites científicos e comerciais
 
-O Quimera estima se uma decisão é suportada, contradita, autorizada ou indeterminada pela evidência, ontologia e política configuradas. Ele não prova a verdade no mundo real, não substitui análise jurídica e não elimina alucinações.
+O Ontology RAG Guardrail estima se uma decisão é suportada, contradita, autorizada ou indeterminada pela evidência, ontologia e política configuradas. Ele não prova a verdade no mundo real, não substitui análise jurídica e não elimina alucinações.
 
 ### Licença
 
@@ -247,4 +255,4 @@ O código original deste repositório é licenciado sob a [GNU Affero General Pu
 
 A AGPLv3 é uma licença copyleft forte: redistribuições e versões modificadas devem preservar a licença e disponibilizar o código-fonte correspondente conforme seus termos. Para versões modificadas usadas por uma rede, a Seção 13 exige que usuários que interagem remotamente recebam uma oferta de acesso ao código-fonte correspondente. A AGPLv3 não proíbe uso comercial em conformidade com a licença; uso proprietário ou qualquer uso fora dos termos da AGPLv3+ exige autorização escrita separada do titular dos direitos autorais.
 
-O repositório também contém materiais selecionados de referência e vendorizados. Código e dados com avisos upstream próprios continuam sujeitos a esses avisos e licenças; o aviso AGPLv3+ da raiz se aplica ao material original do projeto Quimera quando não houver um aviso mais específico.
+O repositório também contém materiais selecionados de referência e vendorizados. Código e dados com avisos upstream próprios continuam sujeitos a esses avisos e licenças; o aviso AGPLv3+ da raiz se aplica ao material original do projeto Ontology RAG Guardrail quando não houver um aviso mais específico.

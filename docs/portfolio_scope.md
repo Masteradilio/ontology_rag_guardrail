@@ -1,6 +1,6 @@
 # Portfolio Scope
 
-Quimera Semantic Trust Guardrail is an experimental technical portfolio project for demonstrating senior-level engineering across RAG, guardrails, evaluation, observability, SDK design, and ontology-grounded reasoning.
+Ontology RAG Guardrail is an experimental technical portfolio project for demonstrating senior-level engineering across RAG, guardrails, evaluation, observability, SDK design, and ontology-grounded reasoning.
 
 The project is not positioned as a commercial product, a production security boundary, or a scientific paper contribution. Its purpose is to make the engineering decisions and trade-offs visible in a runnable repository.
 

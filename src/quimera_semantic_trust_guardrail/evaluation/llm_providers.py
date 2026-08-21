@@ -247,7 +247,7 @@ class OpenRouterProvider(OpenAICompatibleProvider):
                 timeout_seconds=timeout_seconds,
                 extra_headers={
                     "HTTP-Referer": "https://github.com/Masteradilio/quimera_semantic_trust_guardrail",
-                    "X-Title": "Quimera Semantic Trust Guardrail Evaluation",
+                    "X-Title": "Ontology RAG Guardrail Evaluation",
                 },
             )
         )

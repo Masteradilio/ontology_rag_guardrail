@@ -1,6 +1,6 @@
 # Technical Portfolio Backlog
 
-This is the active backlog for Quimera Semantic Trust Guardrail as a technical portfolio project. The former scientific and commercial tracks remain historical context; they are no longer the product objective.
+This is the active backlog for Ontology RAG Guardrail as a technical portfolio project. The former scientific and commercial tracks remain historical context; they are no longer the product objective.
 
 ## Status Legend
 

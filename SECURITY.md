@@ -1,6 +1,6 @@
 # Security Policy
 
-Quimera Semantic Trust Guardrail is an experimental portfolio project. It is not a production security boundary and must not be used as the sole control for legal compliance, financial authorization, privacy protection, or autonomous-agent safety.
+Ontology RAG Guardrail is an experimental portfolio project. It is not a production security boundary and must not be used as the sole control for legal compliance, financial authorization, privacy protection, or autonomous-agent safety.
 
 ## Reporting
 

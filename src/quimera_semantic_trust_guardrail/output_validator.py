@@ -1,5 +1,5 @@
 """
-Quimera Output Validator - Validação Avançada de Saída
+Ontology RAG Guardrail Output Validator - Validação Avançada de Saída
 =======================================================
 
 Sistema de validação de output que analisa:

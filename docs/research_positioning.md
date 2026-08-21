@@ -1,6 +1,6 @@
 # Research Positioning Note
 
-Quimera Semantic Trust Guardrail should be positioned as ontology-grounded trivalent validation for RAG and agent systems.
+Ontology RAG Guardrail should be positioned as ontology-grounded trivalent validation for RAG and agent systems.
 
 The defensible research claim is narrow:
 
@@ -8,9 +8,9 @@ The defensible research claim is narrow:
 
 ## Scientific Lineage
 
-GroundCite contributes claim/span-level groundedness discipline, abstention risk framing, evaluation metrics, and reproducibility habits. Quimera adapts that discipline for runtime enforcement rather than presenting it as a complete scientific benchmark by itself.
+GroundCite contributes claim/span-level groundedness discipline, abstention risk framing, evaluation metrics, and reproducibility habits. Ontology RAG Guardrail adapts that discipline for runtime enforcement rather than presenting it as a complete scientific benchmark by itself.
 
-Legacy Quimera contributes reusable ideas around trivalent truth mapping, ontology graph representation, symbolic inference, validation cascades, and proof ledger patterns. The old AGI framing is explicitly out of scope.
+Legacy modules contribute reusable ideas around trivalent truth mapping, ontology graph representation, symbolic inference, validation cascades, and proof ledger patterns. The old AGI framing is explicitly out of scope.
 
 ## What The Product Does Not Prove
 

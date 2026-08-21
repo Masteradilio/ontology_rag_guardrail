@@ -1,6 +1,6 @@
 # Evaluation Guide
 
-Quimera evaluates a RAG workflow at three distinct points.
+Ontology RAG Guardrail evaluates a RAG workflow at three distinct points.
 
 ## Pre-RAG
 

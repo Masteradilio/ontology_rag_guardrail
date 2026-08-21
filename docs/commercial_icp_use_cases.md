@@ -10,7 +10,7 @@ This document turns the scientific evidence package into buyer hypotheses. It do
 - Users: RAG platform engineers, evaluation engineers, support automation owners.
 - Pain: support answers can mix supported and unsupported claims, and audit teams cannot easily reconstruct why an answer was allowed.
 - Current workaround: prompt rules, citation display, manual review, and ad hoc eval notebooks.
-- Quimera workflow: run `answer_check` after generation; return allow, retry, abstain, or block with proof metadata.
+- Ontology RAG Guardrail workflow: run `answer_check` after generation; return allow, retry, abstain, or block with proof metadata.
 - Pilot success criteria:
   - unsupported claims route to `UNDECIDABLE`;
   - contradicted claims route to block;
@@ -23,7 +23,7 @@ This document turns the scientific evidence package into buyer hypotheses. It do
 - Users: agent framework engineers and workflow owners.
 - Pain: agents can attempt tool calls without explicit semantic authorization.
 - Current workaround: hard-coded allowlists, prompt restrictions, and manual approval for high-risk tools.
-- Quimera workflow: run `action_check` before tool execution.
+- Ontology RAG Guardrail workflow: run `action_check` before tool execution.
 - Pilot success criteria:
   - allowed actions execute;
   - denied actions block;
@@ -36,7 +36,7 @@ This document turns the scientific evidence package into buyer hypotheses. It do
 - Users: risk analysts, privacy analysts, AI governance reviewers.
 - Pain: LLM decisions are hard to audit after the fact, especially when policy and evidence changed.
 - Current workaround: sampling reviews, screenshots, logs, and separate policy spreadsheets.
-- Quimera workflow: run `policy_check`, preserve proof metadata, and link decisions to ontology/policy versions.
+- Ontology RAG Guardrail workflow: run `policy_check`, preserve proof metadata, and link decisions to ontology/policy versions.
 - Pilot success criteria:
   - LGPD/custom policy violations are detected in controlled cases;
   - proof lookup reconstructs decision path;

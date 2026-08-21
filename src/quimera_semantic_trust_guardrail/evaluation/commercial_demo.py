@@ -95,7 +95,7 @@ async def _optional_llm_trace(use_llm: bool) -> Optional[ProviderTrace]:
         response = client.generate(
             LLMRequest(
                 system="You summarize evaluation outputs without making new product claims.",
-                prompt="Summarize Quimera's commercial demo in one conservative sentence.",
+                prompt="Summarize Ontology RAG Guardrail's commercial demo in one conservative sentence.",
                 temperature=0.0,
                 max_tokens=80,
             )

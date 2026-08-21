@@ -1,6 +1,6 @@
 # Commercial Security And Compliance FAQ
 
-## Does Quimera send customer data to external LLMs?
+## Does Ontology RAG Guardrail send customer data to external LLMs?
 
 The deterministic runtime and demo paths do not require external LLM calls. Optional LLM-assisted evaluation is explicit and uses NVIDIA MiniMax M3 first, with OpenRouter MiniMax M3 as fallback only.
 
@@ -8,9 +8,9 @@ The deterministic runtime and demo paths do not require external LLM calls. Opti
 
 No. `.env` is ignored. Provider tests use mocks and secret redaction is tested.
 
-## Does Quimera certify legal compliance?
+## Does Ontology RAG Guardrail certify legal compliance?
 
-No. Quimera can run compliance-style runtime checks and record proof metadata. It does not replace legal review or certify compliance.
+No. Ontology RAG Guardrail can run compliance-style runtime checks and record proof metadata. It does not replace legal review or certify compliance.
 
 ## What audit data is recorded?
 

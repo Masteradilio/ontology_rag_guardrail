@@ -1,6 +1,6 @@
 # RAG Integration Guide
 
-Quimera can be attached after retrieval and generation to decide whether an answer is supported enough to show, retry, abstain, or escalate.
+Ontology RAG Guardrail can be attached after retrieval and generation to decide whether an answer is supported enough to show, retry, abstain, or escalate.
 
 ## Minimal Pattern
 
@@ -54,4 +54,4 @@ This avoids treating absent support as a contradiction.
 
 ## Production Notes
 
-Use stable evidence ids. Avoid sending sensitive data to external judges unless the deployment policy explicitly allows it. Treat Quimera output as an evidence-grounded runtime decision, not a factual proof about the world.
+Use stable evidence ids. Avoid sending sensitive data to external judges unless the deployment policy explicitly allows it. Treat Ontology RAG Guardrail output as an evidence-grounded runtime decision, not a factual proof about the world.

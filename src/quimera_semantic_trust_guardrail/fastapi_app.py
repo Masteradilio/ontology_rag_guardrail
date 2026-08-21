@@ -1,4 +1,4 @@
-"""Optional FastAPI runtime for Quimera Semantic Trust Guardrail.
+"""Optional FastAPI runtime for Ontology RAG Guardrail.
 
 This module is intentionally lazy: the rest of the product can be used
 without FastAPI installed. The ``[fastapi]`` optional extra pulls in
@@ -133,10 +133,10 @@ def create_app(
     """
 
     app = FastAPI(
-        title="Quimera Semantic Trust Guardrail",
+        title="Ontology RAG Guardrail",
         version=__version__,
         description=(
-            "HTTP runtime exposing the Quimera semantic trust API. "
+            "HTTP runtime exposing the Ontology RAG Guardrail semantic trust API. "
             "All tenant-scoped endpoints require an `X-Tenant-ID` header."
         ),
     )

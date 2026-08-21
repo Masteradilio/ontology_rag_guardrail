@@ -3,7 +3,7 @@
 Ontology Sync - Sincronização Automática de Ontologias a partir do File Search
 ===============================================================================
 
-Este módulo permite que o Quimera Guardrails seja automaticamente alimentado
+Este módulo permite que o Ontology RAG Guardrail seja automaticamente alimentado
 com fatos e ontologias a partir dos mesmos documentos que o cliente envia ao
 File Search do seu agente.
 
@@ -40,7 +40,7 @@ Fluxo:
                                   │
                                   ▼
                          ┌─────────────────┐
-                         │ Quimera Ontology│
+                         │ Ontology RAG    │
                          │ (validação)     │
                          └─────────────────┘
 
@@ -500,7 +500,7 @@ Responda em JSON:
 
 class OntologySync:
     """
-    Sincroniza automaticamente a ontologia do Quimera Guardrails
+    Sincroniza automaticamente a ontologia do Ontology RAG Guardrail
     com os documentos do File Search.
     
     Fluxo:
@@ -537,7 +537,7 @@ class OntologySync:
         """
         Args:
             file_search_adapter: Adapter do File Search (CustomFileSearchAdapter)
-            ontology_manager: TenantOntologyManager do Quimera
+            ontology_manager: TenantOntologyManager do Ontology RAG Guardrail
             extractors: Lista de extratores de fatos (default: PatternBasedExtractor)
             auto_sync_on_upload: Sincronizar automaticamente em uploads
             min_facts_confidence: Confiança mínima para incluir fato
@@ -961,7 +961,7 @@ def create_ontology_sync(
     
     Args:
         file_search_adapter: Adapter do File Search
-        ontology_manager: Manager de ontologia do Quimera
+        ontology_manager: Manager de ontologia do Ontology RAG Guardrail
         use_llm_extractor: Usar extração via LLM (mais precisa, mais lenta)
         llm_caller: Função para chamar LLM (necessário se use_llm_extractor=True)
         **kwargs: Outros argumentos para OntologySync

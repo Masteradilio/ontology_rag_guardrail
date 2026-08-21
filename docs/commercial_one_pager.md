@@ -1,8 +1,8 @@
-# Quimera Semantic Trust Guardrail: Technical One-Pager
+# Ontology RAG Guardrail: Technical One-Pager
 
 ## What It Is
 
-Quimera is an experimental Python SDK/runtime for audit-ready trivalent semantic trust decisions in RAG and agent workflows.
+Ontology RAG Guardrail is an experimental Python SDK/runtime for audit-ready trivalent semantic trust decisions in RAG and agent workflows.
 
 It returns:
 
@@ -14,7 +14,7 @@ It returns:
 
 ```text
 RAG or Agent System
-  -> Quimera claim_check / answer_check / action_check / policy_check
+  -> Ontology RAG Guardrail claim_check / answer_check / action_check / policy_check
   -> allow, retry, abstain, block, or escalate
   -> proof metadata for audit
 ```
@@ -28,7 +28,7 @@ RAG or Agent System
 
 ## Buyer Hypothesis
 
-Enterprise teams may value Quimera when they need:
+Enterprise teams may value Ontology RAG Guardrail when they need:
 
 - claim-level RAG answer approval;
 - agent tool-call authorization;
@@ -36,4 +36,4 @@ Enterprise teams may value Quimera when they need:
 
 ## What It Does Not Claim
 
-Quimera does not prove real-world truth, certify legal compliance, or eliminate hallucinations. It validates decisions under configured evidence, ontology, and policy.
+Ontology RAG Guardrail does not prove real-world truth, certify legal compliance, or eliminate hallucinations. It validates decisions under configured evidence, ontology, and policy.

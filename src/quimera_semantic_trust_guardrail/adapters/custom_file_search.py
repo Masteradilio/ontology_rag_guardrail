@@ -3,7 +3,7 @@
 Custom File Search Adapter - Integração com Sistema RAG Próprio
 ================================================================
 
-Conecta o Quimera Guardrails ao sistema File Search Híbrido do 
+Conecta o Ontology RAG Guardrail ao sistema File Search Híbrido do
 Enterprise Agent Orchestrator (EAO), permitindo usar a mesma base 
 de conhecimento do agente para validação de alucinações.
 
@@ -295,7 +295,7 @@ class CustomFileSearchAdapter(KnowledgeAdapter):
     """
     Adapter para o sistema File Search Híbrido do EAO
     
-    Conecta o Quimera à mesma base de conhecimento usada pelo seu agente,
+    Conecta o Ontology RAG Guardrail à mesma base de conhecimento usada pelo seu agente,
     permitindo validação de alucinações sem duplicar dados.
     
     API Endpoints do EAO:

@@ -1,4 +1,4 @@
-"""Command line interface for Quimera Semantic Trust Guardrail.
+"""Command line interface for Ontology RAG Guardrail.
 
 The package exposes two console scripts:
 
@@ -31,7 +31,7 @@ from .adapters import SimpleKnowledgeAdapter
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="quimera",
-        description="Quimera Semantic Trust Guardrail command line interface.",
+        description="Ontology RAG Guardrail command line interface.",
     )
     sub = parser.add_subparsers(dest="command", required=False)
 

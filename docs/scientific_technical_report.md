@@ -1,12 +1,12 @@
-# Quimera Scientific Technical Report
+# Ontology RAG Guardrail Scientific Technical Report
 
 Status: internal technical note, draft-ready for engineering review.
 
 ## Summary
 
-Quimera Semantic Trust Guardrail implements ontology-grounded trivalent validation for claim, answer, action, and policy checks. The current scientific package validates the runtime contract on a small synthetic seed dataset and records reproducible artifacts for each run.
+Ontology RAG Guardrail implements ontology-grounded trivalent validation for claim, answer, action, and policy checks. The current scientific package validates the runtime contract on a small synthetic seed dataset and records reproducible artifacts for each run.
 
-The current evidence supports a narrow claim: under configured evidence, ontology facts, policy facts, and compliance rules, Quimera can produce auditable `TRUE`, `FALSE`, and `UNDECIDABLE` decisions with proof metadata.
+The current evidence supports a narrow claim: under configured evidence, ontology facts, policy facts, and compliance rules, Ontology RAG Guardrail can produce auditable `TRUE`, `FALSE`, and `UNDECIDABLE` decisions with proof metadata.
 
 It does not support claims of real-world truth, legal certification, or hallucination elimination.
 

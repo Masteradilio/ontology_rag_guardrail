@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Google File Search Adapter - Integração com Quimera Guardrails
+Google File Search Adapter - Integração com Ontology RAG Guardrail
 ==============================================================
 
-Conecta o Quimera ao Google File Search para usar a mesma base de
+Conecta o Ontology RAG Guardrail ao Google File Search para usar a mesma base de
 conhecimento do agente principal para validação de alucinações.
 
 Referência: https://blog.google/technology/developers/file-search-gemini-api/
@@ -222,7 +222,7 @@ class GoogleFileSearchAdapter(KnowledgeAdapter):
     """
     Adapter para Google File Search (Gemini API)
     
-    Conecta o Quimera à mesma base de conhecimento usada pelo seu agente,
+    Conecta o Ontology RAG Guardrail à mesma base de conhecimento usada pelo seu agente,
     permitindo validação de alucinações sem duplicar dados.
     
     Requisitos:

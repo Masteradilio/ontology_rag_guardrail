@@ -12,13 +12,13 @@ The current evidence is useful and reproducible, but it is still a seed-level va
 - the baseline is deterministic and not a comparative benchmark;
 - one intentionally undecidable policy case is currently false-allowed;
 - no buyer pilot evidence exists yet;
-- no external natural RAG dataset has been evaluated for Quimera itself.
+- no external natural RAG dataset has been evaluated for Ontology RAG Guardrail itself.
 
 This supports engineering validation and disciplined positioning. It does not yet support a formal empirical paper with strong comparative results.
 
 ## Allowed External Positioning Now
 
-Quimera can be described as:
+Ontology RAG Guardrail can be described as:
 
 - an experimental SDK/runtime for auditable trivalent semantic trust decisions;
 - a system that distinguishes supported, contradicted, and insufficiently supported decisions under configured evidence and policy;
@@ -59,6 +59,6 @@ Before a paper or workshop submission:
 
 The next public-facing artifact should be a technical whitepaper or blog post with this framing:
 
-> Quimera Semantic Trust Guardrail is an experimental runtime for audit-ready trivalent decisions in RAG and agent workflows. The current seed baseline validates runtime behavior and exposes one policy uncertainty limitation that guides the next engineering phase.
+> Ontology RAG Guardrail is an experimental runtime for audit-ready trivalent decisions in RAG and agent workflows. The current seed baseline validates runtime behavior and exposes one policy uncertainty limitation that guides the next engineering phase.
 
 This is more defensible than a paper claim at the current evidence level.

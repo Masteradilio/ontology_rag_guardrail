@@ -1,4 +1,4 @@
-"""Product smoke tests for Quimera Semantic Trust Guardrail.
+"""Product smoke tests for Ontology RAG Guardrail.
 
 These tests verify that the product package works from a fresh import:
 - Main public symbols from `quimera_semantic_trust_guardrail` import.
@@ -211,7 +211,7 @@ def test_minimal_claim_check_with_adapter_supported_path():
 
 
 # ---------------------------------------------------------------------------
-# Package-level sanity: GroundCite and Quimera versions load
+# Package-level sanity: GroundCite and Ontology RAG Guardrail versions load
 # ---------------------------------------------------------------------------
 
 

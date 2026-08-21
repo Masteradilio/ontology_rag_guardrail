@@ -9,8 +9,8 @@ This protocol defines pilot measurements. It should be applied to real customer 
 - expected decision
 - observed decision
 - proof lookup success
-- audit reconstruction minutes before Quimera
-- audit reconstruction minutes after Quimera
+- audit reconstruction minutes before Ontology RAG Guardrail
+- audit reconstruction minutes after Ontology RAG Guardrail
 - setup minutes
 - reviewer usefulness score, from 1 to 5
 - notes and blockers

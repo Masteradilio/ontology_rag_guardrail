@@ -3,7 +3,7 @@ QGSL Logic - Lógica Simbólica Quântica Trivalente
 ==================================================
 
 Implementa a lógica de 3 valores (TRUE/FALSE/UNDECIDABLE) que é o
-diferencial do Quimera em relação a guardrails convencionais.
+diferencial do Ontology RAG Guardrail em relação a guardrails convencionais.
 
 O estado UNDECIDABLE permite:
 - Evitar falsos positivos em detecção de ameaças

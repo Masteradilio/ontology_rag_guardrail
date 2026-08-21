@@ -1,5 +1,5 @@
 """
-Quimera Guardrails - Classe Principal de Integração
+Ontology RAG Guardrail - Classe Principal de Integração
 ====================================================
 
 Esta é a classe principal que unifica Input Shield e Output Validator
@@ -86,7 +86,7 @@ class GuardrailsConfig:
 
 class QuimeraGuardrails:
     """
-    Classe Principal de Integração - Quimera Guardrails
+    Classe Principal de Integração - Ontology RAG Guardrail
     
     Unifica Input Shield e Output Validator em uma única interface
     fácil de integrar com orquestradores de agentes.

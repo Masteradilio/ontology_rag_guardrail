@@ -117,7 +117,7 @@ def default_pilot_scopes() -> List[PilotScope]:
                 "iterate": "Policy uncertainty needs stricter configuration before paid use.",
                 "stop": "Reviewers do not trust or use the proof records.",
             },
-            security_constraints=common_constraints + ["Legal review remains outside Quimera scope."],
+                security_constraints=common_constraints + ["Legal review remains outside Ontology RAG Guardrail scope."],
         ),
     ]
 

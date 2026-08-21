@@ -27,9 +27,9 @@ def test_quimera_claims_ledger_has_required_statuses_and_forbidden_claims():
 
     for status in ["supported", "preliminary", "blocked", "engineering_only", "remove"]:
         assert status in text
-    assert "Quimera proves real-world truth. | remove" in text
-    assert "Quimera eliminates hallucinations. | remove" in text
-    assert "Quimera provides legal compliance certification. | remove" in text
+    assert "Ontology RAG Guardrail proves real-world truth. | remove" in text
+    assert "Ontology RAG Guardrail eliminates hallucinations. | remove" in text
+    assert "Ontology RAG Guardrail provides legal compliance certification. | remove" in text
 
 
 def test_technical_report_records_seed_metrics_and_failure():

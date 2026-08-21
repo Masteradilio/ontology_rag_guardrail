@@ -2,7 +2,7 @@
 
 > Historical backlog: scientific publication and commercial validation are no longer active objectives for this repository. The active roadmap is `docs/portfolio_backlog.md`; the scientific track continues in GroundCite-PTEN.
 
-This backlog prepares the next two validation tracks for Quimera Semantic Trust Guardrail:
+This backlog prepares the next two validation tracks for Ontology RAG Guardrail:
 
 - scientific validation: evidence that the runtime behaves as claimed under controlled conditions;
 - commercial validation: evidence that the product solves urgent enterprise workflows with acceptable integration effort.
@@ -219,11 +219,11 @@ Status: DONE
 
 Goal: turn baseline runs into a conservative scientific evidence package.
 
-### S2-T01: Scientific Claims Ledger For Quimera
+### S2-T01: Scientific Claims Ledger For Ontology RAG Guardrail
 
 Subtasks:
 
-- Create a Quimera-specific claims ledger.
+- Create an Ontology RAG Guardrail-specific claims ledger.
 - Classify each claim as supported, preliminary, blocked, engineering-only, or remove.
 - Link each supported claim to code, tests, datasets, or run artifacts.
 - Add a forbidden-claims section: hallucination elimination, legal proof, real-world truth proof, and autonomous safety guarantee.
@@ -253,7 +253,7 @@ Subtasks:
 Acceptance criteria:
 
 - Report is draft-ready for technical reviewers.
-- It clearly states that Quimera validates support under configured evidence/policy, not global truth.
+- It clearly states that Ontology RAG Guardrail validates support under configured evidence/policy, not global truth.
 
 Validation:
 
@@ -299,7 +299,7 @@ Subtasks:
   - compliance/risk teams auditing LLM decisions.
 - Choose one workflow per ICP.
 - Define pain, current workaround, buyer, user, budget owner, and urgency.
-- Define what Quimera must prove in a pilot.
+- Define what Ontology RAG Guardrail must prove in a pilot.
 
 Acceptance criteria:
 
@@ -388,7 +388,7 @@ Subtasks:
 - Measure setup time.
 - Measure false allow rate and false block rate against customer-reviewed labels.
 - Measure useful abstention rate.
-- Measure audit reconstruction time before and after Quimera.
+- Measure audit reconstruction time before and after Ontology RAG Guardrail.
 - Measure developer integration friction.
 - Measure whether proof records satisfy compliance/risk reviewers.
 

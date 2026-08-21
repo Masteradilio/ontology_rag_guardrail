@@ -1,5 +1,5 @@
 """
-Quimera Input Shield - Proteção Avançada de Entrada
+Ontology RAG Guardrail Input Shield - Proteção Avançada de Entrada
 ====================================================
 
 Sistema de validação de input que analisa:

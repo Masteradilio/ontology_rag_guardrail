@@ -1,6 +1,6 @@
 # Master Backlog
 
-This backlog governs the adaptation of `quimera_guardrails`, `groundcite_pten`, and selected `quimera_original` components into Quimera Semantic Trust Guardrail.
+This backlog governs the adaptation of `quimera_guardrails`, `groundcite_pten`, and selected `quimera_original` components into Ontology RAG Guardrail.
 
 Every implementation task must end with:
 
@@ -30,7 +30,7 @@ Subtasks:
 - Copy current `quimera_guardrails` runtime modules into `src/quimera_semantic_trust_guardrail`.
 - Copy `README.md` from the old guardrail into `docs/README_quimera_guardrail.md`.
 - Copy selected GroundCite source, docs, samples, annotation artifacts, and tests.
-- Copy selected Quimera original source, docs, and tests.
+- Copy selected legacy Quimera original source, docs, and tests.
 - Create root `README.md`.
 - Create `.gitignore`.
 - Create `requirements.txt`.
@@ -43,7 +43,7 @@ Validation:
 
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for `tests/reference_groundcite/test_schema.py` and `tests/reference_groundcite/test_claims.py`.
-- Quimera original reference tests are copied for legacy compatibility coverage. The old flat and `core.*` import paths are now preserved through compatibility shims, and `tests/reference_quimera_original` passes.
+- legacy Quimera original reference tests are copied for legacy compatibility coverage. The old flat and `core.*` import paths are now preserved through compatibility shims, and `tests/reference_quimera_original` passes.
 
 ### P0-T02: Python Environment Bootstrap
 
@@ -109,7 +109,7 @@ Subtasks:
 - Define decision enum: `TRUE`, `FALSE`, `UNDECIDABLE`.
 - Define recommended actions: allow, warn, retry, abstain, block, escalate.
 - Define evidence, contradiction, missing requirement, and proof metadata fields.
-- Map GroundCite labels to Quimera trivalent states.
+- Map GroundCite labels to Ontology RAG Guardrail trivalent states.
 - Add serialization and validation tests.
 - Run regression tests for model serialization and mapping.
 - Update this backlog.
@@ -554,6 +554,22 @@ Validation:
 - Product coverage passed at `67.70%` against the configured `60%` minimum.
 - Evaluation mypy gate passed with no issues; `compileall` and `pip check`
   also passed.
+
+### Q-T02: Rename Public Project Identity
+
+Status: DONE
+
+Goal: present the project consistently as Ontology RAG Guardrail without
+breaking the existing Python import package, CLI, or public class names.
+
+Validation:
+
+- Updated the bilingual root README, active architecture/product/evaluation
+  documents, security guidance, changelog, CLI descriptions, and FastAPI title.
+- Preserved `quimera_semantic_trust_guardrail`, `quimera`, and
+  `QuimeraGuardrails` as compatibility identifiers.
+- Kept `docs/reference` snapshots and upstream technical-license references
+  unchanged as historical material.
 
 ## Active Portfolio Extension
 

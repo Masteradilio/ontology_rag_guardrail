@@ -1,8 +1,8 @@
-# PRD: Quimera Semantic Trust Guardrail
+# PRD: Ontology RAG Guardrail
 
 ## 1. Product Summary
 
-Quimera Semantic Trust Guardrail is an enterprise guardrail and semantic trust runtime for LLM, RAG, and AI agent deployments.
+Ontology RAG Guardrail is an enterprise guardrail and semantic trust runtime for LLM, RAG, and AI agent deployments.
 
 It validates claims, answers, plans, and tool/action requests against tenant-specific knowledge, policies, compliance rules, and evidence sources. The product returns auditable trivalent decisions: `TRUE`, `FALSE`, or `UNDECIDABLE`.
 
@@ -36,7 +36,7 @@ Binary allow/block guardrails are too coarse. A production agent often needs a t
 
 ## 5. Value Proposition
 
-Quimera Semantic Trust Guardrail gives enterprise AI systems a governed semantic decision layer:
+Ontology RAG Guardrail gives enterprise AI systems a governed semantic decision layer:
 
 - validate claims against evidence and ontology;
 - distinguish unsupported from contradicted content;
@@ -195,7 +195,7 @@ if result.decision == "UNDECIDABLE":
 - Existing docs promise adapter behavior not implemented in current APIs.
 - `OntologySync` and `TenantOntologyManager` currently have incompatible contracts.
 - GroundCite contains research/eval code that must be separated from runtime-critical code.
-- Legacy Quimera modules contain useful patterns but also outdated framing and optional heavy dependencies.
+- Legacy modules contain useful patterns but also outdated framing and optional heavy dependencies.
 - A product claim stronger than "supported by evidence" would be scientifically and commercially risky.
 
 ## 15. Near-Term Decision

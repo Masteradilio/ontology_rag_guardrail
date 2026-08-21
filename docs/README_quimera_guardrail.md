@@ -1,4 +1,4 @@
-# Quimera Guardrails
+# Ontology RAG Guardrail
 
 > Sistema Avançado de Proteção para Agentes de IA baseado em Lógica Simbólica Quântica (QGSL)
 
@@ -20,7 +20,7 @@
 
 ## 🎯 Visão Geral
 
-O **Quimera Guardrails** é um sistema de proteção avançado para agentes de IA que combina:
+O **Ontology RAG Guardrail** é um sistema de proteção avançado para agentes de IA que combina:
 
 - **Lógica Trivalente QGSL**: TRUE/FALSE/UNDECIDABLE para decisões mais nuançadas
 - **Input Shield**: Proteção contra PII, injeções, jailbreaks e ameaças
@@ -59,7 +59,7 @@ O **Quimera Guardrails** é um sistema de proteção avançado para agentes de I
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    QUIMERA GUARDRAILS                           │
+│                    ONTOLOGY RAG GUARDRAIL                       │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐        │
@@ -212,7 +212,7 @@ from quimera_guardrails import (
 )
 
 class SecureMessageHandler:
-    """Handler de mensagens com proteção Quimera integrada"""
+    """Handler de mensagens com proteção Ontology RAG Guardrail integrada"""
     
     def __init__(
         self,
@@ -701,7 +701,7 @@ print(result.hallucinations)  # Detectará a inconsistência
 
 ## 🔗 Integração com File Search Customizado (EAO)
 
-O Quimera pode usar a **mesma base de conhecimento** do seu agente principal para validar alucinações, sem duplicar dados. Esta integração é feita através do `CustomFileSearchAdapter` que conecta ao sistema File Search Híbrido do Enterprise Agent Orchestrator (EAO).
+O Ontology RAG Guardrail pode usar a **mesma base de conhecimento** do seu agente principal para validar alucinações, sem duplicar dados. Esta integração é feita através do `CustomFileSearchAdapter` que conecta ao sistema File Search Híbrido do Enterprise Agent Orchestrator (EAO).
 
 ### Características do Sistema File Search
 
@@ -727,7 +727,7 @@ O Quimera pode usar a **mesma base de conhecimento** do seu agente principal par
 │              │                       │                         │
 │              ▼                       ▼                         │
 │   ┌─────────────────┐     ┌─────────────────┐                  │
-│   │  AGENTE (LLM)   │     │ QUIMERA (lazy)  │                  │
+│   │  AGENTE (LLM)   │     │ ONTOLOGY (lazy) │                  │
 │   │  Usa para RAG   │     │ Valida outputs  │                  │
 │   └─────────────────┘     └─────────────────┘                  │
 │                                                                 │
@@ -773,7 +773,7 @@ result = await guardrails.validate_output(
     agent_response="A taxa SELIC é 5% ao ano."  # ERRADO!
 )
 
-# O Quimera detectará a alucinação via File Search
+# O Ontology RAG Guardrail detectará a alucinação via File Search
 print(result.hallucinations)  # Mostrará a inconsistência
 ```
 
@@ -884,7 +884,7 @@ print(f"Documentos indexados: {full_stats['file_search']['total_documents']}")
 
 ### Quando NÃO Precisa de Ontologia
 
-O Quimera funciona **muito bem** sem ontologia para:
+O Ontology RAG Guardrail funciona **muito bem** sem ontologia para:
 
 - ✅ Bloquear PII (CPF, cartão, etc.)
 - ✅ Detectar injection/jailbreak
@@ -899,7 +899,7 @@ Use ontologia/File Search quando precisar:
 
 ## 🧠 Auto-Alimentação de Ontologias (OntologySync)
 
-Como seu SaaS é um orquestrador genérico onde **o cliente cria seus próprios agentes** para qualquer área de conhecimento (RH, Financeiro, Jurídico, Saúde, etc.), o Quimera precisa se adaptar automaticamente ao domínio.
+Como seu SaaS é um orquestrador genérico onde **o cliente cria seus próprios agentes** para qualquer área de conhecimento (RH, Financeiro, Jurídico, Saúde, etc.), o Ontology RAG Guardrail precisa se adaptar automaticamente ao domínio.
 
 O `OntologySync` resolve isso **extraindo automaticamente fatos e ontologias** dos mesmos documentos que o cliente envia ao File Search!
 
@@ -923,7 +923,7 @@ O `OntologySync` resolve isso **extraindo automaticamente fatos e ontologias** d
 │            │                         │                          │
 │            ▼                         ▼                          │
 │   ┌─────────────────┐       ┌─────────────────┐                │
-│   │  Agente usa     │       │ Quimera Ontology│                │
+│   │  Agente usa     │       │ Ontology RAG Guardrail Ontology│                │
 │   │  para RAG       │       │ valida outputs  │                │
 │   └─────────────────┘       └─────────────────┘                │
 │                                                                 │
@@ -1069,7 +1069,7 @@ facts_extracted = [
 # Agora, se o agente responder:
 # "Suas férias são de 15 dias após 6 meses de trabalho"
 # 
-# O Quimera detectará como ALUCINAÇÃO porque contradiz
+# O Ontology RAG Guardrail detectará como ALUCINAÇÃO porque contradiz
 # o fato extraído automaticamente do documento!
 ```
 
@@ -1117,4 +1117,4 @@ Contribuições são bem-vindas! Por favor, abra uma issue primeiro para discuti
 
 ---
 
-**Desenvolvido com 🔬 pelo Projeto Quimera**
+**Desenvolvido com 🔬 pelo Ontology RAG Guardrail**

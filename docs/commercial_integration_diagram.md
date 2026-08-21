@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart LR
-    A["Enterprise RAG or Agent"] --> B["Quimera Runtime"]
+    A["Enterprise RAG or Agent"] --> B["Ontology RAG Guardrail Runtime"]
     B --> C["claim_check / answer_check"]
     B --> D["action_check"]
     B --> E["policy_check"]

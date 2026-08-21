@@ -1,6 +1,6 @@
 # Evaluation Plan
 
-This plan defines how to evaluate Quimera without overstating scientific or commercial claims.
+This plan defines how to evaluate Ontology RAG Guardrail without overstating scientific or commercial claims.
 
 ## Evaluation Axes
 

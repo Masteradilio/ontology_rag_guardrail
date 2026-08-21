@@ -2,7 +2,7 @@
 
 ## Pilot Goal
 
-Validate whether Quimera improves audit-ready semantic governance for one concrete RAG or agent workflow.
+Validate whether Ontology RAG Guardrail improves audit-ready semantic governance for one concrete RAG or agent workflow.
 
 ## Candidate Workflows
 

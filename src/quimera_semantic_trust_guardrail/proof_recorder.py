@@ -2,7 +2,7 @@
 Proof Recorder - Sistema de Auditoria Criptográfica
 ====================================================
 
-Registra todas as decisões do Quimera com:
+Registra todas as decisões do Ontology RAG Guardrail com:
 - Hash criptográfico (SHA-256)
 - Timestamp preciso
 - Contexto completo
@@ -42,7 +42,7 @@ class ProofEntry:
     """
     Entrada no ledger de provas
 
-    Cada decisão do Quimera gera uma entrada imutável
+    Cada decisão do Ontology RAG Guardrail gera uma entrada imutável
     que pode ser auditada posteriormente.
     """
 

@@ -1,6 +1,6 @@
 # Policy And Ontology Modeling Guide
 
-Quimera uses semantic facts as the common representation for business facts, definitions, constraints, synonyms, and policy rules.
+Ontology RAG Guardrail uses semantic facts as the common representation for business facts, definitions, constraints, synonyms, and policy rules.
 
 ## Modeling Principles
 
