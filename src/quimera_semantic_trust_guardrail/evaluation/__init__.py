@@ -37,6 +37,30 @@ from .commercial_pilot import (
     write_default_pilot_package,
 )
 from .scientific_baseline import ControlledClaimAdapter, run_scientific_baseline
+from .embeddings import (
+    DEFAULT_EMBEDDING_MODEL,
+    DeterministicHashEmbedding,
+    EmbeddingDependencyError,
+    SentenceTransformerEmbedding,
+    cosine_similarity,
+)
+from .rag_evals import (
+    DuringRagResult,
+    PostRagResult,
+    PreRagResult,
+    RagCaseResult,
+    RagDocument,
+    RagEvalCase,
+    RagEvaluationReport,
+    evaluate_rag_cases,
+    load_rag_cases,
+)
+from .rag_benchmark import (
+    controlled_seed_answer_evaluator,
+    run_rag_benchmark,
+)
+from .observability import EvaluationTrace, TraceEvent, write_trace_summary
+from .showcase import run_showcase
 
 __all__ = [
     "ControlledDataset",
@@ -69,4 +93,24 @@ __all__ = [
     "compute_pilot_metrics",
     "default_pilot_scopes",
     "write_default_pilot_package",
+    "DEFAULT_EMBEDDING_MODEL",
+    "DeterministicHashEmbedding",
+    "EmbeddingDependencyError",
+    "SentenceTransformerEmbedding",
+    "cosine_similarity",
+    "DuringRagResult",
+    "PostRagResult",
+    "PreRagResult",
+    "RagCaseResult",
+    "RagDocument",
+    "RagEvalCase",
+    "RagEvaluationReport",
+    "evaluate_rag_cases",
+    "load_rag_cases",
+    "controlled_seed_answer_evaluator",
+    "run_rag_benchmark",
+    "EvaluationTrace",
+    "TraceEvent",
+    "write_trace_summary",
+    "run_showcase",
 ]

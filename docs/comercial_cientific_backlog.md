@@ -1,5 +1,7 @@
 # Commercial And Scientific Validation Backlog
 
+> Historical backlog: scientific publication and commercial validation are no longer active objectives for this repository. The active roadmap is `docs/portfolio_backlog.md`; the scientific track continues in GroundCite-PTEN.
+
 This backlog prepares the next two validation tracks for Quimera Semantic Trust Guardrail:
 
 - scientific validation: evidence that the runtime behaves as claimed under controlled conditions;
@@ -429,7 +431,7 @@ Validation:
 
 ## Phase C2: Productization Decision
 
-Status: TODO
+Status: DEFERRED
 
 Goal: decide whether to invest in a product release, research release, or narrower consulting/evaluation offer.
 

@@ -18,7 +18,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 from threading import Lock
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 
@@ -246,7 +246,7 @@ class ProofRecorder:
                 proof_id=proof_id,
                 proof_type=proof_type,
                 tenant_id=tenant_id,
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 timestamp_unix=now,
                 input_hash=input_hash,
                 context_hash=context_hash,
@@ -308,7 +308,7 @@ class ProofRecorder:
     def _save_entry(self, entry: ProofEntry):
         """Salva entrada no storage"""
         # Organiza por tenant e data
-        date_str = datetime.utcnow().strftime("%Y-%m-%d")
+        date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         tenant_path = self.storage_path / entry.tenant_id / date_str
         tenant_path.mkdir(parents=True, exist_ok=True)
         

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 from threading import Lock
 from typing import Any, Dict, List, Optional
 
@@ -37,7 +37,7 @@ def record(event: Dict[str, Any]) -> Path:
     """
 
     entry = dict(event)
-    entry.setdefault("ts", datetime.utcnow().isoformat())
+    entry.setdefault("ts", datetime.now(timezone.utc).isoformat())
     entry.setdefault("version", get_version_tag())
 
     # Calcula checksum antes de adicionar o campo

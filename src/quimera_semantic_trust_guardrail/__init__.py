@@ -31,10 +31,10 @@ Uso básico:
         pass
 
 Autor: Projeto Quimera
-Versão: 1.0.0
+Versão: 0.1.0.dev0
 """
 
-__version__ = "1.0.0"
+__version__ = "0.1.0.dev0"
 __author__ = "Projeto Quimera"
 
 from .main import QuimeraGuardrails, GuardrailsConfig, create_guardrails

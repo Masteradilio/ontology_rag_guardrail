@@ -108,6 +108,52 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Optionally call NVIDIA MiniMax M3 first and OpenRouter fallback.",
     )
 
+    p_rag = sub.add_parser(
+        "rag-benchmark",
+        help="Run the offline three-stage embedding-backed RAG benchmark.",
+    )
+    p_rag.add_argument(
+        "--output-dir",
+        default="artifacts/evaluation",
+        help="Evaluation artifact directory (default: artifacts/evaluation).",
+    )
+    p_rag.add_argument(
+        "--run-id",
+        default="rag-seed-benchmark",
+        help="Run identifier (default: rag-seed-benchmark).",
+    )
+    p_rag.add_argument(
+        "--manifest",
+        default="data/evaluation/rag_seed/manifest.json",
+        help="RAG dataset manifest path.",
+    )
+    p_rag.add_argument(
+        "--model",
+        default=None,
+        help="Sentence Transformers model name (uses the portfolio default when omitted).",
+    )
+    p_rag.add_argument(
+        "--top-k",
+        type=int,
+        default=3,
+        help="Number of retrieved documents used for ranking/context metrics.",
+    )
+
+    p_showcase = sub.add_parser(
+        "showcase",
+        help="Run the offline portfolio showcase without API keys.",
+    )
+    p_showcase.add_argument(
+        "--output-dir",
+        default="artifacts/showcase",
+        help="Showcase artifact directory (default: artifacts/showcase).",
+    )
+    p_showcase.add_argument(
+        "--run-id",
+        default="portfolio-showcase",
+        help="Run identifier (default: portfolio-showcase).",
+    )
+
     return parser
 
 
@@ -183,6 +229,28 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             use_llm=args.use_llm,
         )
         _print_json({"run_dir": str(run_dir)})
+        return 0
+
+    if args.command == "rag-benchmark":
+        from .evaluation import run_rag_benchmark
+
+        kwargs = {
+            "manifest_path": args.manifest,
+            "output_dir": args.output_dir,
+            "run_id": args.run_id,
+            "top_k": args.top_k,
+        }
+        if args.model:
+            kwargs["model_name"] = args.model
+        run_dir = run_rag_benchmark(**kwargs)
+        _print_json({"run_dir": str(run_dir), "llm_api_key_required": False})
+        return 0
+
+    if args.command == "showcase":
+        from .evaluation import run_showcase
+
+        run_dir = run_showcase(output_dir=args.output_dir, run_id=args.run_id)
+        _print_json({"run_dir": str(run_dir), "llm_api_key_required": False})
         return 0
 
     parser.print_help()

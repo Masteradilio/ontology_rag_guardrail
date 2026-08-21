@@ -1,0 +1,12 @@
+{
+  "schema_version": "quimera_rag_evaluation_seed_v1",
+  "package_id": "quimera_rag_seed",
+  "version": "2026-08-20-v1",
+  "path": "data/evaluation/rag_seed/cases.jsonl",
+  "sample_count": 4,
+  "limitations": [
+    "Synthetic documents and queries.",
+    "The post-RAG answer evaluator is deterministic and controlled.",
+    "Metrics do not estimate production RAG quality."
+  ]
+}

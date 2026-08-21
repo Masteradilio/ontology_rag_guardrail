@@ -1,6 +1,8 @@
 # Quimera Semantic Trust Guardrail
 
-Quimera Semantic Trust Guardrail is a Python SDK/runtime for enterprise semantic trust decisions in LLM, RAG, and agent systems.
+Quimera Semantic Trust Guardrail is an experimental Python SDK/runtime for ontology-grounded semantic trust decisions in LLM, RAG, and agent systems.
+
+This repository is a technical portfolio project focused on RAG, guardrails, EVALs, observability, SDK architecture, trivalent validation, and auditability. It is not presented as a production security boundary, commercial service, or scientific paper result.
 
 The core contract is conservative and auditable: every public check returns a trivalent decision, recommended action, evidence, policy/ontology provenance, and proof metadata.
 
@@ -55,7 +57,8 @@ Endpoints include `/claim-check`, `/answer-check`, `/action-check`, `/policy-che
 python -m venv .venv
 .\.venv\Scripts\python -m pip install --upgrade pip
 .\.venv\Scripts\pip install -r requirements.txt
-.\.venv\Scripts\pip install -e .
+.\.venv\Scripts\pip install -e ".[dev]"
+.\.venv\Scripts\pip install -e ".[evaluation]"  # optional embedding-backed EVALs
 ```
 
 Run the regression suite:
@@ -69,7 +72,22 @@ Run examples:
 ```powershell
 .\.venv\Scripts\python examples\01_claim_check_basic.py
 .\.venv\Scripts\python examples\02_ontology_versioning.py
+.\.venv\Scripts\python examples\04_ontology_inspection.py
 ```
+
+Run the offline portfolio showcase:
+
+```powershell
+.\.venv\Scripts\python -m quimera_semantic_trust_guardrail showcase
+```
+
+Run the real embedding-backed three-stage RAG benchmark:
+
+```powershell
+.\.venv\Scripts\python -m quimera_semantic_trust_guardrail rag-benchmark
+```
+
+The benchmark uses `sentence-transformers==5.6.1` with a multilingual local model. It does not require an LLM API key. Provider keys are only needed for explicit optional LLM-assisted evaluation runs.
 
 ## Repository Layout
 
@@ -106,6 +124,11 @@ examples/
 - [Proof and audit guide](docs/proof_audit.md)
 - [Research positioning note](docs/research_positioning.md)
 - [Evaluation plan](docs/evaluation_plan.md)
+- [Portfolio scope](docs/portfolio_scope.md)
+- [Portfolio backlog](docs/portfolio_backlog.md)
+- [Known limitations](docs/known_limitations.md)
+- [Portfolio demo walkthrough](docs/demo_walkthrough.md)
+- [Three-stage EVAL guide](docs/evaluation_guide.md)
 - [Quimera scientific claims ledger](docs/scientific_claims_ledger_quimera.md)
 - [Scientific technical report](docs/scientific_technical_report.md)
 - [External research decision](docs/scientific_external_research_decision.md)
@@ -115,6 +138,10 @@ examples/
 - [Commercial pilot design](docs/commercial_pilot_design.md)
 - [Commercial pilot metrics protocol](docs/commercial_pilot_metrics_protocol.md)
 - [Commercial pricing and packaging hypotheses](docs/commercial_pricing_packaging_hypotheses.md)
+- [Commercial security FAQ](docs/commercial_security_compliance_faq.md)
+- [Commercial metrics sheet](docs/commercial_metrics_sheet.md)
+- [Commercial integration diagram](docs/commercial_integration_diagram.md)
+- [Commercial pilot report template](docs/commercial_pilot_report_template.md)
 - [Execution backlog](docs/MASTER_BACKLOG.md)
 - [Change history](CHANGELOG.md)
 

@@ -25,6 +25,11 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added Phase C0 commercial discovery materials and an offline commercial demo runner/CLI for RAG approval, agent authorization, and policy review workflows.
 - Added Phase C1 commercial pilot planning, metrics helpers, pricing hypotheses, and pilot report templates.
 - Added packaged compatibility shims for copied Quimera original reference tests: `core.*` modules and legacy flat-module imports now re-export the selected `quimera_legacy` modules.
+- Added the active technical portfolio scope and backlog for RAG, guardrails, EVALs, observability, SDK architecture, trivalent validation, and ontology auditability.
+- Added three-stage RAG EVAL contracts for pre-RAG retrieval, during-RAG context quality, and post-RAG trivalent answer decisions.
+- Added lazy Sentence Transformers embeddings pinned to `5.6.1`, deterministic test/showcase embeddings, a committed RAG seed, and the `quimera rag-benchmark` command.
+- Added dependency-free evaluation observability with stage events, decision distributions, JSONL traces, summary artifacts, and secret redaction.
+- Added the offline `quimera showcase` command, repository license, security/contribution guidance, `.env.example`, and Python 3.10-3.12 CI workflow.
 
 ### Changed
 
@@ -32,6 +37,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Cleaned the changelog to remove duplicated initial workspace and validation entries.
 - Updated `docs/MASTER_BACKLOG.md` to restore and close Phase 6 and to reflect that Quimera original reference tests now pass through compatibility shims.
 - Updated GroundCite research reference tests to resolve vendored dataset and scientific documentation paths inside the new product repository layout.
+- Aligned the runtime-reported version with the experimental package version declared in `pyproject.toml` (`0.1.0.dev0`).
 
 ### Validation
 
@@ -49,6 +55,9 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Phase 5 full product + GroundCite schema/claim regression passed: `95 passed`.
 - Quimera original reference compatibility tests passed: `tests/reference_quimera_original`.
 - Full repository regression passed: `217 passed` via `python -m pytest -q`.
+- Focused three-stage RAG EVAL, benchmark, observability, and showcase regression passed: `12 passed`.
+- Current full repository regression passed: `229 passed`, with one pre-existing FastAPI/Starlette deprecation warning.
+- Real embedding benchmark completed with `sentence-transformers==5.6.1`, four synthetic cases, `pre_rag.hit_at_k=1.0` over three evaluable queries, `during_rag.context_recall=0.75`, and `post_rag.decision_accuracy=1.0`; no LLM API key was required.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 
@@ -58,6 +67,8 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - GroundCite `unsupported` labels map to `UNDECIDABLE`, preserving the distinction between absent support and direct contradiction.
 - Research-only GroundCite tests (`test_hybrid.py`, `test_groundcite_bench_dataset.py`, `test_dataset_summary_integrity.py`, `test_scientific_reporting_guardrails.py`) remain under `tests/reference_groundcite/` and are not part of the product regression gate.
 - Quimera estimates support, contradiction, authorization, and insufficient evidence under configured evidence, ontology, and policy. It does not prove real-world truth, replace legal review, or eliminate hallucinations.
+- Commercial and formal-paper validation are historical objectives for this repository; the active portfolio roadmap is `docs/portfolio_backlog.md`.
+- The RAG seed benchmark is synthetic and controlled. Its post-RAG evaluator is deterministic, and its metrics do not estimate production RAG quality.
 
 ## [0.1.0] - 2026-07-04
 
