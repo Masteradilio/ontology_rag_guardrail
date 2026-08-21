@@ -36,5 +36,7 @@ def test_rag_benchmark_writes_offline_artifacts(tmp_path):
     assert metadata["llm_api_key_required"] is False
     assert metadata["sample_count"] == 4
     assert report["stage_metrics"]["pre_rag.hit_at_k"] == 1.0
+    assert report["stage_metrics"]["during_rag.context_precision"] == 1.0
+    assert report["stage_metrics"]["during_rag.candidate_context_precision"] < 1.0
     assert report["stage_metrics"]["post_rag.decision_accuracy"] == 1.0
     assert (run_dir / "summary.md").exists()

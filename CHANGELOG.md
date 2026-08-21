@@ -29,6 +29,9 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added three-stage RAG EVAL contracts for pre-RAG retrieval, during-RAG context quality, and post-RAG trivalent answer decisions.
 - Added lazy Sentence Transformers embeddings pinned to `5.6.1`, deterministic test/showcase embeddings, a committed RAG seed, and the `quimera rag-benchmark` command.
 - Added dependency-free evaluation observability with stage events, decision distributions, JSONL traces, summary artifacts, and secret redaction.
+- Added adaptive RAG context assembly with explicit candidate-vs-final precision, recall, duplicate, context-size, and abstention metrics.
+- Added the opt-in `quimera rag-llm-benchmark` with NVIDIA-first/OpenRouter-fallback policy, structured-output parsing, evidence-consistency guardrails, redacted provider JSONL, and failure-safe artifacts.
+- Added trace metrics, dependency-free OTLP-shaped export, trace replay, proof explanation, coverage/lint/type gates, and provider response error normalization.
 - Added the offline `quimera showcase` command, repository license, security/contribution guidance, `.env.example`, and Python 3.10-3.12 CI workflow.
 
 ### Changed
@@ -38,6 +41,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Updated `docs/MASTER_BACKLOG.md` to restore and close Phase 6 and to reflect that Quimera original reference tests now pass through compatibility shims.
 - Updated GroundCite research reference tests to resolve vendored dataset and scientific documentation paths inside the new product repository layout.
 - Aligned the runtime-reported version with the experimental package version declared in `pyproject.toml` (`0.1.0.dev0`).
+- Changed the default RAG benchmark to adaptive context assembly; the original noisy declared context remains visible as a candidate metric instead of being silently discarded.
 
 ### Validation
 
@@ -55,9 +59,11 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Phase 5 full product + GroundCite schema/claim regression passed: `95 passed`.
 - Quimera original reference compatibility tests passed: `tests/reference_quimera_original`.
 - Full repository regression passed: `217 passed` via `python -m pytest -q`.
-- Focused three-stage RAG EVAL, benchmark, observability, and showcase regression passed: `12 passed`.
-- Current full repository regression passed: `229 passed`, with one pre-existing FastAPI/Starlette deprecation warning.
-- Real embedding benchmark completed with `sentence-transformers==5.6.1`, four synthetic cases, `pre_rag.hit_at_k=1.0` over three evaluable queries, `during_rag.context_recall=0.75`, and `post_rag.decision_accuracy=1.0`; no LLM API key was required.
+- Focused three-stage RAG EVAL, benchmark, observability, replay, and LLM benchmark regression passed: `21 passed`.
+- Current full repository regression passed: `240 passed`, with one pre-existing FastAPI/Starlette deprecation warning.
+- Real adaptive embedding benchmark completed with `sentence-transformers==5.6.1`, four synthetic cases, `pre_rag.hit_at_k=1.0`, `pre_rag.mrr=1.0`, final `during_rag.context_precision=1.0`, final `during_rag.context_recall=1.0`, `during_rag.duplicate_rate=0.0`, and explicit `context_abstention_rate=0.25`; candidate context precision remains `0.3333` as the diagnosed baseline.
+- LLM benchmark completed from `.env` using NVIDIA as primary and OpenRouter as fallback after NVIDIA provider failure: four valid structured decisions, final `post_rag.decision_accuracy=1.0`, `llm_raw_decision_accuracy=1.0`, and `llm_guardrailed_decision_accuracy=1.0`.
+- Product coverage measured at `66.13%` with a configured CI threshold of `60%`; focused Ruff and mypy checks pass.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 

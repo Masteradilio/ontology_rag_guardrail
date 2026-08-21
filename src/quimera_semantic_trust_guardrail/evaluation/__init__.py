@@ -22,6 +22,7 @@ from .llm_providers import (
     LLMRequest,
     LLMResponse,
     NVIDIAProvider,
+    OpenAICompatibleProvider,
     OpenRouterProvider,
     ProviderConfig,
     load_env_file,
@@ -59,7 +60,9 @@ from .rag_benchmark import (
     controlled_seed_answer_evaluator,
     run_rag_benchmark,
 )
-from .observability import EvaluationTrace, TraceEvent, write_trace_summary
+from .llm_rag_benchmark import parse_llm_output, run_llm_rag_benchmark
+from .observability import EvaluationTrace, TraceEvent, write_open_telemetry, write_trace_summary
+from .replay import explain_proof, explain_trace, replay_proof, replay_trace
 from .showcase import run_showcase
 
 __all__ = [
@@ -74,6 +77,7 @@ __all__ = [
     "LLMRequest",
     "LLMResponse",
     "NVIDIAProvider",
+    "OpenAICompatibleProvider",
     "OpenRouterProvider",
     "PilotMetrics",
     "PilotReviewSample",
@@ -109,8 +113,15 @@ __all__ = [
     "load_rag_cases",
     "controlled_seed_answer_evaluator",
     "run_rag_benchmark",
+    "parse_llm_output",
+    "run_llm_rag_benchmark",
     "EvaluationTrace",
     "TraceEvent",
+    "write_open_telemetry",
     "write_trace_summary",
+    "explain_proof",
+    "explain_trace",
+    "replay_proof",
+    "replay_trace",
     "run_showcase",
 ]

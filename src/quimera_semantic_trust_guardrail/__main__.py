@@ -139,6 +139,37 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Number of retrieved documents used for ranking/context metrics.",
     )
 
+    p_llm_rag = sub.add_parser(
+        "rag-llm-benchmark",
+        help="Run the opt-in RAG benchmark with NVIDIA first and OpenRouter fallback.",
+    )
+    p_llm_rag.add_argument("--output-dir", default="artifacts/evaluation")
+    p_llm_rag.add_argument("--run-id", default="rag-llm-benchmark")
+    p_llm_rag.add_argument("--manifest", default="data/evaluation/rag_seed/manifest.json")
+    p_llm_rag.add_argument("--model", default=None)
+    p_llm_rag.add_argument("--top-k", type=int, default=3)
+    p_llm_rag.add_argument(
+        "--no-paid-fallback",
+        action="store_true",
+        help="Do not call the paid OpenRouter provider if NVIDIA fails.",
+    )
+
+    p_replay = sub.add_parser(
+        "trace-replay",
+        help="Replay an evaluation trace as JSON or human-readable text.",
+    )
+    p_replay.add_argument("trace", help="Path to trace.jsonl")
+    p_replay.add_argument("--case-id", default=None)
+    p_replay.add_argument("--json", action="store_true", dest="as_json")
+
+    p_proof = sub.add_parser(
+        "proof-explain",
+        help="Replay and explain one proof ledger entry.",
+    )
+    p_proof.add_argument("proof_id")
+    p_proof.add_argument("--storage", default=".quimera_cli_proofs")
+    p_proof.add_argument("--json", action="store_true", dest="as_json")
+
     p_showcase = sub.add_parser(
         "showcase",
         help="Run the offline portfolio showcase without API keys.",
@@ -244,6 +275,41 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             kwargs["model_name"] = args.model
         run_dir = run_rag_benchmark(**kwargs)
         _print_json({"run_dir": str(run_dir), "llm_api_key_required": False})
+        return 0
+
+    if args.command == "rag-llm-benchmark":
+        from .evaluation import SentenceTransformerEmbedding, run_llm_rag_benchmark
+
+        kwargs = {
+            "manifest_path": args.manifest,
+            "output_dir": args.output_dir,
+            "run_id": args.run_id,
+            "top_k": args.top_k,
+            "allow_paid_fallback": not args.no_paid_fallback,
+            "embedder": SentenceTransformerEmbedding(model_name=args.model)
+            if args.model
+            else SentenceTransformerEmbedding(),
+        }
+        run_dir = run_llm_rag_benchmark(**kwargs)
+        _print_json({"run_dir": str(run_dir), "llm_api_key_required": True})
+        return 0
+
+    if args.command == "trace-replay":
+        from .evaluation import explain_trace, replay_trace
+
+        if args.as_json:
+            _print_json(replay_trace(args.trace, case_id=args.case_id))
+        else:
+            sys.stdout.write(explain_trace(args.trace, case_id=args.case_id) + "\n")
+        return 0
+
+    if args.command == "proof-explain":
+        from .evaluation import explain_proof, replay_proof
+
+        if args.as_json:
+            _print_json(replay_proof(args.storage, args.proof_id))
+        else:
+            sys.stdout.write(explain_proof(args.storage, args.proof_id) + "\n")
         return 0
 
     if args.command == "showcase":

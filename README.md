@@ -89,6 +89,16 @@ Run the real embedding-backed three-stage RAG benchmark:
 
 The benchmark uses `sentence-transformers==5.6.1` with a multilingual local model. It does not require an LLM API key. Provider keys are only needed for explicit optional LLM-assisted evaluation runs.
 
+Run the opt-in LLM-backed benchmark configured by `.env`:
+
+```powershell
+.\.venv\Scripts\python -m quimera_semantic_trust_guardrail rag-llm-benchmark
+```
+
+NVIDIA MiniMax M3 is attempted first and paid OpenRouter is used only as a
+fallback. The benchmark reports raw LLM decisions separately from the final
+evidence-consistency-guarded decisions.
+
 ## Repository Layout
 
 ```text
@@ -105,6 +115,8 @@ docs/
   proof_audit.md
   research_positioning.md
   evaluation_plan.md
+  evaluation_guide.md
+  portfolio_backlog.md
   PRD.md
   MASTER_BACKLOG.md
 tests/

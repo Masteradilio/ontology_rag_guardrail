@@ -16,15 +16,22 @@ Queries with no relevant gold document are not included in hit@k or MRR aggregat
 
 ## During RAG
 
-The assembled context is evaluated independently of the answer. The report records:
+The pipeline separates the declared candidate context from the final assembled
+context. The report records:
 
 - context precision;
 - context recall;
 - duplicate rate;
 - evidence coverage;
-- retrieved document ids.
+- candidate-context metrics, preserving input noise;
+- final retrieved document ids;
+- context size and explicit abstention rate.
 
-This stage exposes retrieval noise and duplicate context even when an answer happens to look plausible.
+The default benchmark uses adaptive assembly: a document must reach the
+configured absolute similarity floor and remain close to the top score. An
+empty final context is an abstention, not a fabricated retrieval success. This
+stage therefore exposes both the original retrieval noise and the quality of
+the policy that turns candidates into model context.
 
 ## Post-RAG
 
@@ -35,7 +42,11 @@ The answer is passed to an explicit evaluator. The evaluator may be deterministi
 - `TRUE`, `FALSE`, and `UNDECIDABLE` distribution;
 - evidence coverage inherited from the assembled context.
 
-The committed benchmark uses a controlled deterministic evaluator. This keeps the base benchmark reproducible without an LLM API key. An LLM key is only needed for a separate judge-assisted or generation-based experiment.
+The committed benchmark uses a controlled deterministic evaluator. This keeps the base benchmark reproducible without an LLM API key. The opt-in
+`quimera rag-llm-benchmark` command sends only the selected context to the
+NVIDIA MiniMax M3 endpoint first and uses OpenRouter only when the primary
+provider fails. Provider traces are redacted and malformed model output maps
+to `UNDECIDABLE`.
 
 ## Interpretation
 

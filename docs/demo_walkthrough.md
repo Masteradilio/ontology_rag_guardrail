@@ -27,6 +27,16 @@ python -m quimera_semantic_trust_guardrail rag-benchmark --run-id rag-seed-bench
 
 The benchmark uses `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` through `sentence-transformers==5.6.1`. It may download the model from Hugging Face on first use, but it does not call an LLM provider and does not require an API key.
 
+For the opt-in provider-backed benchmark configured by `.env`:
+
+```powershell
+python -m quimera_semantic_trust_guardrail rag-llm-benchmark --run-id rag-llm-benchmark
+```
+
+NVIDIA MiniMax M3 is attempted first; paid OpenRouter is used only when the
+primary provider fails. The run records redacted provider traces and maps
+malformed or unavailable model output to `UNDECIDABLE`.
+
 ## 4. Inspect Artifacts
 
 - `metadata.json`: commit, dataset, model, and API-key requirement.
@@ -34,6 +44,13 @@ The benchmark uses `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`
 - `summary.md`: reviewer-friendly metrics and limitations.
 - `trace.jsonl`: stage-level retrieval, context, and decision events.
 - `observability.json`: event and decision summaries.
+- `otel.json`: dependency-free OTLP-shaped spans for collector integration.
+
+To inspect a trace as a reviewer:
+
+```powershell
+python -m quimera_semantic_trust_guardrail trace-replay artifacts/evaluation/rag-seed-benchmark/trace.jsonl
+```
 
 ## What This Demonstrates
 

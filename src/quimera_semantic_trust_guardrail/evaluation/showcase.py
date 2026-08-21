@@ -11,7 +11,7 @@ from ..decision_model import TrivalentDecision
 from ..proof_recorder import ProofRecorder
 from ..runtime import SemanticTrustRuntime
 from .embeddings import DeterministicHashEmbedding
-from .observability import EvaluationTrace, write_trace_summary
+from .observability import EvaluationTrace, write_open_telemetry, write_trace_summary
 from .rag_benchmark import controlled_seed_answer_evaluator
 from .rag_evals import evaluate_rag_cases, load_rag_cases
 from .scientific_baseline import ControlledClaimAdapter
@@ -147,4 +147,5 @@ def run_showcase(
     )
     trace.write_jsonl(run_dir / "trace.jsonl")
     write_trace_summary(run_dir / "observability.json", trace)
+    write_open_telemetry(run_dir / "otel.json", trace)
     return run_dir

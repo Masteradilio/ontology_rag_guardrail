@@ -86,6 +86,48 @@ def test_during_rag_reports_context_precision_recall_and_duplicates():
     assert duplicate.duplicate_rate == pytest.approx(1 / 3)
 
 
+def test_adaptive_context_assembly_removes_noise_and_can_abstain():
+    report = evaluate_rag_cases(
+        _cases(),
+        FakeEmbedding(),
+        context_policy="adaptive",
+        min_similarity=0.4,
+    )
+
+    supported = report.cases[0].during_rag
+    duplicate = report.cases[1].during_rag
+
+    assert supported.candidate_context_precision == 0.5
+    assert supported.retrieved_document_ids == ["refund"]
+    assert duplicate.retrieved_document_ids == ["data"]
+    assert duplicate.duplicate_rate == 0.0
+    assert report.stage_metrics["during_rag.context_precision"] == 1.0
+    assert report.stage_metrics["during_rag.context_recall"] == 1.0
+    assert report.stage_metrics["during_rag.context_abstention_rate"] == 0.0
+
+
+def test_adaptive_context_assembly_abstains_below_similarity_floor():
+    cases = [
+        RagEvalCase(
+            case_id="unknown",
+            query="unknown query",
+            documents=[{"document_id": "other", "text": "shipping policy"}],
+            answer="unknown",
+        )
+    ]
+
+    report = evaluate_rag_cases(
+        cases,
+        FakeEmbedding(),
+        context_policy="adaptive",
+        min_similarity=0.4,
+    )
+
+    assert report.cases[0].during_rag.retrieved_document_ids == []
+    assert report.cases[0].during_rag.context_abstained is True
+    assert report.stage_metrics["during_rag.context_precision"] == 0.0
+
+
 def test_post_rag_accepts_explicit_trivalent_evaluator():
     def evaluator(case, _context):
         return "FALSE" if case.case_id == "duplicate" else "TRUE"

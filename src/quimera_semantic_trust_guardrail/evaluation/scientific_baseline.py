@@ -87,8 +87,8 @@ def _metrics(run_id: str, results: List[EvaluationSampleResult]) -> SummaryMetri
     expected_by_observed = Counter(
         f"{item.expected_label}:{item.observed_decision}" for item in results
     )
-    expected_decision = Counter()
-    observed_decision = Counter()
+    expected_decision: Counter[str] = Counter()
+    observed_decision: Counter[str] = Counter()
     false_allow = 0
     false_block = 0
     expected_undecidable = 0

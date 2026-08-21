@@ -172,7 +172,15 @@ class OpenAICompatibleProvider:
                 status_code=response.status_code,
             )
 
-        data = response.json()
+        try:
+            data = response.json()
+        except (ValueError, requests.RequestException) as exc:
+            raise LLMFailure(
+                "provider response was not valid JSON",
+                provider_name=self.provider_name,
+                retryable=response.status_code >= 500,
+                status_code=response.status_code,
+            ) from exc
         try:
             text = data["choices"][0]["message"]["content"]
         except (KeyError, IndexError, TypeError) as exc:

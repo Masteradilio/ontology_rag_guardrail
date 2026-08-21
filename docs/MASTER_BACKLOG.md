@@ -521,4 +521,16 @@ Validation:
 - Research boundaries explicitly reject claims of real-world truth proof, legal compliance without review, hallucination elimination, corpus completeness, and autonomous safety without system-level controls.
 - GroundCite research reference tests were adjusted to read vendored dataset and scientific documentation from `data/reference/groundcite_pten` and `docs/reference/groundcite_pten`.
 - Legacy import compatibility was restored with packaged `core.*` and old flat-module shims so `tests/reference_quimera_original` now passes.
-- Full repository regression now passes with `python -m pytest -q`: `190 passed`.
+- Full repository regression now passes with `python -m pytest -q`: `240 passed`.
+
+## Active Portfolio Extension
+
+The original product phases in this master backlog are complete. The current
+technical-portfolio work is tracked in `docs/portfolio_backlog.md` and keeps
+the runtime focused on RAG, guardrails, EVALs, observability, SDK architecture,
+trivalent validation, ontology provenance, and proof replay.
+
+Latest portfolio validation includes adaptive candidate-vs-final context
+metrics, the opt-in NVIDIA-first/OpenRouter-fallback LLM benchmark, redacted
+provider traces, OTLP-shaped observability export, replay commands, a 60%
+coverage gate, focused Ruff/mypy checks, and `240 passed` in the full suite.

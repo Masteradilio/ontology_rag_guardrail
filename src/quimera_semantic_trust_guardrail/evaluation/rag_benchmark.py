@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from .embeddings import DEFAULT_EMBEDDING_MODEL, EmbeddingBackend, SentenceTransformerEmbedding
-from .observability import EvaluationTrace, write_trace_summary
+from .observability import EvaluationTrace, write_open_telemetry, write_trace_summary
 from .rag_evals import RagEvalCase, evaluate_rag_cases, load_rag_cases
 
 
@@ -52,6 +52,9 @@ def run_rag_benchmark(
     run_id: str = "rag-seed-benchmark",
     model_name: str = DEFAULT_EMBEDDING_MODEL,
     top_k: int = 3,
+    context_policy: str = "adaptive",
+    min_similarity: float = 0.40,
+    relative_score_threshold: float = 0.85,
     embedder: Optional[EmbeddingBackend] = None,
 ) -> Path:
     """Run the offline benchmark and write redacted JSON/Markdown artifacts."""
@@ -67,6 +70,9 @@ def run_rag_benchmark(
         backend,
         answer_evaluator=controlled_seed_answer_evaluator,
         top_k=top_k,
+        context_policy=context_policy,
+        min_similarity=min_similarity,
+        relative_score_threshold=relative_score_threshold,
         trace=trace,
     )
 
@@ -82,6 +88,11 @@ def run_rag_benchmark(
         "sample_count": len(cases),
         "embedding_model": getattr(backend, "model_name", model_name),
         "top_k": top_k,
+        "context_assembly_policy": context_policy,
+        "context_min_similarity": min_similarity if context_policy == "adaptive" else None,
+        "context_relative_score_threshold": (
+            relative_score_threshold if context_policy == "adaptive" else None
+        ),
         "llm_api_key_required": False,
         "post_rag_evaluator": "controlled_seed_answer_evaluator",
     }
@@ -95,6 +106,7 @@ def run_rag_benchmark(
     )
     trace.write_jsonl(run_dir / "trace.jsonl")
     write_trace_summary(run_dir / "observability.json", trace)
+    write_open_telemetry(run_dir / "otel.json", trace)
     metric_lines = [
         "# RAG Seed Benchmark",
         "",
@@ -102,6 +114,13 @@ def run_rag_benchmark(
         f"- Embedding model: `{metadata['embedding_model']}`",
         f"- Samples: `{metadata['sample_count']}`",
         "- LLM API key required: `no`",
+        f"- Context assembly: `{context_policy}`",
+        (
+            f"- Context threshold: `min_similarity={min_similarity:.2f}`, "
+            f"`relative={relative_score_threshold:.2f}`"
+            if context_policy == "adaptive"
+            else ""
+        ),
         "",
         "## Metrics",
         "",
@@ -114,6 +133,8 @@ def run_rag_benchmark(
             "",
             "## Limitations",
             "",
+            "- Candidate-context metrics preserve the noisy declared context; final-context metrics measure the adaptive assembly policy.",
+            "- Empty context is an explicit abstention when no candidate reaches the configured similarity floor.",
             *[f"- {limitation}" for limitation in report.limitations],
         ]
     )

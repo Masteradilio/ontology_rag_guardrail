@@ -13,7 +13,9 @@ from quimera_semantic_trust_guardrail.evaluation import (
     LLMRequest,
     LLMResponse,
     NVIDIAProvider,
+    OpenAICompatibleProvider,
     OpenRouterProvider,
+    ProviderConfig,
     ProviderTrace,
     SummaryMetrics,
     create_evaluation_run,
@@ -78,6 +80,36 @@ def test_fallback_uses_openrouter_when_nvidia_fails():
             "status_code": 429,
         }
     ]
+
+
+def test_invalid_provider_json_is_normalized_and_reaches_fallback(monkeypatch):
+    class InvalidJsonResponse:
+        status_code = 200
+        headers = {}
+
+        def json(self):
+            raise ValueError("invalid json")
+
+    monkeypatch.setattr(
+        "quimera_semantic_trust_guardrail.evaluation.llm_providers.requests.post",
+        lambda *_args, **_kwargs: InvalidJsonResponse(),
+    )
+    nvidia = OpenAICompatibleProvider(
+        ProviderConfig(
+            provider_name="nvidia",
+            model_name="minimax-m3",
+            api_key="secret",
+            base_url="https://nvidia.invalid",
+        )
+    )
+    client = FallbackLLMClient(
+        [nvidia, FakeProvider("openrouter", "minimax-m3", response_text="fallback")]
+    )
+
+    response = client.generate(LLMRequest(prompt="test"))
+
+    assert response.provider_name == "openrouter"
+    assert client.last_failures[0]["message"] == "provider response was not valid JSON"
 
 
 def test_fallback_raises_when_all_providers_fail():

@@ -8,6 +8,7 @@ receives an explicit answer evaluator when one is needed.
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Sequence
 
@@ -36,6 +37,7 @@ class RagEvalCase(BaseModel):
 
 class PreRagResult(BaseModel):
     ranked_document_ids: List[str]
+    ranked_document_scores: Dict[str, float] = Field(default_factory=dict)
     relevant_document_ids: List[str]
     hit_at_k: float
     reciprocal_rank: float
@@ -43,12 +45,18 @@ class PreRagResult(BaseModel):
 
 
 class DuringRagResult(BaseModel):
+    candidate_document_ids: List[str] = Field(default_factory=list)
     retrieved_document_ids: List[str]
     relevant_document_ids: List[str]
+    candidate_context_precision: float = 0.0
+    candidate_context_recall: float = 0.0
+    candidate_duplicate_rate: float = 0.0
     context_precision: float
     context_recall: float
     duplicate_rate: float
     evidence_coverage: float
+    context_assembly_policy: str = "declared"
+    context_abstained: bool = False
 
 
 class PostRagResult(BaseModel):
@@ -70,6 +78,9 @@ class RagEvaluationReport(BaseModel):
     sample_count: int
     top_k: int
     embedding_model: str
+    context_assembly_policy: str = "declared"
+    context_min_similarity: Optional[float] = None
+    context_relative_score_threshold: Optional[float] = None
     stage_metrics: Dict[str, float] = Field(default_factory=dict)
     decision_distribution: Dict[str, int] = Field(default_factory=dict)
     cases: List[RagCaseResult] = Field(default_factory=list)
@@ -138,6 +149,7 @@ def _pre_rag(
     )
     return PreRagResult(
         ranked_document_ids=list(ranked_ids),
+        ranked_document_scores=dict(similarities),
         relevant_document_ids=list(case.relevant_document_ids),
         hit_at_k=1.0 if any(document_id in relevant for document_id in selected) else 0.0,
         reciprocal_rank=1.0 / first_rank if first_rank else 0.0,
@@ -145,21 +157,62 @@ def _pre_rag(
     )
 
 
-def _during_rag(case: RagEvalCase, ranked_ids: Sequence[str], top_k: int) -> DuringRagResult:
-    retrieved = list(case.retrieved_document_ids or ranked_ids[:top_k])
-    relevant = set(case.relevant_document_ids)
+def _context_metrics(
+    retrieved: Sequence[str],
+    relevant: set[str],
+) -> tuple[float, float, float]:
     unique_retrieved = set(retrieved)
     relevant_retrieved = unique_retrieved.intersection(relevant)
     precision = len(relevant_retrieved) / len(unique_retrieved) if unique_retrieved else 0.0
     recall = len(relevant_retrieved) / len(relevant) if relevant else 0.0
     duplicate_rate = (len(retrieved) - len(unique_retrieved)) / len(retrieved) if retrieved else 0.0
+    return precision, recall, duplicate_rate
+
+
+def _during_rag(
+    case: RagEvalCase,
+    ranked_ids: Sequence[str],
+    similarities: Mapping[str, float],
+    top_k: int,
+    *,
+    context_policy: str,
+    min_similarity: float,
+    relative_score_threshold: float,
+) -> DuringRagResult:
+    candidate = list(case.retrieved_document_ids or ranked_ids[:top_k])
+    relevant = set(case.relevant_document_ids)
+    candidate_precision, candidate_recall, candidate_duplicate_rate = _context_metrics(
+        candidate, relevant
+    )
+
+    if context_policy == "declared":
+        retrieved = candidate
+    elif context_policy == "adaptive":
+        ranked_candidates = list(ranked_ids[:top_k])
+        top_score = similarities[ranked_candidates[0]] if ranked_candidates else 0.0
+        score_floor = max(min_similarity, top_score * relative_score_threshold)
+        retrieved = [
+            document_id
+            for document_id in ranked_candidates
+            if similarities.get(document_id, 0.0) >= score_floor
+        ]
+    else:
+        raise ValueError("context_policy must be 'declared' or 'adaptive'")
+
+    precision, recall, duplicate_rate = _context_metrics(retrieved, relevant)
     return DuringRagResult(
+        candidate_document_ids=candidate,
         retrieved_document_ids=retrieved,
         relevant_document_ids=list(case.relevant_document_ids),
+        candidate_context_precision=candidate_precision,
+        candidate_context_recall=candidate_recall,
+        candidate_duplicate_rate=candidate_duplicate_rate,
         context_precision=precision,
         context_recall=recall,
         duplicate_rate=duplicate_rate,
         evidence_coverage=recall,
+        context_assembly_policy=context_policy,
+        context_abstained=not retrieved,
     )
 
 
@@ -189,12 +242,19 @@ def evaluate_rag_cases(
     *,
     answer_evaluator: Optional[AnswerEvaluator] = None,
     top_k: int = 3,
+    context_policy: str = "declared",
+    min_similarity: float = 0.40,
+    relative_score_threshold: float = 0.85,
     trace: Optional[EvaluationTrace] = None,
 ) -> RagEvaluationReport:
     """Evaluate retrieval, assembled context, and answer decision quality."""
 
     if top_k < 1:
         raise ValueError("top_k must be positive")
+    if not 0.0 <= relative_score_threshold <= 1.0:
+        raise ValueError("relative_score_threshold must be between 0 and 1")
+    if min_similarity < -1.0:
+        raise ValueError("min_similarity must be at least -1")
     normalized_cases = [
         case if isinstance(case, RagEvalCase) else RagEvalCase.model_validate(case)
         for case in cases
@@ -203,6 +263,7 @@ def evaluate_rag_cases(
     observed_decisions: Dict[str, int] = {}
 
     for case in normalized_cases:
+        case_started = time.perf_counter()
         ranked_ids, similarities = _rank_documents(case, embedder)
         pre = _pre_rag(case, ranked_ids, similarities, top_k)
         if trace:
@@ -215,8 +276,18 @@ def evaluate_rag_cases(
                     "hit_at_k": pre.hit_at_k,
                     "mrr": pre.reciprocal_rank,
                 },
+                duration_ms=(time.perf_counter() - case_started) * 1000,
             )
-        during = _during_rag(case, ranked_ids, top_k)
+        context_started = time.perf_counter()
+        during = _during_rag(
+            case,
+            ranked_ids,
+            similarities,
+            top_k,
+            context_policy=context_policy,
+            min_similarity=min_similarity,
+            relative_score_threshold=relative_score_threshold,
+        )
         if trace:
             trace.record(
                 "during_rag",
@@ -226,7 +297,10 @@ def evaluate_rag_cases(
                     "context_precision": during.context_precision,
                     "context_recall": during.context_recall,
                     "duplicate_rate": during.duplicate_rate,
+                    "context_size": len(during.retrieved_document_ids),
+                    "context_abstained": during.context_abstained,
                 },
+                duration_ms=(time.perf_counter() - context_started) * 1000,
             )
         documents_by_id = {document.document_id: document for document in case.documents}
         context = [
@@ -234,6 +308,7 @@ def evaluate_rag_cases(
             for document_id in during.retrieved_document_ids
             if document_id in documents_by_id
         ]
+        post_started = time.perf_counter()
         post = _post_rag(case, context, during, answer_evaluator)
         if trace:
             trace.record(
@@ -245,6 +320,7 @@ def evaluate_rag_cases(
                     "correct": post.decision_correct,
                     "evidence_coverage": post.evidence_coverage,
                 },
+                duration_ms=(time.perf_counter() - post_started) * 1000,
             )
         if post.observed_decision is not None:
             key = post.observed_decision.value
@@ -261,21 +337,59 @@ def evaluate_rag_cases(
     retrieval_evaluable = [
         result for result in results if result.pre_rag.relevant_document_ids
     ]
+    context_evaluable = [
+        result for result in results if result.during_rag.retrieved_document_ids
+    ]
+    candidate_context_evaluable = [
+        result for result in results if result.during_rag.candidate_document_ids
+    ]
     return RagEvaluationReport(
         sample_count=len(results),
         top_k=top_k,
         embedding_model=getattr(embedder, "model_name", embedder.__class__.__name__),
+        context_assembly_policy=context_policy,
+        context_min_similarity=min_similarity if context_policy == "adaptive" else None,
+        context_relative_score_threshold=(
+            relative_score_threshold if context_policy == "adaptive" else None
+        ),
         stage_metrics={
             "pre_rag.hit_at_k": _mean(result.pre_rag.hit_at_k for result in retrieval_evaluable),
             "pre_rag.mrr": _mean(result.pre_rag.reciprocal_rank for result in retrieval_evaluable),
             "pre_rag.top1_similarity": _mean(result.pre_rag.top1_similarity for result in results),
             "pre_rag.evaluable_queries": float(len(retrieval_evaluable)),
-            "during_rag.context_precision": _mean(result.during_rag.context_precision for result in results),
-            "during_rag.context_recall": _mean(result.during_rag.context_recall for result in results),
-            "during_rag.duplicate_rate": _mean(result.during_rag.duplicate_rate for result in results),
-            "during_rag.evidence_coverage": _mean(result.during_rag.evidence_coverage for result in results),
+            "during_rag.context_precision": _mean(
+                result.during_rag.context_precision for result in context_evaluable
+            ),
+            "during_rag.context_recall": _mean(
+                result.during_rag.context_recall for result in retrieval_evaluable
+            ),
+            "during_rag.duplicate_rate": _mean(
+                result.during_rag.duplicate_rate for result in context_evaluable
+            ),
+            "during_rag.evidence_coverage": _mean(
+                result.during_rag.evidence_coverage for result in retrieval_evaluable
+            ),
+            "during_rag.candidate_context_precision": _mean(
+                result.during_rag.candidate_context_precision for result in candidate_context_evaluable
+            ),
+            "during_rag.candidate_context_recall": _mean(
+                result.during_rag.candidate_context_recall for result in retrieval_evaluable
+            ),
+            "during_rag.candidate_duplicate_rate": _mean(
+                result.during_rag.candidate_duplicate_rate for result in candidate_context_evaluable
+            ),
+            "during_rag.context_size": _mean(
+                float(len(result.during_rag.retrieved_document_ids)) for result in results
+            ),
+            "during_rag.context_abstention_rate": _mean(
+                float(result.during_rag.context_abstained) for result in results
+            ),
+            "during_rag.context_evaluable_cases": float(len(context_evaluable)),
+            "during_rag.recall_evaluable_queries": float(len(retrieval_evaluable)),
             "post_rag.decision_accuracy": _mean(post_accuracy_values),
-            "post_rag.evidence_coverage": _mean(result.post_rag.evidence_coverage for result in results),
+            "post_rag.evidence_coverage": _mean(
+                result.post_rag.evidence_coverage for result in retrieval_evaluable
+            ),
         },
         decision_distribution=observed_decisions,
         cases=results,

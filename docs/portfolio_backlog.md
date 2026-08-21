@@ -109,7 +109,7 @@ Subtasks:
 
 Acceptance: context quality is separated from answer quality.
 
-Validation: implemented context precision, context recall, duplicate rate, and evidence coverage per case and in the aggregate report.
+Validation: implemented candidate-vs-final context precision, context recall, duplicate rate, evidence coverage, context size, and abstention rate per case and in the aggregate report. The adaptive seed run reached final-context precision/recall of `1.0` while preserving candidate precision of `0.3333` as the diagnosed baseline.
 
 ### P2-T04: Post-RAG Evaluation
 
@@ -124,6 +124,21 @@ Subtasks:
 Acceptance: answer correctness, grounding evidence, and abstention remain separately inspectable.
 
 Validation: implemented explicit answer evaluator injection, trivalent decision distribution, post-RAG accuracy, and no implicit LLM calls.
+
+### P2-T06: Opt-In LLM RAG Benchmark
+
+Status: DONE
+
+Subtasks:
+
+- Generate conservative structured answers and trivalent decisions from the selected context.
+- Attempt NVIDIA MiniMax M3 first and use paid OpenRouter only as an explicit fallback.
+- Persist provider/model/latency/fallback metadata without prompts, responses, or credentials.
+- Treat malformed output and provider exhaustion as `UNDECIDABLE`/partial benchmark outcomes.
+
+Acceptance: an API-key-backed run is reproducible, auditable, and never required by the offline regression suite.
+
+Validation: added `quimera rag-llm-benchmark`, redacted provider traces, fallback ordering tests, malformed-output tests, and failure-safe artifacts.
 
 ### P2-T05: Reproducible Benchmark
 
@@ -141,7 +156,7 @@ Validation: added `quimera rag-benchmark`, a four-case committed seed, JSON/Mark
 
 ## Phase P3: Observability And Auditability
 
-Status: IN_PROGRESS
+Status: DONE
 
 Subtasks:
 
@@ -151,7 +166,7 @@ Subtasks:
 - Add optional OpenTelemetry export with redaction.
 - Add proof replay and human-readable explanation commands.
 
-Implemented so far: dependency-free trace events, stage-level retrieval/context/decision events, decision distribution, JSONL export, summary export, and secret redaction. OpenTelemetry export and proof replay remain TODO.
+Validation: trace events now include stage duration, decision/abstention/failure/token metrics, and secret redaction; `otel.json` is a dependency-free OTLP-shaped export; `trace-replay` and `proof-explain` reconstruct human-readable evaluation/proof paths.
 
 Acceptance: a reviewer can reconstruct one decision from request through evidence and proof ledger.
 
@@ -172,7 +187,7 @@ Acceptance: the project demonstrates RAG, guardrails, agents, ontology, and audi
 
 ## Phase P5: Engineering Quality
 
-Status: IN_PROGRESS
+Status: DONE
 
 Subtasks:
 
@@ -182,6 +197,8 @@ Subtasks:
 - Add contract tests for provider, retriever, embedder, and evidence adapters.
 
 Acceptance: the project presents maintainable engineering, not only a working demo.
+
+Validation: CI covers Python 3.10-3.12, enforces 60% product-test coverage, runs focused Ruff correctness checks and mypy evaluation checks, and includes provider/embedder/RAG/replay contract tests. The active runtime path uses timezone-aware UTC timestamps; the remaining FastAPI TestClient warning is an upstream dependency warning.
 
 ## Deferred Tracks
 
