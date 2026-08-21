@@ -8,12 +8,17 @@ The current deterministic seed includes `policy-undecidable-001`, where the expe
 
 ## Evaluation Limitations
 
-- The committed datasets are small and synthetic.
+- The four-case seed and the 96-case enterprise package are synthetic or
+  semisynthetic fixtures. The enterprise package is not a real anonymized
+  customer dataset and must not be presented as one.
 - Embedding retrieval quality depends on the selected model, corpus, language, and threshold configuration.
 - The offline benchmark evaluates deterministic answer fixtures; it does not measure an LLM's generation quality.
 - The LLM benchmark is a four-case provider-backed smoke evaluation; provider output can vary between runs and the raw LLM accuracy must be reported separately from the guardrailed decision accuracy.
 - The evidence-consistency guardrail is intentionally narrow and seed-oriented. It demonstrates a validation stage; it is not a general natural-language contradiction solver.
 - The adaptive similarity floor improves precision by abstaining on weak context. Thresholds must be calibrated on a larger, independently labeled corpus before comparing systems.
+- The published threshold curve is calibrated and evaluated on the same
+  semisynthetic corpus. It demonstrates the measurement and trade-off
+  mechanism, but does not establish an out-of-sample operating point.
 - No metric in this repository proves real-world truth or production RAG accuracy.
 - Optional provider runs can fail because of network, quota, model availability, or provider configuration.
 

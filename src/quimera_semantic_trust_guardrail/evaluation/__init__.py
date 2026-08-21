@@ -64,6 +64,12 @@ from .llm_rag_benchmark import parse_llm_output, run_llm_rag_benchmark
 from .observability import EvaluationTrace, TraceEvent, write_open_telemetry, write_trace_summary
 from .replay import explain_proof, explain_trace, replay_proof, replay_trace
 from .showcase import run_showcase
+from .threshold_benchmark import (
+    DEFAULT_THRESHOLD_MANIFEST,
+    DEFAULT_THRESHOLDS,
+    run_threshold_benchmark,
+)
+from .threshold_sweep import ThresholdCurvePoint, ThresholdSweepReport, sweep_context_thresholds
 
 __all__ = [
     "ControlledDataset",
@@ -124,4 +130,10 @@ __all__ = [
     "replay_proof",
     "replay_trace",
     "run_showcase",
+    "DEFAULT_THRESHOLD_MANIFEST",
+    "DEFAULT_THRESHOLDS",
+    "run_threshold_benchmark",
+    "ThresholdCurvePoint",
+    "ThresholdSweepReport",
+    "sweep_context_thresholds",
 ]

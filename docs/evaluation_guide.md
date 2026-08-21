@@ -33,6 +33,35 @@ empty final context is an abstention, not a fabricated retrieval success. This
 stage therefore exposes both the original retrieval noise and the quality of
 the policy that turns candidates into model context.
 
+### Threshold Calibration Benchmark
+
+The expanded `rag_enterprise_v1` package contains 96 balanced, semisynthetic
+cases across 24 enterprise policy families. It is deliberately larger than
+the four-case regression seed and contains supported, contradicted,
+insufficient-evidence, and partial-coverage cases. The package is committed
+with a generator, manifest, provenance fields, and no production or personal
+records.
+
+Run the threshold sweep with the local Sentence Transformers backend:
+
+```powershell
+python -m quimera_semantic_trust_guardrail rag-threshold-benchmark
+```
+
+The command performs one embedding pass, reuses the ranking, and evaluates a
+0.20-0.80 absolute-threshold grid at 0.01 increments. It writes JSON, CSV,
+Markdown, and a dependency-free SVG containing context precision, context
+recall, context F1, abstention, useful abstention, harmful abstention, mean
+context size, and pre-RAG hit@k/MRR. The recommended threshold maximizes F1 on
+this corpus; it is a calibration artifact, not a production default.
+
+In the committed run, threshold `0.55` is the F1 recommendation with context
+precision `0.861`, context recall `0.944`, context F1 `0.901`, and harmful
+abstention `0.042`. Threshold `0.65` exceeds `0.90` precision but lowers recall
+to `0.778`, making the precision/recall/abstention trade-off visible instead
+of hiding it behind one headline number. The published snapshot is under
+`docs/benchmarks/rag-enterprise-threshold-20260820`.
+
 ## Post-RAG
 
 The answer is passed to an explicit evaluator. The evaluator may be deterministic, runtime-backed, or LLM-assisted, but no provider is called implicitly. The report records:
@@ -50,4 +79,10 @@ to `UNDECIDABLE`.
 
 ## Interpretation
 
-The seed is an engineering regression fixture, not a production accuracy estimate. Any public report must include the dataset size, synthetic nature, model name, top-k configuration, and known limitations.
+The committed datasets are engineering fixtures, not production accuracy
+estimates. The 96-case package is template-generated semisynthetic data, not a
+real anonymized customer dataset. Any public report must include the dataset
+size, provenance, model name, top-k configuration, threshold policy, and known
+limitations. Real anonymized records should replace or extend this package
+only after privacy review, identifier removal, label adjudication, and a held-
+out evaluation split.

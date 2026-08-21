@@ -89,6 +89,18 @@ Run the real embedding-backed three-stage RAG benchmark:
 
 The benchmark uses `sentence-transformers==5.6.1` with a multilingual local model. It does not require an LLM API key. Provider keys are only needed for explicit optional LLM-assisted evaluation runs.
 
+Run the expanded threshold calibration benchmark:
+
+```powershell
+.\.venv\Scripts\python -m quimera_semantic_trust_guardrail rag-threshold-benchmark
+```
+
+This uses the committed 96-case, 24-family semisynthetic enterprise corpus
+and writes a threshold curve for context precision, recall, F1, and
+abstention. The benchmark is offline and does not require an LLM API key. A
+reviewer-friendly snapshot is committed under
+`docs/benchmarks/rag-enterprise-threshold-20260820`.
+
 Run the opt-in LLM-backed benchmark configured by `.env`:
 
 ```powershell
@@ -107,7 +119,7 @@ src/
   groundcite/                        # vendored evaluation core from GroundCite-PTEN
   quimera_legacy/                    # selected legacy components for adaptation
   core/                              # compatibility shims for copied legacy reference tests
-docs/
+  docs/
   architecture.md
   integration_rag.md
   integration_agents.md
@@ -117,6 +129,7 @@ docs/
   evaluation_plan.md
   evaluation_guide.md
   portfolio_backlog.md
+  benchmarks/                       # committed RAG threshold artifacts
   PRD.md
   MASTER_BACKLOG.md
 tests/
@@ -141,6 +154,7 @@ examples/
 - [Known limitations](docs/known_limitations.md)
 - [Portfolio demo walkthrough](docs/demo_walkthrough.md)
 - [Three-stage EVAL guide](docs/evaluation_guide.md)
+- [Published threshold benchmark](docs/benchmarks/rag-enterprise-threshold-20260820/summary.md)
 - [Quimera scientific claims ledger](docs/scientific_claims_ledger_quimera.md)
 - [Scientific technical report](docs/scientific_technical_report.md)
 - [External research decision](docs/scientific_external_research_decision.md)

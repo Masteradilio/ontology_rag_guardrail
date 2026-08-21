@@ -27,6 +27,17 @@ python -m quimera_semantic_trust_guardrail rag-benchmark --run-id rag-seed-bench
 
 The benchmark uses `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` through `sentence-transformers==5.6.1`. It may download the model from Hugging Face on first use, but it does not call an LLM provider and does not require an API key.
 
+For the expanded threshold calibration benchmark:
+
+```powershell
+python -m quimera_semantic_trust_guardrail rag-threshold-benchmark --run-id rag-enterprise-threshold-benchmark
+```
+
+This evaluates 96 semisynthetic cases from 24 enterprise policy families and
+writes a precision/recall/F1/abstention curve over thresholds from 0.20 to
+0.80. The committed, reviewer-friendly snapshot is
+`docs/benchmarks/rag-enterprise-threshold-20260820`.
+
 For the opt-in provider-backed benchmark configured by `.env`:
 
 ```powershell
@@ -45,6 +56,8 @@ malformed or unavailable model output to `UNDECIDABLE`.
 - `trace.jsonl`: stage-level retrieval, context, and decision events.
 - `observability.json`: event and decision summaries.
 - `otel.json`: dependency-free OTLP-shaped spans for collector integration.
+- `threshold_curve.csv`: threshold-level metrics for plotting or analysis.
+- `threshold_curve.svg`: dependency-free chart suitable for GitHub review.
 
 To inspect a trace as a reviewer:
 

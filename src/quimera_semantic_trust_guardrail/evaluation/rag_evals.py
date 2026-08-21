@@ -29,6 +29,7 @@ class RagEvalCase(BaseModel):
     case_id: str
     query: str
     documents: List[RagDocument]
+    metadata: Dict[str, Any] = Field(default_factory=dict)
     relevant_document_ids: List[str] = Field(default_factory=list)
     retrieved_document_ids: List[str] = Field(default_factory=list)
     answer: str

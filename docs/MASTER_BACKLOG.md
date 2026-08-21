@@ -533,4 +533,5 @@ trivalent validation, ontology provenance, and proof replay.
 Latest portfolio validation includes adaptive candidate-vs-final context
 metrics, the opt-in NVIDIA-first/OpenRouter-fallback LLM benchmark, redacted
 provider traces, OTLP-shaped observability export, replay commands, a 60%
-coverage gate, focused Ruff/mypy checks, and `240 passed` in the full suite.
+coverage gate, focused Ruff/mypy checks, the 96-case threshold sweep, and
+`240 passed` before the threshold benchmark extension.

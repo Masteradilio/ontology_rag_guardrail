@@ -32,6 +32,8 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added adaptive RAG context assembly with explicit candidate-vs-final precision, recall, duplicate, context-size, and abstention metrics.
 - Added the opt-in `quimera rag-llm-benchmark` with NVIDIA-first/OpenRouter-fallback policy, structured-output parsing, evidence-consistency guardrails, redacted provider JSONL, and failure-safe artifacts.
 - Added trace metrics, dependency-free OTLP-shaped export, trace replay, proof explanation, coverage/lint/type gates, and provider response error normalization.
+- Added the 96-case `rag_enterprise_v1` semisynthetic benchmark package with 24 enterprise policy families, balanced trivalent/evidence scenarios, generator, manifest, and provenance metadata.
+- Added `quimera rag-threshold-benchmark` with one-pass Sentence Transformers ranking reuse, threshold-level precision/recall/F1/abstention metrics, recommendation logic, CSV/JSON/Markdown/SVG serialization, and a GitHub-readable benchmark snapshot.
 - Added the offline `quimera showcase` command, repository license, security/contribution guidance, `.env.example`, and Python 3.10-3.12 CI workflow.
 
 ### Changed
@@ -64,6 +66,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Real adaptive embedding benchmark completed with `sentence-transformers==5.6.1`, four synthetic cases, `pre_rag.hit_at_k=1.0`, `pre_rag.mrr=1.0`, final `during_rag.context_precision=1.0`, final `during_rag.context_recall=1.0`, `during_rag.duplicate_rate=0.0`, and explicit `context_abstention_rate=0.25`; candidate context precision remains `0.3333` as the diagnosed baseline.
 - LLM benchmark completed from `.env` using NVIDIA as primary and OpenRouter as fallback after NVIDIA provider failure: four valid structured decisions, final `post_rag.decision_accuracy=1.0`, `llm_raw_decision_accuracy=1.0`, and `llm_guardrailed_decision_accuracy=1.0`.
 - Product coverage measured at `66.13%` with a configured CI threshold of `60%`; focused Ruff and mypy checks pass.
+- Enterprise threshold benchmark completed over 96 cases with `pre_rag.hit_at_k=1.0` and `pre_rag.mrr=0.9583`; the F1 recommendation at threshold `0.55` reached context precision `0.861`, recall `0.944`, F1 `0.901`, and harmful abstention `0.042`. A precision-oriented threshold `0.65` reached precision `0.907` with recall `0.778`.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 
@@ -75,6 +78,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Quimera estimates support, contradiction, authorization, and insufficient evidence under configured evidence, ontology, and policy. It does not prove real-world truth, replace legal review, or eliminate hallucinations.
 - Commercial and formal-paper validation are historical objectives for this repository; the active portfolio roadmap is `docs/portfolio_backlog.md`.
 - The RAG seed benchmark is synthetic and controlled. Its post-RAG evaluator is deterministic, and its metrics do not estimate production RAG quality.
+- The expanded enterprise benchmark is template-generated semisynthetic data, not real anonymized customer data. Its published curve demonstrates calibration and trade-off measurement; it is not an out-of-sample or production-quality claim.
 
 ## [0.1.0] - 2026-07-04
 

@@ -154,6 +154,25 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Do not call the paid OpenRouter provider if NVIDIA fails.",
     )
 
+    p_threshold = sub.add_parser(
+        "rag-threshold-benchmark",
+        help="Run the enterprise RAG threshold precision/recall/abstention sweep.",
+    )
+    p_threshold.add_argument("--output-dir", default="artifacts/evaluation")
+    p_threshold.add_argument("--run-id", default="rag-enterprise-threshold-benchmark")
+    p_threshold.add_argument(
+        "--manifest",
+        default="data/evaluation/rag_enterprise_v1/manifest.json",
+    )
+    p_threshold.add_argument("--model", default=None)
+    p_threshold.add_argument("--top-k", type=int, default=3)
+    p_threshold.add_argument("--relative-score-threshold", type=float, default=0.85)
+    p_threshold.add_argument(
+        "--thresholds",
+        default=None,
+        help="Comma-separated absolute similarity thresholds (default: 0.20-0.80 by 0.01).",
+    )
+
     p_replay = sub.add_parser(
         "trace-replay",
         help="Replay an evaluation trace as JSON or human-readable text.",
@@ -292,6 +311,30 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         }
         run_dir = run_llm_rag_benchmark(**kwargs)
         _print_json({"run_dir": str(run_dir), "llm_api_key_required": True})
+        return 0
+
+    if args.command == "rag-threshold-benchmark":
+        from .evaluation import SentenceTransformerEmbedding, run_threshold_benchmark
+
+        thresholds = (
+            [float(value.strip()) for value in args.thresholds.split(",") if value.strip()]
+            if args.thresholds
+            else None
+        )
+        run_dir = run_threshold_benchmark(
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            run_id=args.run_id,
+            top_k=args.top_k,
+            relative_score_threshold=args.relative_score_threshold,
+            thresholds=thresholds,
+            embedder=(
+                SentenceTransformerEmbedding(model_name=args.model)
+                if args.model
+                else SentenceTransformerEmbedding()
+            ),
+        )
+        _print_json({"run_dir": str(run_dir), "llm_api_key_required": False})
         return 0
 
     if args.command == "trace-replay":

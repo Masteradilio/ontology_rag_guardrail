@@ -154,6 +154,23 @@ Acceptance: a clean environment can reproduce the benchmark without an LLM API k
 
 Validation: added `quimera rag-benchmark`, a four-case committed seed, JSON/Markdown artifacts, and a real local embedding run with `llm_api_key_required: false`.
 
+### P2-T07: Enterprise Threshold Calibration Benchmark
+
+Status: DONE
+
+Subtasks:
+
+- Expand the controlled RAG corpus across multiple enterprise policy families.
+- Keep provenance explicit and avoid presenting generated cases as real customer records.
+- Sweep context similarity thresholds without re-encoding the corpus for every point.
+- Report context precision, recall, F1, abstention, useful/harmful abstention, and context size.
+- Publish JSON, CSV, Markdown, and SVG artifacts that can be reviewed on GitHub.
+- Document the path for replacing the semisynthetic package with privacy-reviewed anonymized data.
+
+Acceptance: a reviewer can reproduce the curve offline, inspect the recommended threshold, and see the precision/recall/abstention trade-off without an LLM API key.
+
+Validation: added `rag_enterprise_v1` with 96 balanced cases across 24 policy families; the Sentence Transformers run achieved pre-RAG hit@k `1.0`, MRR `0.958`; the F1 recommendation at threshold `0.55` achieved context precision `0.861`, recall `0.944`, F1 `0.901`, and harmful abstention `0.042`. Threshold `0.65` reaches precision `0.907` with recall `0.778`. Published snapshot: `docs/benchmarks/rag-enterprise-threshold-20260820`.
+
 ## Phase P3: Observability And Auditability
 
 Status: DONE
