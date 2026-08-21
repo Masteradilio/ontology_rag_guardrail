@@ -157,7 +157,7 @@ Acceptance: a reviewer can reconstruct one decision from request through evidenc
 
 ## Phase P4: RAG And Agent Showcase
 
-Status: IN_PROGRESS
+Status: DONE
 
 Subtasks:
 
@@ -166,7 +166,7 @@ Subtasks:
 - Add a `showcase` command with `TRUE`, `FALSE`, and `UNDECIDABLE` cases.
 - Demonstrate ontology versioning and proof lookup in the same flow.
 
-Implemented so far: `quimera showcase` runs offline runtime decisions, ontology-backed agent authorization, the three-stage RAG EVAL, proof lookup, and observability artifacts. A dedicated prose walkthrough remains TODO.
+Validation: `quimera showcase` runs offline runtime decisions, ontology-backed agent authorization, the three-stage RAG EVAL, proof lookup, and observability artifacts. `docs/demo_walkthrough.md` provides the reviewer path.
 
 Acceptance: the project demonstrates RAG, guardrails, agents, ontology, and auditability in under five minutes.
 
