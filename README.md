@@ -111,6 +111,10 @@ NVIDIA MiniMax M3 is attempted first and paid OpenRouter is used only as a
 fallback. The benchmark reports raw LLM decisions separately from the final
 evidence-consistency-guarded decisions.
 
+Set `NVIDIA_URL_REFERENCE_MODEL` to the NVIDIA Chat Completions endpoint shown
+in `.env.example`; a `build.nvidia.com/.../modelcard` reference is also
+normalized automatically for compatibility.
+
 ## Repository Layout
 
 ```text

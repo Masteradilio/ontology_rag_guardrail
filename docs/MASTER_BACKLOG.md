@@ -534,4 +534,7 @@ Latest portfolio validation includes adaptive candidate-vs-final context
 metrics, the opt-in NVIDIA-first/OpenRouter-fallback LLM benchmark, redacted
 provider traces, OTLP-shaped observability export, replay commands, a 60%
 coverage gate, focused Ruff/mypy checks, the 96-case threshold sweep, and
-`240 passed` before the threshold benchmark extension.
+the recruiter reproduction audit. The real provider-backed rerun used NVIDIA
+for three cases and OpenRouter fallback for one rate-limited case; the full
+suite now passes with `247 passed` and product coverage at `67.49%` after the
+provider configuration fix.

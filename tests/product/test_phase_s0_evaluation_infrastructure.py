@@ -146,6 +146,18 @@ def test_provider_configs_read_expected_env_names():
     assert "openrouter.ai" in openrouter.config.base_url
 
 
+def test_nvidia_model_card_reference_is_normalized_to_inference_endpoint():
+    provider = NVIDIAProvider(
+        env={
+            "NVIDIA_LLM_MODEL": "minimaxai/minimax-m3",
+            "NVIDIA_URL_REFERENCE_MODEL": "https://build.nvidia.com/minimaxai/minimax-m3/modelcard",
+            "NVIDIA_API_KEY": "test-key",
+        }
+    )
+
+    assert provider.config.base_url == "https://integrate.api.nvidia.com/v1/chat/completions"
+
+
 def test_env_file_loader_and_redaction(tmp_path):
     env_file = tmp_path / ".env"
     env_file.write_text(

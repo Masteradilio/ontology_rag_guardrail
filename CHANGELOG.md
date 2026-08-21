@@ -34,6 +34,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added trace metrics, dependency-free OTLP-shaped export, trace replay, proof explanation, coverage/lint/type gates, and provider response error normalization.
 - Added the 96-case `rag_enterprise_v1` semisynthetic benchmark package with 24 enterprise policy families, balanced trivalent/evidence scenarios, generator, manifest, and provenance metadata.
 - Added `quimera rag-threshold-benchmark` with one-pass Sentence Transformers ranking reuse, threshold-level precision/recall/F1/abstention metrics, recommendation logic, CSV/JSON/Markdown/SVG serialization, and a GitHub-readable benchmark snapshot.
+- Added NVIDIA model-card URL normalization so a documentation URL in `NVIDIA_URL_REFERENCE_MODEL` cannot silently force every LLM call into the paid fallback.
 - Added the offline `quimera showcase` command, repository license, security/contribution guidance, `.env.example`, and Python 3.10-3.12 CI workflow.
 
 ### Changed
@@ -44,6 +45,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Updated GroundCite research reference tests to resolve vendored dataset and scientific documentation paths inside the new product repository layout.
 - Aligned the runtime-reported version with the experimental package version declared in `pyproject.toml` (`0.1.0.dev0`).
 - Changed the default RAG benchmark to adaptive context assembly; the original noisy declared context remains visible as a candidate metric instead of being silently discarded.
+- Clarified `.env.example`, README, and evaluation guidance for the NVIDIA inference endpoint versus the NVIDIA model-card URL.
 
 ### Validation
 
@@ -67,6 +69,8 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - LLM benchmark completed from `.env` using NVIDIA as primary and OpenRouter as fallback after NVIDIA provider failure: four valid structured decisions, final `post_rag.decision_accuracy=1.0`, `llm_raw_decision_accuracy=1.0`, and `llm_guardrailed_decision_accuracy=1.0`.
 - Product coverage measured at `66.13%` with a configured CI threshold of `60%`; focused Ruff and mypy checks pass.
 - Enterprise threshold benchmark completed over 96 cases with `pre_rag.hit_at_k=1.0` and `pre_rag.mrr=0.9583`; the F1 recommendation at threshold `0.55` reached context precision `0.861`, recall `0.944`, F1 `0.901`, and harmful abstention `0.042`. A precision-oriented threshold `0.65` reached precision `0.907` with recall `0.778`.
+- Recruiter-style reproduction passed for setup, imports, examples, showcase, offline benchmarks, threshold artifacts, trace replay, proof explanation, HTTP endpoints, and optional LLM evaluation. After URL normalization, NVIDIA handled `3/4` cases and OpenRouter handled `1/4` after NVIDIA returned `HTTP 429`; all four structured decisions were valid and both raw/guardrailed accuracy metrics were `1.0`.
+- Final regression after the provider configuration fix: `247 passed`, product coverage `67.49%`, focused Ruff/mypy/compileall/pip checks passed; the full-repository Ruff scan still reports pre-existing lint debt outside the documented focused gate.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 
@@ -79,6 +83,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Commercial and formal-paper validation are historical objectives for this repository; the active portfolio roadmap is `docs/portfolio_backlog.md`.
 - The RAG seed benchmark is synthetic and controlled. Its post-RAG evaluator is deterministic, and its metrics do not estimate production RAG quality.
 - The expanded enterprise benchmark is template-generated semisynthetic data, not real anonymized customer data. Its published curve demonstrates calibration and trade-off measurement; it is not an out-of-sample or production-quality claim.
+- The optional provider benchmark remains network- and quota-dependent. The repository records provider, fallback, parse, latency, and status metadata, but never commits API keys or raw provider responses.
 
 ## [0.1.0] - 2026-07-04
 

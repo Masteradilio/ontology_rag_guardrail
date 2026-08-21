@@ -171,6 +171,21 @@ Acceptance: a reviewer can reproduce the curve offline, inspect the recommended 
 
 Validation: added `rag_enterprise_v1` with 96 balanced cases across 24 policy families; the Sentence Transformers run achieved pre-RAG hit@k `1.0`, MRR `0.958`; the F1 recommendation at threshold `0.55` achieved context precision `0.861`, recall `0.944`, F1 `0.901`, and harmful abstention `0.042`. Threshold `0.65` reaches precision `0.907` with recall `0.778`. Published snapshot: `docs/benchmarks/rag-enterprise-threshold-20260820`.
 
+### P5-T02: Recruiter Reproduction Path
+
+Status: DONE
+
+Subtasks:
+
+- Execute the README setup, imports, examples, showcase, offline benchmarks, replay, proof explanation, and optional HTTP runtime.
+- Execute the provider-backed benchmark with NVIDIA first and verify paid fallback behavior.
+- Detect configuration mistakes without recording credentials or provider responses.
+- Add regression coverage for common NVIDIA model-card versus inference-endpoint configuration errors.
+
+Acceptance: a reviewer can follow the documented path, understand optional network/API-key requirements, and recover from the documented provider fallback behavior.
+
+Validation: setup extras, imports, three examples, showcase, RAG benchmark, threshold benchmark, trace replay, proof explanation, HTTP endpoints, and full regression passed. The NVIDIA URL normalization fixed the model-card configuration issue; the real run used NVIDIA for 3/4 cases and OpenRouter only after one NVIDIA `HTTP 429`.
+
 ## Phase P3: Observability And Auditability
 
 Status: DONE

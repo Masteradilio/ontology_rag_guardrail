@@ -43,6 +43,7 @@ Thumbs.db
 
 # Large/generated experiment outputs
 artifacts/
+.quimera_cli_proofs/
 experiments/**/results/
 scratch/
 *.sqlite

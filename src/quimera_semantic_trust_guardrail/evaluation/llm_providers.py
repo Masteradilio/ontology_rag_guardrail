@@ -12,8 +12,22 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Mapping, Optional, Protocol, Sequence
+from urllib.parse import urlparse
 
 import requests
+
+
+NVIDIA_DEFAULT_BASE_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
+
+
+def _nvidia_base_url(configured_url: str) -> str:
+    """Resolve an NVIDIA model-card reference to its inference endpoint."""
+
+    url = configured_url.strip()
+    parsed = urlparse(url)
+    if parsed.netloc == "build.nvidia.com" and parsed.path.rstrip("/").endswith("/modelcard"):
+        return NVIDIA_DEFAULT_BASE_URL
+    return url or NVIDIA_DEFAULT_BASE_URL
 
 
 class LLMFailure(RuntimeError):
@@ -211,7 +225,7 @@ class NVIDIAProvider(OpenAICompatibleProvider):
                 provider_name="nvidia",
                 model_name=values.get("NVIDIA_LLM_MODEL", ""),
                 api_key=values.get("NVIDIA_API_KEY", ""),
-                base_url=values.get("NVIDIA_URL_REFERENCE_MODEL", ""),
+                base_url=_nvidia_base_url(values.get("NVIDIA_URL_REFERENCE_MODEL", "")),
                 timeout_seconds=timeout_seconds,
             )
         )

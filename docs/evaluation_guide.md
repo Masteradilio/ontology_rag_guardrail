@@ -77,6 +77,11 @@ NVIDIA MiniMax M3 endpoint first and uses OpenRouter only when the primary
 provider fails. Provider traces are redacted and malformed model output maps
 to `UNDECIDABLE`.
 
+`NVIDIA_URL_REFERENCE_MODEL` must contain the NVIDIA Chat Completions endpoint
+(`https://integrate.api.nvidia.com/v1/chat/completions`). For compatibility,
+the client also converts a `build.nvidia.com/.../modelcard` reference into that
+endpoint; the model-card page itself is documentation, not an inference API.
+
 ## Interpretation
 
 The committed datasets are engineering fixtures, not production accuracy
