@@ -1,4 +1,3 @@
-import os
 from typing import List, Dict, Any, Optional
 
 from groundcite.backends.base import BaseBackend

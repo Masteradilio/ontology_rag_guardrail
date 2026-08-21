@@ -33,7 +33,7 @@ import hashlib
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Callable
+from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
 import json
 

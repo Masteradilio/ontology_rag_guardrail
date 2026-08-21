@@ -1,7 +1,7 @@
 import os
 import asyncio
 import logging
-from typing import List, Dict, Any
+from typing import Dict, Any
 from pathlib import Path
 
 import requests

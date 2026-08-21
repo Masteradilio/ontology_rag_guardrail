@@ -2,7 +2,6 @@ from typing import List, Dict, Any, Optional
 
 from groundcite.backends.base import BaseBackend
 from groundcite.backends.lexical import LexicalBackend
-from groundcite.backends.pricing import calculate_inference_cost
 
 class HybridBackend(BaseBackend):
     """
@@ -178,4 +177,3 @@ class HybridBackend(BaseBackend):
         semantic_result["usd_estimate"] = _calculate_cost()  # Custo real estimado incorrido
         
         return semantic_result
-

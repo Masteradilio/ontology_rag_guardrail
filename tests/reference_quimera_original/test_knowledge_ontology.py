@@ -13,7 +13,6 @@ Versão: 1.0
 import pytest
 import numpy as np
 import warnings
-from unittest.mock import patch
 
 # Importa os módulos a serem testados
 import sys
@@ -425,8 +424,8 @@ class TestIntegrationScenarios:
     def test_contradiction_propagation(self):
         """Testa propagação de contradições."""
         # Adiciona fatos iniciais
-        fact1_id = self.ontology.add_fact("A", "implica", "B", "TRUE")
-        fact2_id = self.ontology.add_fact("B", "implica", "C", "TRUE")
+        self.ontology.add_fact("A", "implica", "B", "TRUE")
+        self.ontology.add_fact("B", "implica", "C", "TRUE")
         fact3_id = self.ontology.add_fact("A", "implica", "não_C", "TRUE")
         
         # Simula detecção de contradição

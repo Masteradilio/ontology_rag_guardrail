@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 
@@ -353,7 +353,7 @@ class FactualPDFReportGenerator:
         ]))
         
         story.append(Paragraph("💰 Retorno de Investimento (ROI) & Eficiência de Custos", h2_style))
-        story.append(financial_data_p := Paragraph(
+        story.append(Paragraph(
             f"Graças ao motor híbrido do GroundCite que intercepta termos deterministicamente sem chamadas caras na nuvem, "
             f"este lote obteve **{roi_percent:.1f}%** de economia real!", body_style
         ))

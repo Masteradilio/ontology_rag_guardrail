@@ -1,4 +1,3 @@
-import os
 import json
 from pathlib import Path
 from typing import Optional, List, Dict, Any
@@ -940,7 +939,7 @@ def report(
     avg_unsupported_rate = sum(res.get("scores", {}).get("span_support_unsupported_rate", 0.0) for res in results) / total_samples
     avg_abstention_risk = sum(res.get("scores", {}).get("abstention_risk", 0.0) for res in results) / total_samples
     
-    md_content = f"# Relatório de Avaliação RAG - GroundCite\n\n"
+    md_content = "# Relatório de Avaliação RAG - GroundCite\n\n"
     md_content += f"**Arquivo analisado:** `{results_path.name}`\n"
     md_content += f"**Total de Amostras:** `{total_samples}`\n\n"
     
@@ -996,7 +995,6 @@ def serve(
     try:
         import uvicorn
         from fastapi import FastAPI, HTTPException
-        from pydantic import BaseModel
     except ImportError:
         console.print("[bold red]FastAPI ou Uvicorn não instalados. Rode `pip install fastapi uvicorn`.[/bold red]")
         raise typer.Exit(code=1)
@@ -1254,7 +1252,7 @@ def push_to_hub(
         success = exporter.push_to_hub(repo_id=repo_id, token=token)
         
         if success:
-            console.print(f"\n[bold green][OK] Benchmark publicado com absoluto sucesso no Hugging Face Datasets![/bold green]")
+            console.print("\n[bold green][OK] Benchmark publicado com absoluto sucesso no Hugging Face Datasets![/bold green]")
             console.print(f"URL: [cyan]https://huggingface.co/datasets/{repo_id}[/cyan]\n")
         else:
             console.print("[bold red]Falha ao exportar para o Hub de Datasets. Verifique as credenciais e conexões.[/bold red]")

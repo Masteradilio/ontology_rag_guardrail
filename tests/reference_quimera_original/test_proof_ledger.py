@@ -1,4 +1,5 @@
 import json
+from importlib import import_module
 
 import os
 import sys
@@ -8,8 +9,9 @@ import pandas as pd
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_root)
 
-from core import proof_ledger
-from core.proof_ledger import calculate_checksum, get_version_tag
+proof_ledger = import_module("core.proof_ledger")
+calculate_checksum = proof_ledger.calculate_checksum
+get_version_tag = proof_ledger.get_version_tag
 
 
 def test_record_and_load_entries(tmp_path, monkeypatch):

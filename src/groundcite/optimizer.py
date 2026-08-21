@@ -1,7 +1,4 @@
-import json
-import math
-from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from rapidfuzz import process, fuzz
 from sklearn.metrics import f1_score
 
@@ -208,8 +205,6 @@ class ParetoOptimizer:
         
         # Computa coordenadas para desenho SVG da curva de Pareto
         costs = [r["cost_usd"] for r in grid_results]
-        f1s = [r["f1_score"] for r in grid_results]
-        
         min_cost = min(costs) if costs else 0.0
         max_cost = max(costs) if costs else 1.0
         cost_range = (max_cost - min_cost) if (max_cost - min_cost) > 0 else 1.0

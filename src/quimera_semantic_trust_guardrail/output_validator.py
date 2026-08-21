@@ -23,14 +23,13 @@ EXCLUSIVO DO OUTPUT VALIDATOR (não existe no Input Shield):
 from __future__ import annotations
 import re
 import time
-import hashlib
-from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Set, Tuple
+from dataclasses import dataclass
+from typing import Dict, Any, List, Optional
 from enum import Enum
 
-from .qgsl_logic import QGSLState, LogicalQutrit, TruthValue
+from .qgsl_logic import QGSLState
 from .proof_recorder import ProofRecorder, ProofType
-from .compliance_engine import ComplianceEngine, ComplianceStandard, ComplianceViolation
+from .compliance_engine import ComplianceEngine
 from .tenant_ontology import TenantOntologyManager, ClaimVerification
 
 
@@ -262,7 +261,7 @@ class QuimeraOutputValidator:
                 for h in hallucinations:
                     issues.append(IssueDetail(
                         issue_type=ValidationIssue.HALLUCINATION,
-                        severity=0.8 if h.verified == False else 0.5,
+                        severity=0.8 if not h.verified else 0.5,
                         description=f"Possível alucinação: {h.claim[:50]}...",
                         location=h.claim[:100],
                         suggestion=h.reasoning

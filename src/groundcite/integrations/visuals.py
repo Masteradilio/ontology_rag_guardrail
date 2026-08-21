@@ -1,6 +1,5 @@
-import math
 import numpy as np
-from typing import List, Dict, Any, Tuple, Optional
+from typing import List, Dict, Any, Tuple
 
 # Este módulo gerencia toda a lógica de computação analítica avançada e renderização
 # de componentes gráficos em formato SVG nativo para compatibilidade perfeita com temas Dark e Light no Streamlit.
@@ -177,8 +176,6 @@ def generate_mcnemar_wilcoxon_card(results: List[Dict[str, Any]]) -> str:
     Computa testes de significância de McNemar e Wilcoxon pareados contra baselines (se presentes)
     e renderiza o painel Glassmorphism premium de significância pareada.
     """
-    from groundcite.cli import convert_usd_to # reaproveita utilitario
-    
     # Separa previsões reais do dataset carregado
     hybrid_preds = []
     ragas_preds = []

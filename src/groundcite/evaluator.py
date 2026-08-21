@@ -2,7 +2,7 @@ import time
 from typing import List, Optional, Dict, Any
 
 from groundcite.schema import Sample, EvalResult
-from groundcite.claims import split_into_claims, BaseClaimDecomposer, RegexClaimDecomposer
+from groundcite.claims import BaseClaimDecomposer, RegexClaimDecomposer
 from groundcite.backends.base import BaseBackend
 from groundcite.backends.lexical import LexicalBackend
 from groundcite.metrics.claim_support import ClaimSupport

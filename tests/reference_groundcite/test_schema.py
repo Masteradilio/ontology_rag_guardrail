@@ -1,4 +1,3 @@
-import json
 import pytest
 from pydantic import ValidationError
 
@@ -8,7 +7,6 @@ from groundcite.schema import (
     GoldClaim,
     GoldSchema,
     Sample,
-    EvalResult,
 )
 
 def test_context_validation():

@@ -1,5 +1,3 @@
-from typing import Optional
-
 def assert_grounded(
     dataset_path: str,
     min_claim_support: float = 0.80,
@@ -21,7 +19,6 @@ def assert_grounded(
     Raises:
         AssertionError: If the evaluated dataset falls below the quality threshold.
     """
-    import json
     from pathlib import Path
     from groundcite.schema import Sample
     from groundcite.evaluator import Evaluator

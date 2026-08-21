@@ -36,6 +36,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Added `quimera rag-threshold-benchmark` with one-pass Sentence Transformers ranking reuse, threshold-level precision/recall/F1/abstention metrics, recommendation logic, CSV/JSON/Markdown/SVG serialization, and a GitHub-readable benchmark snapshot.
 - Added NVIDIA model-card URL normalization so a documentation URL in `NVIDIA_URL_REFERENCE_MODEL` cannot silently force every LLM call into the paid fallback.
 - Added the offline `quimera showcase` command, repository license, security/contribution guidance, `.env.example`, and Python 3.10-3.12 CI workflow.
+- Added an explicit repository-wide Ruff gate in `pyproject.toml` for `E4`, `E7`, `E9`, and `F` findings, matching the CI quality contract.
 
 ### Changed
 
@@ -46,6 +47,7 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Aligned the runtime-reported version with the experimental package version declared in `pyproject.toml` (`0.1.0.dev0`).
 - Changed the default RAG benchmark to adaptive context assembly; the original noisy declared context remains visible as a candidate metric instead of being silently discarded.
 - Clarified `.env.example`, README, and evaluation guidance for the NVIDIA inference endpoint versus the NVIDIA model-card URL.
+- Made `ruff check .` use the same explicit lint scope as CI so local and hosted validation do not depend on implicit Ruff defaults.
 
 ### Validation
 
@@ -70,7 +72,8 @@ All notable changes to Quimera Semantic Trust Guardrail will be documented here.
 - Product coverage measured at `66.13%` with a configured CI threshold of `60%`; focused Ruff and mypy checks pass.
 - Enterprise threshold benchmark completed over 96 cases with `pre_rag.hit_at_k=1.0` and `pre_rag.mrr=0.9583`; the F1 recommendation at threshold `0.55` reached context precision `0.861`, recall `0.944`, F1 `0.901`, and harmful abstention `0.042`. A precision-oriented threshold `0.65` reached precision `0.907` with recall `0.778`.
 - Recruiter-style reproduction passed for setup, imports, examples, showcase, offline benchmarks, threshold artifacts, trace replay, proof explanation, HTTP endpoints, and optional LLM evaluation. After URL normalization, NVIDIA handled `3/4` cases and OpenRouter handled `1/4` after NVIDIA returned `HTTP 429`; all four structured decisions were valid and both raw/guardrailed accuracy metrics were `1.0`.
-- Final regression after the provider configuration fix: `247 passed`, product coverage `67.49%`, focused Ruff/mypy/compileall/pip checks passed; the full-repository Ruff scan still reports pre-existing lint debt outside the documented focused gate.
+- Final regression after the provider configuration fix: `247 passed`, product coverage `67.49%`, focused Ruff/mypy/compileall/pip checks passed.
+- Repository-wide lint debt was cleared: `.venv\Scripts\ruff.exe check .` passes with zero `E4`, `E7`, `E9`, or `F` findings; product coverage remains above the `60%` gate at `67.70%`.
 - Smoke imports passed for `quimera_semantic_trust_guardrail`, `groundcite`, and `quimera_legacy.truth_mapping`.
 - GroundCite reference subset passed: `9 passed` for schema and claim tests.
 

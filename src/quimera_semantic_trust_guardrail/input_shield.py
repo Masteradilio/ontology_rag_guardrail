@@ -20,13 +20,15 @@ EXCLUSIVO DO INPUT SHIELD (não existe no Output Validator):
 from __future__ import annotations
 import re
 import time
-import hashlib
-from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Set
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Dict, Any, List, Optional
 from enum import Enum
 
-from .qgsl_logic import QGSLState, LogicalQutrit, TruthValue
+from .qgsl_logic import QGSLState
 from .proof_recorder import ProofRecorder, ProofType
+
+if TYPE_CHECKING:
+    from .compliance_engine import ComplianceEngine
 
 
 class ThreatType(Enum):

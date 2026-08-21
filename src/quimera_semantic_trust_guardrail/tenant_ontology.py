@@ -17,7 +17,7 @@ import json
 import hashlib
 import time
 from dataclasses import dataclass, field, asdict
-from typing import Dict, Any, List, Optional, Set, Tuple
+from typing import Dict, Any, List, Optional
 from pathlib import Path
 from threading import RLock
 from enum import Enum
@@ -613,7 +613,7 @@ class TenantOntologyManager:
             result = self.verify_claim(tenant_id, ontology_id, sentence)
             
             # Se contradiz ou é indeterminado com conceitos relevantes
-            if result.verified == False or (result.verified is None and result.relevant_concepts):
+            if not result.verified or (result.verified is None and result.relevant_concepts):
                 hallucinations.append(result)
         
         return hallucinations

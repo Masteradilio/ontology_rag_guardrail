@@ -1,8 +1,6 @@
-import pytest
 from typing import List, Dict, Any, Optional
 
-from groundcite import Sample, Context
-from groundcite.backends import BaseBackend, LexicalBackend, HybridBackend
+from groundcite.backends import BaseBackend, HybridBackend
 
 class MockSemanticBackend(BaseBackend):
     """Backend Mock semântico para contar invocações e validar o fallback."""

@@ -16,7 +16,7 @@ Versão: 1.0.0
 """
 
 import numpy as np
-from typing import Union, Tuple, Dict, Any, Optional
+from typing import Union, Dict
 import warnings
 
 # Importa helpers do truth_mapping para unificação da ordem T/F/U
@@ -43,9 +43,9 @@ warnings.filterwarnings("ignore", message="Qiskit não está instalado.*", categ
 # Importação condicional do quantum bridge
 try:
     # Verifica se o Qiskit está disponível
-    import qiskit
+    __import__("qiskit")
     QUANTUM_AVAILABLE = True
-except ImportError as e:
+except ImportError:
     QUANTUM_AVAILABLE = False
     warnings.warn("Qiskit não está instalado. Funcionalidades quânticas limitadas. Para instalar: pip install qiskit qiskit-aer")
 
@@ -467,7 +467,6 @@ class LogicalQubit:
         if use_quantum and QUANTUM_AVAILABLE:
             try:
                 # Implementação quântica real usando Qiskit
-                import qiskit
                 from qiskit import QuantumCircuit, transpile
                 from qiskit_aer import AerSimulator
                 
@@ -491,7 +490,6 @@ class LogicalQubit:
                 counts = result.get_counts(compiled_circuit)
                 
                 # Calcula probabilidades
-                prob_0 = counts.get('0', 0) / 1000
                 prob_1 = counts.get('1', 0) / 1000
                 
                 # Retorna estado baseado nas probabilidades
@@ -520,7 +518,7 @@ class LogicalQubit:
             LogicalQubit: Resultado da operação AND
         """
         if use_quantum and QUANTUM_AVAILABLE:
-            return quantum_and(self, other)
+            return logical_and(self, other)
         else:
             # Fallback para implementação clássica
             return logical_and(self, other)
@@ -537,7 +535,7 @@ class LogicalQubit:
             LogicalQubit: Resultado da operação OR
         """
         if use_quantum and QUANTUM_AVAILABLE:
-            return quantum_or(self, other)
+            return logical_or(self, other)
         else:
             # Fallback para implementação clássica
             return logical_or(self, other)
@@ -555,7 +553,6 @@ class LogicalQubit:
         if use_quantum and QUANTUM_AVAILABLE:
             try:
                 # Implementação quântica real usando Qiskit
-                import qiskit
                 from qiskit import QuantumCircuit, transpile
                 from qiskit_aer import AerSimulator
                 
@@ -973,7 +970,7 @@ if __name__ == "__main__":
         
         # Informações quânticas
         quantum_info = true_q.get_quantum_info()
-        print(f"\nInformações Quânticas do TRUE:")
+        print("\nInformações Quânticas do TRUE:")
         print(f"  Entropia: {quantum_info.get('entropy', 'N/A'):.3f}")
         print(f"  Pureza: {quantum_info.get('purity', 'N/A'):.3f}")
         print(f"  Coerência: {quantum_info.get('coherence', 'N/A'):.3f}")

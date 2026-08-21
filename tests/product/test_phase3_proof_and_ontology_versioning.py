@@ -412,7 +412,7 @@ def test_proof_lookup_links_snapshot_to_decision_via_related_proof_id(tmp_path):
         ontology_id = guardrails.create_ontology(
             name="Policies", domain="security"
         )
-        snap = guardrails.snapshot_ontology(name="audit-baseline")
+        guardrails.snapshot_ontology(name="audit-baseline")
 
         adapter.add_fact(
             "Refunds are available within 30 days.",

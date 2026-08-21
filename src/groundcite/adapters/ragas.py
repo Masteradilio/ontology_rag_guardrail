@@ -1,6 +1,6 @@
 import os
 import logging
-from typing import List, Dict, Any
+from typing import List, Any
 from pathlib import Path
 
 from groundcite.schema import Sample

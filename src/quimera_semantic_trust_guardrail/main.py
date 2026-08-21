@@ -18,12 +18,11 @@ Uso simplificado:
 """
 
 from __future__ import annotations
-import asyncio
 from dataclasses import dataclass
 from typing import Dict, Any, List, Optional
 
-from .input_shield import QuimeraInputShield, ShieldResult, ThreatType
-from .output_validator import QuimeraOutputValidator, ValidationResult, ValidationIssue
+from .input_shield import QuimeraInputShield, ShieldResult
+from .output_validator import QuimeraOutputValidator, ValidationResult
 from .tenant_ontology import TenantOntologyManager, OntologyEntry
 from .compliance_engine import ComplianceEngine, ComplianceStandard
 from .proof_recorder import ProofRecorder

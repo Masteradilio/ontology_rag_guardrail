@@ -1,6 +1,5 @@
 from __future__ import annotations
-import os
-from typing import Dict, List, Tuple
+from typing import Dict, List
 from pathlib import Path
 from pypdf import PdfReader
 

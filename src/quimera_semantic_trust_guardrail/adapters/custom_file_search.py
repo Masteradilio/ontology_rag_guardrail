@@ -42,9 +42,8 @@ import hashlib
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Union
+from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
-import json
 import logging
 
 # HTTP clients (preferência por httpx para async, fallback para aiohttp/requests)
@@ -655,8 +654,6 @@ class CustomFileSearchAdapter(KnowledgeAdapter):
         # Análise de suporte
         # Estratégia: verificar overlap semântico entre claim e evidências
         best_score = max(f.relevance_score for f in evidence)
-        avg_score = sum(f.relevance_score for f in evidence) / len(evidence)
-        
         # Regras de decisão
         if best_score >= 0.85:
             # Alta confiança - evidência forte encontrada

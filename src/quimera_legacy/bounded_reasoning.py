@@ -16,17 +16,14 @@ Autor: Projeto Quimera
 Data: 2024
 """
 
-import re
 import logging
-from typing import List, Dict, Any, Optional, Set, Tuple
-from dataclasses import dataclass, field
+from typing import List, Dict, Any, Optional, Tuple
+from dataclasses import dataclass
 from enum import Enum
 
 try:
-    from .qgsl_core import LogicalQubit
     from .knowledge_ontology import Fact
 except ImportError:
-    from qgsl_core import LogicalQubit
     from knowledge_ontology import Fact
 
 # Configuração de logging

@@ -1,7 +1,7 @@
 import re
 import random
 import logging
-from typing import List, Optional, Dict, Any
+from typing import List
 from groundcite.schema import Sample, GoldSchema, GoldClaim, EvidenceSpan
 
 logger = logging.getLogger(__name__)
@@ -262,7 +262,6 @@ class PerturbationEngine:
                 corrupt = cls.perturb(sample, strategy)
                 corrupted_samples.append(corrupt)
                 
-        import json
         from pathlib import Path
         
         path = Path(output_path)

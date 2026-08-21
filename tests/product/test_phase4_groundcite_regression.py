@@ -16,13 +16,11 @@ from __future__ import annotations
 
 import asyncio
 import json
-from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
 
 from groundcite.claims import (
-    ClaimDependencyGraph,
     RegexClaimDecomposer,
     split_into_claims,
 )
@@ -30,18 +28,13 @@ from groundcite.metrics.abstention import AbstentionRisk
 from groundcite.metrics.claim_support import ClaimSupport
 from groundcite.schema import (
     Context,
-    EvidenceSpan,
-    GoldClaim,
-    GoldSchema,
     Sample,
     EvalResult,
 )
 from groundcite.backends.base import BaseBackend
 
 from quimera_semantic_trust_guardrail import (
-    ComplianceEngine,
     DecisionStatus,
-    GuardrailsConfig,
     RecommendedAction,
     SemanticTrustRuntime,
     SimpleKnowledgeAdapter,

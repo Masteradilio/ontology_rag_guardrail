@@ -1,7 +1,7 @@
 import json
 import time
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict
 
 # Diretório e arquivo para o cache local de preços de API (armazenado na pasta do usuário)
 CACHE_DIR = Path.home() / ".groundcite"

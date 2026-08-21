@@ -1,4 +1,3 @@
-import re
 from typing import List, Dict, Any, Tuple
 from groundcite.schema import Sample
 from groundcite.backends.base import BaseBackend

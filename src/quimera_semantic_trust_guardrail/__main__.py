@@ -16,7 +16,7 @@ import argparse
 import asyncio
 import json
 import sys
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, Optional, Sequence
 
 from . import __version__
 from .runtime import SemanticTrustRuntime

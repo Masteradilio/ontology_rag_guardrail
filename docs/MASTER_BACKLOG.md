@@ -523,6 +523,38 @@ Validation:
 - Legacy import compatibility was restored with packaged `core.*` and old flat-module shims so `tests/reference_quimera_original` now passes.
 - Full repository regression now passes with `python -m pytest -q`: `240 passed`.
 
+## Engineering Quality Maintenance
+
+### Q-T01: Clear Repository Ruff Debt
+
+Status: DONE
+
+Goal: make the repository lint gate explicit, reproducible, and clean across
+the product, vendored reference packages, compatibility shims, and tests.
+
+Subtasks:
+
+- Declare the supported Ruff gate in `pyproject.toml`.
+- Remove all `E4`, `E7`, `E9`, and `F` findings without changing public behavior.
+- Run the full regression suite after import and compatibility cleanup.
+- Record the lint command and result in this backlog and `CHANGELOG.md`.
+- Review `git status --short` and the final diff before closeout.
+
+Validation:
+
+- Added an explicit Ruff configuration to `pyproject.toml` with target Python
+  3.10 and the repository gate `E4`, `E7`, `E9`, and `F`.
+- Removed all 117 findings reported by the pre-change repository-wide gate,
+  including unused imports/assignments, undefined names, invalid boolean
+  comparisons, and malformed import placement across product, GroundCite,
+  legacy compatibility, and test code.
+- `.venv\Scripts\ruff.exe check .` passed with zero findings.
+- Full regression passed: `247 passed`, with one existing Starlette/httpx
+  deprecation warning from the FastAPI test client.
+- Product coverage passed at `67.70%` against the configured `60%` minimum.
+- Evaluation mypy gate passed with no issues; `compileall` and `pip check`
+  also passed.
+
 ## Active Portfolio Extension
 
 The original product phases in this master backlog are complete. The current

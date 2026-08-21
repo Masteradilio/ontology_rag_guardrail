@@ -15,31 +15,27 @@ Autor: Projeto Quimera
 Data: 2024
 """
 
-import re
-import copy
 import time
 import os
-import numpy as np
 from typing import List, Dict, Any, Optional, Tuple, Set
-from dataclasses import dataclass, field
-from collections import defaultdict
+from dataclasses import dataclass
 import logging
 
 # ImportaÃ§Ãµes condicionais para compatibilidade
 try:
     from .qgsl_core import LogicalQubit, logical_and, logical_or, apply_gate, get_logical_gate
-    from .qgsl_core import create_quantum_superposition, apply_quantum_gate, quantum_logical_and, quantum_logical_or
+    from .qgsl_core import create_quantum_superposition, quantum_logical_and
     from .knowledge_ontology import KnowledgeOntology, Fact
-    from .bounded_reasoning import BoundedReasoning, ConstraintViolation
+    from .bounded_reasoning import BoundedReasoning
 except ImportError:
     from qgsl_core import LogicalQubit, logical_and, logical_or, apply_gate, get_logical_gate
-    from qgsl_core import create_quantum_superposition, apply_quantum_gate, quantum_logical_and, quantum_logical_or
+    from qgsl_core import create_quantum_superposition, quantum_logical_and
     from knowledge_ontology import KnowledgeOntology, Fact
-    from bounded_reasoning import BoundedReasoning, ConstraintViolation
+    from bounded_reasoning import BoundedReasoning
 
 # VerificaÃ§Ã£o de disponibilidade quÃ¢ntica baseada no Qiskit
 try:
-    import qiskit
+    __import__("qiskit")
     QUANTUM_AVAILABLE = True
 except ImportError:
     QUANTUM_AVAILABLE = False
@@ -1130,7 +1126,6 @@ class InferenceEngine:
         # 2. Se backward nÃ£o conseguiu ou forward tambÃ©m foi solicitado
         if use_forward and (not results['goal_achieved'] or use_forward):
             logger.info("Executando forward chaining...")
-            initial_facts_count = len(self.ontology.get_all_facts())
             
             # Executa forward chaining com o objetivo
             forward_facts = self.forward_chain(goal_pattern)
@@ -1372,5 +1367,4 @@ if __name__ == "__main__":
         print(f"  {rule.name}: {quantum_info}")
     
     print("\n=== TESTE CONCLUÃDO ===")
-
 

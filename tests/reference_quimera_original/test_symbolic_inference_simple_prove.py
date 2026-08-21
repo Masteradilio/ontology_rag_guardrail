@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Prove() success path with a minimal ontology and rule."""
 
-import sys, os
+import sys
+import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from core.symbolic_inference import prove

@@ -46,8 +46,6 @@ class ConformalPredictor:
         Calcula os scores de não-conformidade s_i = 1 - P(Y_i | X_i) para cada claim.
         """
         new_scores = []
-        from rapidfuzz import process, fuzz
-        
         for sample in calibration_samples:
             if not sample.gold or not sample.gold.claims:
                 continue

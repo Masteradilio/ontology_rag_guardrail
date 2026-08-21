@@ -64,20 +64,19 @@ Uso:
 """
 
 from __future__ import annotations
-import asyncio
 import re
 import hashlib
 import logging
 import inspect
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Set, Tuple, Callable
+from typing import Dict, Any, List, Optional, Callable
 from datetime import datetime
 from enum import Enum
 
-logger = logging.getLogger(__name__)
-
 from ..semantic_fact import SemanticFactType
+
+logger = logging.getLogger(__name__)
 
 
 # =============================================================================
@@ -864,7 +863,7 @@ class OntologySync:
             # {"document_content": "...", "document_name": "..."}
         """
         try:
-            from fastapi import APIRouter, HTTPException
+            from fastapi import APIRouter
             from pydantic import BaseModel
             
             router = APIRouter()
