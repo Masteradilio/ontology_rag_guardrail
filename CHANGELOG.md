@@ -42,6 +42,7 @@ All notable changes to Ontology RAG Guardrail will be documented here.
 ### Changed
 
 - Renamed the public project identity from Quimera Semantic Trust Guardrail to Ontology RAG Guardrail while retaining the existing Python package, CLI, and class identifiers for backward compatibility.
+- Updated package metadata, operational references, and provider telemetry to use the new GitHub repository URL.
 - Rewrote the root `README.md` so it reflects the implemented SDK/runtime surface instead of the initial workspace plan.
 - Cleaned the changelog to remove duplicated initial workspace and validation entries.
 - Updated `docs/MASTER_BACKLOG.md` to restore and close Phase 6 and to reflect that legacy Quimera original reference tests now pass through compatibility shims.

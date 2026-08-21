@@ -67,11 +67,11 @@ fastapi = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail"
-Documentation = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail#readme"
-Source = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail"
-Issues = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail/issues"
-Changelog = "https://github.com/Masteradilio/quimera_semantic_trust_guardrail/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/Masteradilio/ontology_rag_guardrail"
+Documentation = "https://github.com/Masteradilio/ontology_rag_guardrail#readme"
+Source = "https://github.com/Masteradilio/ontology_rag_guardrail"
+Issues = "https://github.com/Masteradilio/ontology_rag_guardrail/issues"
+Changelog = "https://github.com/Masteradilio/ontology_rag_guardrail/blob/main/CHANGELOG.md"
 
 [project.scripts]
 quimera = "quimera_semantic_trust_guardrail.__main__:main"

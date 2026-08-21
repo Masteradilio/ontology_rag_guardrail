@@ -246,7 +246,7 @@ class OpenRouterProvider(OpenAICompatibleProvider):
                 base_url=values.get("OPENROUTER_URL", self.DEFAULT_BASE_URL),
                 timeout_seconds=timeout_seconds,
                 extra_headers={
-                    "HTTP-Referer": "https://github.com/Masteradilio/quimera_semantic_trust_guardrail",
+                    "HTTP-Referer": "https://github.com/Masteradilio/ontology_rag_guardrail",
                     "X-Title": "Ontology RAG Guardrail Evaluation",
                 },
             )

@@ -74,7 +74,7 @@ Validation:
 
 Status: DONE
 
-Goal: prepare the first synchronization with `https://github.com/Masteradilio/quimera_semantic_trust_guardrail.git`.
+Goal: prepare the first synchronization with `https://github.com/Masteradilio/ontology_rag_guardrail.git`.
 
 Subtasks:
 
@@ -92,7 +92,7 @@ Subtasks:
 Validation:
 
 - Git repository initialized with `main` as the default branch.
-- Remote configured as `https://github.com/Masteradilio/quimera_semantic_trust_guardrail.git`.
+- Remote configured as `https://github.com/Masteradilio/ontology_rag_guardrail.git`.
 - `.gitignore` verified for `.venv`, `__pycache__`, and `.pyc`.
 - Initial project preparation committed and pushed to `origin/main`.
 
@@ -568,6 +568,8 @@ Validation:
   documents, security guidance, changelog, CLI descriptions, and FastAPI title.
 - Preserved `quimera_semantic_trust_guardrail`, `quimera`, and
   `QuimeraGuardrails` as compatibility identifiers.
+- Updated package metadata, operational references, and provider telemetry to
+  use `https://github.com/Masteradilio/ontology_rag_guardrail`.
 - Kept `docs/reference` snapshots and upstream technical-license references
   unchanged as historical material.
 
